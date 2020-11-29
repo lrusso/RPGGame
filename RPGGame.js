@@ -236,22 +236,22 @@ RPGGame.Game.prototype = {
 
 		if (this.cursors.left.isDown)
 			{
-			game.physics.arcade.velocityFromAngle(180, 300, this.hero.body.velocity);
+			game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
 			this.hero.animations.play("walk_left", 30, true);
 			}
 		else if (this.cursors.right.isDown)
 			{
-			game.physics.arcade.velocityFromAngle(0, 300, this.hero.body.velocity);
+			game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 			this.hero.animations.play("walk_right", 30, true);
 			}
 		else if (this.cursors.up.isDown)
 			{
-			game.physics.arcade.velocityFromAngle(-90, 300, this.hero.body.velocity);
+			game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 			this.hero.animations.play("walk_up", 30, true);
 			}
 		else if (this.cursors.down.isDown)
 			{
-			game.physics.arcade.velocityFromAngle(90, 300, this.hero.body.velocity);
+			game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 			this.hero.animations.play("walk_down", 30, true);
 			}
 		else
