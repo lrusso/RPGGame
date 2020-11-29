@@ -157,7 +157,7 @@ RPGGame.Game.prototype = {
 		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
 		this.coins.callAll("animations.play", "animations", "spin");
 
-		this.hero = game.add.sprite(420, 301, "hero");
+		this.hero = game.add.sprite(420, 300, "hero");
 		this.hero.anchor.set(0.6);
 
 		this.hero.animations.add("walk_left", [117, 118, 119, 120, 121, 122, 123, 124, 125]);
