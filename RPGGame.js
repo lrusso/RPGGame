@@ -168,8 +168,7 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.hero);
 
 		// This adjusts the collision body size.
-		this.hero.body.setSize(20, 24, 0, 8);
-		this.hero.anchor.set(0.5);
+		this.hero.body.setSize(20, 24, -3, 6);
 
 		game.camera.follow(this.hero);
 
