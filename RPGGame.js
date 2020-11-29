@@ -145,7 +145,7 @@ RPGGame.Game.prototype = {
 		this.map.addTilesetImage("door");
 		this.map.addTilesetImage("wood");
 
-		this.map.setCollisionBetween(1, 3);
+		this.map.setCollisionBetween(1, 4);
 
 		this.layer = this.map.createLayer("Tile Layer 1");
 
