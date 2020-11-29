@@ -157,7 +157,7 @@ RPGGame.Game.prototype = {
 		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
 		this.coins.callAll("animations.play", "animations", "spin");
 
-		this.hero = game.add.sprite(420, 305, "hero");
+		this.hero = game.add.sprite(420, 301, "hero");
 		this.hero.anchor.set(0.6);
 
 		this.hero.animations.add("walk_left", [117, 118, 119, 120, 121, 122, 123, 124, 125]);
@@ -168,7 +168,8 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.hero);
 
 		// This adjusts the collision body size.
-		this.hero.body.setSize(25, 25, 0, 0);
+		this.hero.body.setSize(16, 23, 0, 3);
+		this.hero.anchor.set(0.5);
 
 		game.camera.follow(this.hero);
 
