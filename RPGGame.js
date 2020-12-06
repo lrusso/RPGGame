@@ -94,7 +94,10 @@ RPGGame.Preloader.prototype = {
 
 RPGGame.Game = function (game)
 	{
-	this.splash = true;
+	this.toast = true;
+	this.toastText = null;
+	this.toastShadow = null;
+
 	this.cursors = null;
 	this.map = null;
 	this.coins = null;
@@ -153,20 +156,18 @@ RPGGame.Game.prototype = {
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
-		//  Here we create our coins group
+		// CREATING A COINS GROUP
 		this.coins = game.add.group();
 		this.coins.enableBody = true;
-
-		//  And now we convert all of the Tiled objects with an ID of 34 into sprites within the coins group
-		this.map.createFromObjects("Object Layer 1", 34, "coin", 0, true, false, this.coins);
-
-		//  Add animations to all of the coin sprites
 		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
 		this.coins.callAll("animations.play", "animations", "spin");
 
+		// CONVERTING ALL OF THE TILED OBJECTS WITH AN ID OF 34 INTO SPRITES WITHIN THE COINS GROUP
+		this.map.createFromObjects("Object Layer 1", 34, "coin", 0, true, false, this.coins);
+
+		// ADDING THE HERO
 		this.hero = game.add.sprite(420, 300, "hero");
 		this.hero.anchor.set(0.6);
-
 		this.hero.animations.add("walk_left", [117, 118, 119, 120, 121, 122, 123, 124, 125]);
 		this.hero.animations.add("walk_right", [143, 144, 145, 146, 147, 148, 149, 150, 151]);
 		this.hero.animations.add("walk_up", [104, 105, 106, 107, 108, 109, 110, 111, 112]);
@@ -174,7 +175,7 @@ RPGGame.Game.prototype = {
 
 		game.physics.arcade.enable(this.hero);
 
-		// This adjusts the collision body size.
+		// ADJUSTING THE COLLISION BODY SIZE
 		this.hero.body.setSize(20, 24, -3, 6);
 
 		game.camera.follow(this.hero);
@@ -208,28 +209,14 @@ RPGGame.Game.prototype = {
 		var buttonLoadGame = this.add.button(742, 3, "loadgame", null, this, 2, 1, 0);
 		buttonLoadGame.fixedToCamera = true;
 
-		// CHECKING IF THE SPLASH MUST BE DISPLAYED
-		if (this.splash==true)
+		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
+		if (this.toast==true)
 			{
-			// ADDING THE SPLASH
-			var toastShadow = game.add.graphics();
-			toastShadow.beginFill(0x000000, 0.4);
-			toastShadow.fixedToCamera = true;
-			var toastText = game.add.text(0, 0, STRING_ABOUT, { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
-			toastText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
-			toastText.setTextBounds(0, 370, 800, 55);
-			toastText.fixedToCamera = true;
-			toastShadow.drawRoundedRect(800 / 2 - toastText._width / 2 - 11, 373, toastText._width + 23, 46, 10);
+			// ADDING THE ABOUT TOAST
+			this.showToast(STRING_ABOUT, true);
 
-			// SETTING THAT IN 3 SECONDS THE SPLASH MUST FADE OUT
-			setTimeout(function()
-				{
-				game.add.tween(toastShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
-				game.add.tween(toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
-				}, 3000);
-
-			// SETTING THAT THE SPLASH MUST NOT BE DISPLAYED AGAIN
-			this.splash = false;
+			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
+			this.toast = false;
 			}
 		},
 
@@ -290,6 +277,28 @@ RPGGame.Game.prototype = {
 	getCurrentTime: function()
 		{
 		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+		},
+
+	showToast: function(myText, mustFade)
+		{
+		this.toastShadow = game.add.graphics();
+		this.toastShadow.beginFill(0x000000, 0.4);
+		this.toastShadow.fixedToCamera = true;
+		this.toastText = game.add.text(0, 0, myText, { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.toastText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
+		this.toastText.setTextBounds(0, 370, 800, 55);
+		this.toastText.fixedToCamera = true;
+		this.toastShadow.drawRoundedRect(800 / 2 - this.toastText._width / 2 - 11, 373, this.toastText._width + 23, 46, 10);
+
+		if (mustFade==true)
+			{
+			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
+			setTimeout(function()
+				{
+				game.add.tween(game.state.states["RPGGame.Game"].toastShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				}, 3000);
+			}
 		}
 	};
 
