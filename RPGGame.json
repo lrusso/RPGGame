@@ -262,11 +262,11 @@
 				},
 				{
 				"firstgid":28,
-				"image":"..\/tiles\/grassWSW.png",
+				"image":"..\/tiles\/grassWaterSouthWest.png",
 				"imageheight":32,
 				"imagewidth":32,
 				"margin":0,
-				"name":"grassWSW",
+				"name":"grassWaterSouthWest",
 				"properties": {"collides":"false"},
 				"spacing":0,
 				"tileheight":32,
