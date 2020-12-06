@@ -98,6 +98,13 @@ RPGGame.Game = function (game)
 	this.toastText = null;
 	this.toastShadow = null;
 
+	this.buttonSoundGame = null;
+	this.buttonSoundGameShadow = null;
+	this.buttonSaveGame = null;
+	this.buttonSaveGameShadow = null;
+	this.buttonLoadGame = null;
+	this.buttonLoadGameShadow = null;
+
 	this.cursors = null;
 	this.map = null;
 	this.coins = null;
@@ -183,31 +190,31 @@ RPGGame.Game.prototype = {
 		this.cursors = game.input.keyboard.createCursorKeys();
 
 		// ADDING THE SOUND GAME ICON
-		var buttonSoundGameShadow = game.add.sprite(639, 29, "soundgame");
-		buttonSoundGameShadow.anchor.set(0.5);
-		buttonSoundGameShadow.tint = 0x000000;
-		buttonSoundGameShadow.alpha = 0.7;
-		buttonSoundGameShadow.fixedToCamera = true;
-		var buttonSoundGame = this.add.button(612, 3, "soundgame", null, this, 2, 1, 0);
-		buttonSoundGame.fixedToCamera = true;
+		this.buttonSoundGameShadow = game.add.sprite(639, 29, "soundgame");
+		this.buttonSoundGameShadow.anchor.set(0.5);
+		this.buttonSoundGameShadow.tint = 0x000000;
+		this.buttonSoundGameShadow.alpha = 0.7;
+		this.buttonSoundGameShadow.fixedToCamera = true;
+		this.buttonSoundGame = this.add.button(612, 3, "soundgame", null, this, 2, 1, 0);
+		this.buttonSoundGame.fixedToCamera = true;
 
 		// ADDING THE SAVE GAME ICON
-		var buttonSaveGameShadow = game.add.sprite(704, 29, "savegame");
-		buttonSaveGameShadow.anchor.set(0.5);
-		buttonSaveGameShadow.tint = 0x000000;
-		buttonSaveGameShadow.alpha = 0.7;
-		buttonSaveGameShadow.fixedToCamera = true;
-		var buttonSaveGame = this.add.button(677, 3, "savegame", null, this, 2, 1, 0);
-		buttonSaveGame.fixedToCamera = true;
+		this.buttonSaveGameShadow = game.add.sprite(704, 29, "savegame");
+		this.buttonSaveGameShadow.anchor.set(0.5);
+		this.buttonSaveGameShadow.tint = 0x000000;
+		this.buttonSaveGameShadow.alpha = 0.7;
+		this.buttonSaveGameShadow.fixedToCamera = true;
+		this.buttonSaveGame = this.add.button(677, 3, "savegame", null, this, 2, 1, 0);
+		this.buttonSaveGame.fixedToCamera = true;
 
 		// ADDING THE LOAD GAME ICON
-		var buttonLoadGameShadow = game.add.sprite(769, 29, "loadgame");
-		buttonLoadGameShadow.anchor.set(0.5);
-		buttonLoadGameShadow.tint = 0x000000;
-		buttonLoadGameShadow.alpha = 0.7;
-		buttonLoadGameShadow.fixedToCamera = true;
-		var buttonLoadGame = this.add.button(742, 3, "loadgame", null, this, 2, 1, 0);
-		buttonLoadGame.fixedToCamera = true;
+		this.buttonLoadGameShadow = game.add.sprite(769, 29, "loadgame");
+		this.buttonLoadGameShadow.anchor.set(0.5);
+		this.buttonLoadGameShadow.tint = 0x000000;
+		this.buttonLoadGameShadow.alpha = 0.7;
+		this.buttonLoadGameShadow.fixedToCamera = true;
+		this.buttonLoadGame = this.add.button(742, 3, "loadgame", null, this, 2, 1, 0);
+		this.buttonLoadGame.fixedToCamera = true;
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
