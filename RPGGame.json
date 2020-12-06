@@ -43,7 +43,7 @@
 				"objects":
 						[
 						{"gid":99,"x":416,"y":128,"id":1,"name":"","properties":{},"rotation":0,"type":"","visible":true,"height":0,"width":0},
-						{"gid":99,"x":416,"y":508,"id":2,"name":"","properties":{},"rotation":0,"type":"","visible":true,"height":0,"width":0}
+						{"gid":99,"x":416,"y":512,"id":2,"name":"","properties":{},"rotation":0,"type":"","visible":true,"height":0,"width":0}
 						],
 				"draworder":"topdown",
 				"opacity":1,
