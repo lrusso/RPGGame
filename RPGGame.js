@@ -148,7 +148,8 @@ RPGGame.Game = function (game)
 	this.coins = null;
 	this.layer = null;
 	this.hero = null;
-	this.waterCounter = null;
+
+	this.waterTimer = null;
 	this.waterDelay = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
@@ -176,7 +177,7 @@ RPGGame.Game.prototype = {
 		this.coins = null;
 		this.layer = null;
 		this.hero = null;
-		this.waterCounter = null;
+		this.waterTimer = null;
 		this.waterDelay = 500;
 		},
 
@@ -290,14 +291,20 @@ RPGGame.Game.prototype = {
 
 	update: function ()
 		{
-		if (this.waterCounter==null)
+		// CHECKING IF THERE IS A WATER TIMER
+		if (this.waterTimer==null)
 			{
-			this.waterCounter = this.getCurrentTime();
+			// UPDATING THE WATER TIMER WITH THE CURRENT TIME
+			this.waterTimer = this.getCurrentTime();
 			}
-		else if (this.getCurrentTime()-this.waterCounter>this.waterDelay)
+		// OTHERWISE, CHECKING IF THE WATER DELAY HAS PASSED
+		else if (this.getCurrentTime()-this.waterTimer>this.waterDelay)
 			{
+			// SWAPING THE TILES USED IN THE MAP, FROM WATER1 TO WATER2
 			this.map.swap(10, 11);
-			this.waterCounter = null;
+
+			// CLEARING THE WATER TIMER
+			this.waterTimer = null;
 			}
 
 		game.physics.arcade.collide(this.hero, this.layer);
@@ -334,8 +341,10 @@ RPGGame.Game.prototype = {
 
 	render: function ()
 		{
+		// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
 		if(RPGGame.showDebug==true)
 			{
+			// SHOWING THE HERO'S COLLISION BODY SIZE
 			game.debug.body(this.hero);
 			}
 		},
