@@ -140,6 +140,7 @@ RPGGame.Game = function (game)
 	this.dialogText = null;
 	this.dialogShadow = null;
 	this.dialogTimeout = null;
+	this.dialogDebug = null;
 
 	this.buttonSoundGame = null;
 	this.buttonSoundGameShadow = null;
@@ -268,7 +269,7 @@ RPGGame.Game.prototype = {
 		// HITS THE KING
 		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("Hello, I'm The King.", 40, 260, game.state.states["RPGGame.Game"].KING_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog("Hello, I'm The King.", 111, 260, game.state.states["RPGGame.Game"].KING_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -276,7 +277,7 @@ RPGGame.Game.prototype = {
 		// HITS THE GUARD
 		this.map.setTileIndexCallback(this.GUARD_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("...", 170, 220, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog("...", 175, 227, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -391,6 +392,52 @@ RPGGame.Game.prototype = {
 		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
 		},
 
+	showDialog: function(myText, x, y, tile_id)
+		{
+		if (this.dialogID!=tile_id)
+			{
+			if (this.dialogID!=null)
+				{
+				this.dialogText.destroy();
+				this.dialogShadow.destroy();
+				if (this.dialogDebug!=null)
+					{
+					this.dialogDebug.destroy();
+					}
+				clearTimeout(this.dialogTimeout);
+				}
+
+			this.dialogID = tile_id;
+
+			this.dialogShadow = game.add.graphics();
+			this.dialogShadow.beginFill(0x000000, 0.4);
+			this.dialogShadow.fixedToCamera = true;
+			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
+			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
+			this.dialogText.setTextBounds(0, 0, 0, 30);
+			//this.dialogShadow.drawRoundedRect(800 / 2 - this.dialogText._width / 2 - 11, 373, this.dialogText._width + 23, 46, 10);
+
+			if (RPGGame.showDebug==true)
+				{
+				this.dialogDebug = game.add.graphics(0, 0);
+				this.dialogDebug.lineStyle(1, 0x0000FF, 1);
+				this.dialogDebug.drawRect(x, y - 5, 1, 32);
+				}
+
+			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
+			this.dialogTimeout = setTimeout(function()
+				{
+				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.add.tween(game.state.states["RPGGame.Game"].dialogText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				if (game.state.states["RPGGame.Game"].dialogDebug!=null)
+					{
+					game.state.states["RPGGame.Game"].dialogDebug.destroy();
+					}
+				game.state.states["RPGGame.Game"].dialogID = null;
+				}, 3000);
+			}
+		},
+
 	showToast: function(myText, mustFade)
 		{
 		this.toastShadow = game.add.graphics();
@@ -411,39 +458,7 @@ RPGGame.Game.prototype = {
 				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				}, 3000);
 			}
-		},
-
-	showDialog: function(myText, x, y, tile_id)
-		{
-		if (this.dialogID!=tile_id)
-			{
-			if (this.dialogID!=null)
-				{
-				this.dialogText.destroy();
-				this.dialogShadow.destroy();
-				clearTimeout(this.dialogTimeout);
-				}
-
-			this.dialogID = tile_id;
-
-			this.dialogShadow = game.add.graphics();
-			this.dialogShadow.beginFill(0x000000, 0.4);
-			this.dialogShadow.fixedToCamera = true;
-			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
-			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
-			//this.dialogText.setTextBounds(0, 370, 800, 55);
-			//this.dialogText.fixedToCamera = true;
-			//this.dialogShadow.drawRoundedRect(800 / 2 - this.dialogText._width / 2 - 11, 373, this.dialogText._width + 23, 46, 10);
-
-			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
-			this.dialogTimeout = setTimeout(function()
-				{
-				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
-				game.add.tween(game.state.states["RPGGame.Game"].dialogText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
-				game.state.states["RPGGame.Game"].dialogID = null;
-				}, 3000);
-			}
-		},
+		}
 	};
 
 // CREATING THE GAME INSTANCE
