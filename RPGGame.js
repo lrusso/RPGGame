@@ -488,8 +488,8 @@ RPGGame.Game.prototype = {
 
 			// CREATING THE DIALOG SHADOW
 			this.dialogShadow = game.add.graphics();
-			this.dialogShadow.lineStyle(1, 0x888888, 1);
-			this.dialogShadow.beginFill(0x000000, 0.8);
+			this.dialogShadow.lineStyle(1, 0xFFFFFF, 1);
+			this.dialogShadow.beginFill(0x000072, 1);
 
 			// CREATING THE DIALOG TEXT
 			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
