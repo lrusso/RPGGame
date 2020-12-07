@@ -282,35 +282,43 @@ RPGGame.Game.prototype = {
 		// MAKING THE GAME CAMERA TO FOLLOW THE HERO
 		game.camera.follow(this.hero);
 
-		// GETTING CLOSE TO THE KING
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE KING
 		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
 			{
+			// SHOWING A DIALOG
 			game.state.states["RPGGame.Game"].showDialog(STRING_KING, 111, 258, game.state.states["RPGGame.Game"].KING_TILE_ID);
 
+			// PREVENTING THE CHARACTER TO WALK OVER THE KING
 			return true;
 			}, game, this.layer);
 
-		// GETTING CLOSE TO THE GUARD 1
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 1
 		this.map.setTileIndexCallback(this.GUARD1_TILE_ID, function ()
 			{
+			// SHOWING A DIALOG
 			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD1, 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
 
+			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 1
 			return true;
 			}, game, this.layer);
 
-		// GETTING CLOSE TO THE GUARD 2
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 2
 		this.map.setTileIndexCallback(this.GUARD2_TILE_ID, function ()
 			{
+			// SHOWING A DIALOG
 			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD2, 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
 
+			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 2
 			return true;
 			}, game, this.layer);
 
-		// GETTING CLOSE TO THE MERCHANT
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE MERCHANT
 		this.map.setTileIndexCallback(this.MERCHANT_TILE_ID, function ()
 			{
+			// SHOWING A DIALOG
 			game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
 
+			// PREVENTING THE CHARACTER TO WALK OVER THE MERCHANT
 			return true;
 			}, game, this.layer);
 
