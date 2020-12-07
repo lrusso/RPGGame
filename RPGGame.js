@@ -455,18 +455,26 @@ RPGGame.Game.prototype = {
 				clearTimeout(this.dialogTimeout);
 				}
 
+			// UPDATING THE DIALOG ID
 			this.dialogID = tile_id;
 
+			// CREATING THE DIALOG SHADOW
 			this.dialogShadow = game.add.graphics();
 			this.dialogShadow.lineStyle(1, 0x888888, 1);
 			this.dialogShadow.beginFill(0x000000, 0.8);
+
+			// CREATING THE DIALOG TEXT
 			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
 			this.dialogText.setTextBounds(0, 0, 0, 30);
+
+			// DRAWING THE DIALOG SHADOW
 			this.dialogShadow.drawRoundedRect(x - this.dialogText._width / 2 - 12, y - 5, this.dialogText._width + 23, 32, 10);
 
+			// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
 			if (RPGGame.showDebug==true)
 				{
+				// CREATING A DIALOG DEBUG INDICATOR
 				this.dialogDebug = game.add.graphics(0, 0);
 				this.dialogDebug.lineStyle(1, 0x0000FF, 1);
 				this.dialogDebug.drawRect(x, y - 5, 1, 32);
@@ -475,12 +483,18 @@ RPGGame.Game.prototype = {
 			// SETTING THAT IN 3 SECONDS THE DIALOG MUST FADE OUT
 			this.dialogTimeout = setTimeout(function()
 				{
+				// FADING OUT THE DIALOG SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				game.add.tween(game.state.states["RPGGame.Game"].dialogText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+
+				// CHECKING IF A DIALOG DEBUG INDICATOR WAS CREATED
 				if (game.state.states["RPGGame.Game"].dialogDebug!=null)
 					{
+					// DESTROYING THE DIALOG DEBUG INDICATOR
 					game.state.states["RPGGame.Game"].dialogDebug.destroy();
 					}
+
+				// CLEARING THE DIALOG ID
 				game.state.states["RPGGame.Game"].dialogID = null;
 				}, 3000);
 			}
@@ -488,20 +502,27 @@ RPGGame.Game.prototype = {
 
 	showToast: function(myText, mustFade)
 		{
+		// CREATING THE TOAST SHADOW
 		this.toastShadow = game.add.graphics();
 		this.toastShadow.beginFill(0x000000, 0.4);
 		this.toastShadow.fixedToCamera = true;
+
+		// CREATING THE TOAST TEXT
 		this.toastText = game.add.text(0, 0, myText, { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.toastText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
 		this.toastText.setTextBounds(0, 370, 800, 55);
 		this.toastText.fixedToCamera = true;
+
+		// DRAWING THE TOAST SHADOW
 		this.toastShadow.drawRoundedRect(800 / 2 - this.toastText._width / 2 - 11, 373, this.toastText._width + 23, 46, 10);
 
+		// CHECKING IF THE TOAST MUST FADE OUT
 		if (mustFade==true)
 			{
 			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
 			setTimeout(function()
 				{
+				// FADING OUT THE ABOUT TOAST SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].toastShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				}, 3000);
