@@ -116,7 +116,8 @@ RPGGame.Preloader.prototype = {
 		game.load.image("treasure", imageTreasure);
 		game.load.spritesheet("coin", imageCoin, 32, 32);
 		game.load.spritesheet("hero", imageHero, 32, 32);
-		game.load.image("guard", imageGuard);
+		game.load.image("guard1", imageGuard);
+		game.load.image("guard2", imageGuard);
 		game.load.image("merchant", imageMerchant);
 		game.load.image("priest", imagePriest);
 		game.load.image("king", imageKing)
@@ -190,7 +191,8 @@ RPGGame.Game.prototype = {
 		this.waterDelay = 500;
 
 		this.KING_TILE_ID = 19;
-		this.GUARD_TILE_ID = 20;
+		this.GUARD1_TILE_ID = 20;
+		this.GUARD2_TILE_ID = 21;
 		},
 
 	create: function ()
@@ -223,7 +225,8 @@ RPGGame.Game.prototype = {
 		this.map.addTilesetImage("portUp");
 		this.map.addTilesetImage("portDown");
 		this.map.addTilesetImage("treasure");
-		this.map.addTilesetImage("guard");
+		this.map.addTilesetImage("guard1");
+		this.map.addTilesetImage("guard2");
 		this.map.addTilesetImage("merchant");
 		this.map.addTilesetImage("priest");
 		this.map.addTilesetImage("king");
@@ -274,10 +277,18 @@ RPGGame.Game.prototype = {
 			return true;
 			}, game, this.layer);
 
-		// HITS THE GUARD
-		this.map.setTileIndexCallback(this.GUARD_TILE_ID, function ()
+		// HITS THE GUARD 1
+		this.map.setTileIndexCallback(this.GUARD1_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("I'm watching you.", 177, 226, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog("I'm watching you.", 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
+
+			return true;
+			}, game, this.layer);
+
+		// HITS THE GUARD 2
+		this.map.setTileIndexCallback(this.GUARD2_TILE_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].showDialog("Go away.", 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
 
 			return true;
 			}, game, this.layer);
