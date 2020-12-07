@@ -269,7 +269,7 @@ RPGGame.Game.prototype = {
 		// HITS THE KING
 		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("Hello, I'm The King.", 111, 260, game.state.states["RPGGame.Game"].KING_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog("Hello, I'm the King.", 111, 260, game.state.states["RPGGame.Game"].KING_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -277,7 +277,7 @@ RPGGame.Game.prototype = {
 		// HITS THE GUARD
 		this.map.setTileIndexCallback(this.GUARD_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("...", 175, 227, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog("I'm watching you.", 177, 228, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -410,12 +410,11 @@ RPGGame.Game.prototype = {
 			this.dialogID = tile_id;
 
 			this.dialogShadow = game.add.graphics();
-			this.dialogShadow.beginFill(0x000000, 0.4);
-			this.dialogShadow.fixedToCamera = true;
+			this.dialogShadow.beginFill(0x000000, 0.8);
 			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
 			this.dialogText.setTextBounds(0, 0, 0, 30);
-			//this.dialogShadow.drawRoundedRect(800 / 2 - this.dialogText._width / 2 - 11, 373, this.dialogText._width + 23, 46, 10);
+			this.dialogShadow.drawRoundedRect(x - this.dialogText._width / 2 - 12, y - 5, this.dialogText._width + 23, 32, 10);
 
 			if (RPGGame.showDebug==true)
 				{
