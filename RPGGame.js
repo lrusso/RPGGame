@@ -434,16 +434,24 @@ RPGGame.Game.prototype = {
 
 	showDialog: function(myText, x, y, tile_id)
 		{
+		// CHECKING IF THE DIALOG ID IS NEW
 		if (this.dialogID!=tile_id)
 			{
+			// CHECKING IF THERE IS A PREVIOUS DIALOG ID
 			if (this.dialogID!=null)
 				{
+				// DESTROYING ANY PREVIOUS OBJECT FROM THE PREVIOUS DIALOG
 				this.dialogText.destroy();
 				this.dialogShadow.destroy();
+
+				// CHECKING IF A DIALOG DEBUG INDICATOR WAS CREATED
 				if (this.dialogDebug!=null)
 					{
+					// DESTROYING THE DIALOG DEBUG INDICATOR
 					this.dialogDebug.destroy();
 					}
+
+				// CLEARING THE TIMEOUT FROM THE PREVIOUS DIALOG
 				clearTimeout(this.dialogTimeout);
 				}
 
@@ -464,7 +472,7 @@ RPGGame.Game.prototype = {
 				this.dialogDebug.drawRect(x, y - 5, 1, 32);
 				}
 
-			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
+			// SETTING THAT IN 3 SECONDS THE DIALOG MUST FADE OUT
 			this.dialogTimeout = setTimeout(function()
 				{
 				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
