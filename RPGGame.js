@@ -136,6 +136,11 @@ RPGGame.Game = function (game)
 	this.toastText = null;
 	this.toastShadow = null;
 
+	this.dialogID = null;
+	this.dialogText = null;
+	this.dialogShadow = null;
+	this.dialogTimeout = null;
+
 	this.buttonSoundGame = null;
 	this.buttonSoundGameShadow = null;
 	this.buttonSaveGame = null;
@@ -151,6 +156,8 @@ RPGGame.Game = function (game)
 
 	this.waterTimer = null;
 	this.waterDelay = null;
+
+	this.KING_TILE_ID = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -177,14 +184,20 @@ RPGGame.Game.prototype = {
 		this.coins = null;
 		this.layer = null;
 		this.hero = null;
+
 		this.waterTimer = null;
 		this.waterDelay = 500;
+
+		this.KING_TILE_ID = 19;
+		this.GUARD_TILE_ID = 20;
 		},
 
 	create: function ()
 		{
+		// ADDING THE TILEMAP
 		this.map = game.add.tilemap("map");
 
+		// ADDING THE IMAGES FOR THE TILEMAP
 		this.map.addTilesetImage("water1");
 		this.map.addTilesetImage("water2");
 		this.map.addTilesetImage("grass");
@@ -215,7 +228,8 @@ RPGGame.Game.prototype = {
 		this.map.addTilesetImage("king");
 		this.map.addTilesetImage("wizard");
 
-		this.map.setCollisionBetween(10, 19);
+		// SETTING THE COLLISON TILES
+		this.map.setCollisionBetween(10, 29);
 
 		this.layer = this.map.createLayer("Tile Layer 1");
 
@@ -242,14 +256,30 @@ RPGGame.Game.prototype = {
 		this.hero.animations.add("walk_up", [9, 10, 11]);
 		this.hero.animations.add("walk_down", [0, 1, 2]);
 
+		// ENABLE THE HERO'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
 		game.physics.arcade.enable(this.hero);
 
 		// ADJUSTING THE COLLISION BODY SIZE
 		this.hero.body.setSize(20, 24, -1.5, 3);
 
+		// MAKING THE GAME CAMERA TO FOLLOW THE HERO
 		game.camera.follow(this.hero);
 
-		this.cursors = game.input.keyboard.createCursorKeys();
+		// HITS THE KING
+		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].showDialog("Hello, I'm The King.", 40, 260, game.state.states["RPGGame.Game"].KING_TILE_ID);
+
+			return true;
+			}, game, this.layer);
+
+		// HITS THE GUARD
+		this.map.setTileIndexCallback(this.GUARD_TILE_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].showDialog("...", 170, 220, game.state.states["RPGGame.Game"].GUARD_TILE_ID);
+
+			return true;
+			}, game, this.layer);
 
 		// ADDING THE SOUND GAME ICON
 		this.buttonSoundGameShadow = game.add.sprite(639, 29, "soundgame");
@@ -287,6 +317,8 @@ RPGGame.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
+
+		this.cursors = game.input.keyboard.createCursorKeys();
 		},
 
 	update: function ()
@@ -379,7 +411,39 @@ RPGGame.Game.prototype = {
 				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				}, 3000);
 			}
-		}
+		},
+
+	showDialog: function(myText, x, y, tile_id)
+		{
+		if (this.dialogID!=tile_id)
+			{
+			if (this.dialogID!=null)
+				{
+				this.dialogText.destroy();
+				this.dialogShadow.destroy();
+				clearTimeout(this.dialogTimeout);
+				}
+
+			this.dialogID = tile_id;
+
+			this.dialogShadow = game.add.graphics();
+			this.dialogShadow.beginFill(0x000000, 0.4);
+			this.dialogShadow.fixedToCamera = true;
+			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
+			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
+			//this.dialogText.setTextBounds(0, 370, 800, 55);
+			//this.dialogText.fixedToCamera = true;
+			//this.dialogShadow.drawRoundedRect(800 / 2 - this.dialogText._width / 2 - 11, 373, this.dialogText._width + 23, 46, 10);
+
+			// SETTING THAT IN 3 SECONDS THE ABOUT TOAST MUST FADE OUT
+			this.dialogTimeout = setTimeout(function()
+				{
+				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.add.tween(game.state.states["RPGGame.Game"].dialogText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.state.states["RPGGame.Game"].dialogID = null;
+				}, 3000);
+			}
+		},
 	};
 
 // CREATING THE GAME INSTANCE
