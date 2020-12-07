@@ -410,6 +410,7 @@ RPGGame.Game.prototype = {
 			this.dialogID = tile_id;
 
 			this.dialogShadow = game.add.graphics();
+			this.dialogShadow.lineStyle(1, 0xFFFFFF, 1);
 			this.dialogShadow.beginFill(0x000000, 0.8);
 			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
