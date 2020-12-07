@@ -4,15 +4,24 @@
 // GETTING THE USER LANGUAGE
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
+var STRING_KING = "";
+var STRING_GUARD1 = "";
+var STRING_GUARD2 = "";
 var STRING_ABOUT = "";
 
 // CHECKING THE USER LANGUAGE
 if (userLanguage.substring(0,2)=="es")
 	{
+	STRING_KING = "Yo soy el Rey.";
+	STRING_GUARD1 = "Te estoy vigilando.";
+	STRING_GUARD2 = "Vete de aqu" + String.fromCharCode(237) + ".";
 	STRING_ABOUT = "Dise" + String.fromCharCode(241) + "ado por www.lrusso.com";
 	}
 	else
 	{
+	STRING_KING = "I'm the King.";
+	STRING_GUARD1 = "I'm watching you.";
+	STRING_GUARD2 = "Go away.";
 	STRING_ABOUT = "Designed by www.lrusso.com";
 	}
 
@@ -272,7 +281,7 @@ RPGGame.Game.prototype = {
 		// HITS THE KING
 		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("Hello, I'm the King.", 111, 258, game.state.states["RPGGame.Game"].KING_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog(STRING_KING, 111, 258, game.state.states["RPGGame.Game"].KING_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -280,7 +289,7 @@ RPGGame.Game.prototype = {
 		// HITS THE GUARD 1
 		this.map.setTileIndexCallback(this.GUARD1_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("I'm watching you.", 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD1, 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
 
 			return true;
 			}, game, this.layer);
@@ -288,7 +297,7 @@ RPGGame.Game.prototype = {
 		// HITS THE GUARD 2
 		this.map.setTileIndexCallback(this.GUARD2_TILE_ID, function ()
 			{
-			game.state.states["RPGGame.Game"].showDialog("Go away.", 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
+			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD2, 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
 
 			return true;
 			}, game, this.layer);
