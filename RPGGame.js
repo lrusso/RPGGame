@@ -234,7 +234,7 @@ RPGGame.Game.prototype = {
 		this.coins.callAll("animations.play", "animations", "spin");
 
 		// ADDING THE HERO
-		this.hero = game.add.sprite(420, 300, "hero");
+		this.hero = game.add.sprite(420, 307, "hero");
 		this.hero.anchor.set(0.6);
 		this.hero.animations.add("walk_left", [3, 4, 5]);
 		this.hero.animations.add("walk_right", [6, 7, 8]);
@@ -244,7 +244,7 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.hero);
 
 		// ADJUSTING THE COLLISION BODY SIZE
-		this.hero.body.setSize(20, 24, -3, 6);
+		this.hero.body.setSize(20, 24, -1.5, 3);
 
 		game.camera.follow(this.hero);
 
@@ -334,7 +334,10 @@ RPGGame.Game.prototype = {
 
 	render: function ()
 		{
-		//game.debug.body(this.hero);
+		if(RPGGame.showDebug==true)
+			{
+			game.debug.body(this.hero);
+			}
 		},
 
 	collectCoin: function(player, coin)
