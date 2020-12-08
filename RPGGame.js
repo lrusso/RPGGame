@@ -119,7 +119,16 @@ RPGGame.Preloader.prototype = {
 		game.load.image("wall", imageWall);
 		game.load.image("window" , imageWindow);
 		game.load.image("floor", imageFloor);
-		game.load.image("door", imageDoor);
+		game.load.image("doorMerchantClosed", imageDoor);
+		game.load.image("doorMerchantOpened", imageFloor);
+		game.load.image("doorPriestClosed", imageDoor);
+		game.load.image("doorPriestOpened", imageFloor);
+		game.load.image("doorKingClosed", imageDoor);
+		game.load.image("doorKingOpened", imageFloor);
+		game.load.image("doorEntranceClosed", imageDoor);
+		game.load.image("doorEntranceOpened", imageFloor);
+		game.load.image("doorWizardClosed", imageDoor);
+		game.load.image("doorWizardOpened", imageFloor);
 		game.load.image("signMerchant", imageSignMerchant);
 		game.load.image("signPriest", imageSignPriest);
 		game.load.image("signWizard", imageSignWizard);
@@ -177,8 +186,6 @@ RPGGame.Game = function (game)
 	this.waterTimer = null;
 	this.waterDelay = null;
 
-	this.KING_TILE_ID = null;
-
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
 		{
@@ -214,6 +221,22 @@ RPGGame.Game.prototype = {
 		this.MERCHANT_TILE_ID = 22;
 		this.PRIEST_TILE_ID = 23;
 		this.WIZARD_TILE_ID = 24;
+
+		this.FLOOR_TILE_ID = 40;
+		this.GRASS_TILE_ID = 30;
+
+		this.DOOR_CURRENT = null;
+		this.DOOR_CURRENT_CLOSED = null;
+		this.DOOR_MERCHANT_CLOSED_ID = 41;
+		this.DOOR_MERCHANT_OPENED_ID = 42;
+		this.DOOR_PRIEST_CLOSED_ID = 43;
+		this.DOOR_PRIEST_OPENED_ID = 44;
+		this.DOOR_KING_CLOSED_ID = 45;
+		this.DOOR_KING_OPENED_ID = 46;
+		this.DOOR_ENTRANCE_CLOSED_ID = 47;
+		this.DOOR_ENTRANCE_OPENED_ID = 48;
+		this.DOOR_WIZARD_CLOSED_ID = 49;
+		this.DOOR_WIZARD_OPENED_ID = 50;
 		},
 
 	create: function ()
@@ -238,7 +261,16 @@ RPGGame.Game.prototype = {
 		this.map.addTilesetImage("wall");
 		this.map.addTilesetImage("window");
 		this.map.addTilesetImage("floor");
-		this.map.addTilesetImage("door");
+		this.map.addTilesetImage("doorMerchantClosed");
+		this.map.addTilesetImage("doorMerchantOpened");
+		this.map.addTilesetImage("doorPriestClosed");
+		this.map.addTilesetImage("doorPriestOpened");
+		this.map.addTilesetImage("doorKingClosed");
+		this.map.addTilesetImage("doorKingOpened");
+		this.map.addTilesetImage("doorEntranceClosed");
+		this.map.addTilesetImage("doorEntranceOpened");
+		this.map.addTilesetImage("doorWizardClosed");
+		this.map.addTilesetImage("doorWizardOpened");
 		this.map.addTilesetImage("signMerchant");
 		this.map.addTilesetImage("signPriest");
 		this.map.addTilesetImage("signWizard");
@@ -290,65 +322,11 @@ RPGGame.Game.prototype = {
 		// MAKING THE GAME CAMERA TO FOLLOW THE HERO
 		game.camera.follow(this.hero);
 
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE KING
-		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_KING, 111, 258, game.state.states["RPGGame.Game"].KING_TILE_ID);
+		// HANDLING THE NPCS
+		this.handleNPCs();
 
-			// PREVENTING THE CHARACTER TO WALK OVER THE KING
-			return true;
-			}, game, this.layer);
-
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 1
-		this.map.setTileIndexCallback(this.GUARD1_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD1, 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
-
-			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 1
-			return true;
-			}, game, this.layer);
-
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 2
-		this.map.setTileIndexCallback(this.GUARD2_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD2, 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
-
-			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 2
-			return true;
-			}, game, this.layer);
-
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE MERCHANT
-		this.map.setTileIndexCallback(this.MERCHANT_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
-
-			// PREVENTING THE CHARACTER TO WALK OVER THE MERCHANT
-			return true;
-			}, game, this.layer);
-
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PRIEST
-		this.map.setTileIndexCallback(this.PRIEST_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
-
-			// PREVENTING THE CHARACTER TO WALK OVER THE PRIEST
-			return true;
-			}, game, this.layer);
-
-		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE WIZARD
-		this.map.setTileIndexCallback(this.WIZARD_TILE_ID, function ()
-			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_WIZARD, 270, 518, game.state.states["RPGGame.Game"].WIZARD_TILE_ID);
-
-			// PREVENTING THE CHARACTER TO WALK OVER THE WIZARD
-			return true;
-			}, game, this.layer);
+		// HANDLING THE DOORS WITH THE AUTO OPEN/CLOSE FEATURE
+		this.handleDoors();
 
 		// ADDING THE SOUND GAME ICON
 		this.buttonSoundGameShadow = game.add.sprite(639, 29, "soundgame");
@@ -458,6 +436,143 @@ RPGGame.Game.prototype = {
 	getCurrentTime: function()
 		{
 		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+		},
+
+	handleNPCs: function()
+		{
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE KING
+		this.map.setTileIndexCallback(this.KING_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_KING, 111, 258, game.state.states["RPGGame.Game"].KING_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE KING
+			return true;
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 1
+		this.map.setTileIndexCallback(this.GUARD1_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD1, 177, 226, game.state.states["RPGGame.Game"].GUARD1_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 1
+			return true;
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE GUARD 2
+		this.map.setTileIndexCallback(this.GUARD2_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_GUARD2, 177, 358, game.state.states["RPGGame.Game"].GUARD2_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE GUARD 2
+			return true;
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE MERCHANT
+		this.map.setTileIndexCallback(this.MERCHANT_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE MERCHANT
+			return true;
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PRIEST
+		this.map.setTileIndexCallback(this.PRIEST_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE PRIEST
+			return true;
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE WIZARD
+		this.map.setTileIndexCallback(this.WIZARD_TILE_ID, function ()
+			{
+			// SHOWING A DIALOG
+			game.state.states["RPGGame.Game"].showDialog(STRING_WIZARD, 270, 518, game.state.states["RPGGame.Game"].WIZARD_TILE_ID);
+
+			// PREVENTING THE CHARACTER TO WALK OVER THE WIZARD
+			return true;
+			}, game, this.layer);
+		},
+
+	handleDoors: function()
+		{
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE MERCHANT'S DOOR
+		this.map.setTileIndexCallback(this.DOOR_MERCHANT_CLOSED_ID, function ()
+			{
+			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID)
+				{
+				game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID;
+				game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID;
+				game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID);
+				}
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE PRIEST'S DOOR
+		this.map.setTileIndexCallback(this.DOOR_PRIEST_CLOSED_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_PRIEST_OPENED_ID;
+			game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_PRIEST_CLOSED_ID;
+			game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_PRIEST_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_PRIEST_OPENED_ID);
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE KING'S DOOR
+		this.map.setTileIndexCallback(this.DOOR_KING_CLOSED_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_KING_OPENED_ID;
+			game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_KING_CLOSED_ID;
+			game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_KING_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_KING_OPENED_ID);
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE ENTRANCE DOOR
+		this.map.setTileIndexCallback(this.DOOR_ENTRANCE_CLOSED_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_ENTRANCE_OPENED_ID;
+			game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_ENTRANCE_CLOSED_ID;
+			game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_ENTRANCE_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_ENTRANCE_OPENED_ID);
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE WIZARD'S DOOR
+		this.map.setTileIndexCallback(this.DOOR_WIZARD_CLOSED_ID, function ()
+			{
+			game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_WIZARD_OPENED_ID;
+			game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_WIZARD_CLOSED_ID;
+			game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_WIZARD_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_WIZARD_OPENED_ID);
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS ON THE FLOOR
+		this.map.setTileIndexCallback(this.FLOOR_TILE_ID, function ()
+			{
+			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
+				{
+				setTimeout(function()
+					{
+					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
+					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
+					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
+					},25)
+				}
+			}, game, this.layer);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS ON THE GRASS
+		this.map.setTileIndexCallback(this.GRASS_TILE_ID, function ()
+			{
+			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
+				{
+				setTimeout(function()
+					{
+					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
+					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
+					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
+					},25)
+				}
+			}, game, this.layer);
 		},
 
 	showDialog: function(myText, x, y, tile_id)
