@@ -550,7 +550,7 @@ RPGGame.Game.prototype = {
 			// SETTING THAT IN 3 SECONDS THE TOAST MUST FADE OUT
 			setTimeout(function()
 				{
-				// FADING OUT THE ABOUT TOAST SHADOW AND TEXT
+				// FADING OUT THE TOAST SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].toastShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				}, 3000);
