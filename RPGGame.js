@@ -186,6 +186,29 @@ RPGGame.Game = function (game)
 	this.waterTimer = null;
 	this.waterDelay = null;
 
+	this.KING_TILE_ID = null;
+	this.GUARD1_TILE_ID = null;
+	this.GUARD2_TILE_ID = null;
+	this.MERCHANT_TILE_ID = null;
+	this.PRIEST_TILE_ID = null;
+	this.WIZARD_TILE_ID = null;
+
+	this.FLOOR_TILE_ID = null;
+	this.GRASS_TILE_ID = null;
+
+	this.DOOR_CURRENT = null;
+	this.DOOR_CURRENT_CLOSED = null;
+	this.DOOR_MERCHANT_CLOSED_ID = null;
+	this.DOOR_MERCHANT_OPENED_ID = null;
+	this.DOOR_PRIEST_CLOSED_ID = null;
+	this.DOOR_PRIEST_OPENED_ID = null;
+	this.DOOR_KING_CLOSED_ID = null;
+	this.DOOR_KING_OPENED_ID = null;
+	this.DOOR_ENTRANCE_CLOSED_ID = null;
+	this.DOOR_ENTRANCE_OPENED_ID = null;
+	this.DOOR_WIZARD_CLOSED_ID = null;
+	this.DOOR_WIZARD_OPENED_ID = null;
+
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
 		{
