@@ -413,12 +413,14 @@ RPGGame.Game.prototype = {
 		if (this.isMobileDevice==true)
 			{
 			// ADDING THE STICK
-			this.stick = this.pad.addDPad(0, 0, 200, "dpad");
-			this.stick.alignBottomLeft(0);
+			this.stick = this.pad.addDPad(100, 335, 0, "dpad");
+			this.stick.sprite.scale.set(0.8);
+			this.stick.sprite.tint = 0xA9A9A9;
 
 			// ADDING THE BUTTON A
-			this.buttonA = this.pad.addButton(0, 0, "dpad", "button1-up", "button1-down");
-			this.buttonA.alignBottomRight(0);
+			this.buttonA = this.pad.addButton(715, 350, "dpad", "button1-up", "button1-down");
+			this.buttonA.sprite.scale.set(0.8);
+			this.buttonA.sprite.tint = 0xA9A9A9;
 			///this.buttonA.onDown.add(this.pressButtonA, this);
 			}
 		},
