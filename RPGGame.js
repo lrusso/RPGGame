@@ -218,6 +218,8 @@ RPGGame.Game = function (game)
 	this.DOOR_WIZARD_CLOSED_ID = null;
 	this.DOOR_WIZARD_OPENED_ID = null;
 
+	this.isMobileDevice = null;
+
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
 		{
@@ -274,6 +276,9 @@ RPGGame.Game.prototype = {
 
 	create: function ()
 		{
+		// CHECKING IS THE GAME IS RUNNING IN A MOBILE DEVICE
+		this.isMobileDevice = isMobileDevice();
+
 		// ADDING THE PAD PLUGIN
 		this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
@@ -405,7 +410,7 @@ RPGGame.Game.prototype = {
 		this.cursors = game.input.keyboard.createCursorKeys();
 
 		// CHECKING IF IT IS A MOBILE DEVICE
-		if (isMobileDevice()==true)
+		if (this.isMobileDevice==true)
 			{
 			// ADDING THE STICK
 			this.stick = this.pad.addDPad(0, 0, 200, "dpad");
@@ -442,41 +447,36 @@ RPGGame.Game.prototype = {
 		this.hero.body.velocity.x = 0;
 		this.hero.body.velocity.y = 0;
 
-		if (this.cursors.left.isDown)
+		if (this.isMobileDevice==false)
 			{
-			game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-			this.hero.animations.play("walk_left", 10, true);
-			}
-		else if (this.cursors.right.isDown)
-			{
-			game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
-			this.hero.animations.play("walk_right", 10, true);
-			}
-		else if (this.cursors.up.isDown)
-			{
-			game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
-			this.hero.animations.play("walk_up", 10, true);
-			}
-		else if (this.cursors.down.isDown)
-			{
-			game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
-			this.hero.animations.play("walk_down", 10, true);
-			}
-		else
-			{
-			if (isMobileDevice()==false)
+			if (this.cursors.left.isDown)
 				{
-				this.hero.animations.stop(null, true);
+				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_left", 10, true);
 				}
-			else if (this.stick.isUp)
+			else if (this.cursors.right.isDown)
+				{
+				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_right", 10, true);
+				}
+			else if (this.cursors.up.isDown)
+				{
+				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_up", 10, true);
+				}
+			else if (this.cursors.down.isDown)
+				{
+				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_down", 10, true);
+				}
+			else
 				{
 				this.hero.animations.stop(null, true);
 				}
 			}
-
-		if (isMobileDevice()==true)
+			else
 			{
-			if (this.stick.isDown)
+			if (this.stick.isDown==true)
 				{
 				if (this.stick.direction === Phaser.LEFT)
 					{
@@ -498,6 +498,10 @@ RPGGame.Game.prototype = {
 					game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_down", 10, true);
 					}
+				}
+			else
+				{
+				this.hero.animations.stop(null, true);
 				}
 			}
 		},
