@@ -425,7 +425,7 @@ RPGGame.Game.prototype = {
 			this.buttonA.sprite.events.onInputUp.add(function()
 				{
 				console.log('Tap in A');
-				},this)
+				},this);
 			}
 		},
 
