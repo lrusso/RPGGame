@@ -421,7 +421,11 @@ RPGGame.Game.prototype = {
 			this.buttonA = this.pad.addButton(715, 350, "dpad", "button1-up", "button1-down");
 			this.buttonA.sprite.scale.set(0.8);
 			this.buttonA.sprite.tint = 0xA9A9A9;
-			///this.buttonA.onDown.add(this.pressButtonA, this);
+			this.buttonA.sprite.inputEnabled = true;
+			this.buttonA.sprite.events.onInputUp.add(function()
+				{
+				console.log('Tap in A');
+				},this)
 			}
 		},
 
