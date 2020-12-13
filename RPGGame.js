@@ -404,18 +404,18 @@ RPGGame.Game.prototype = {
 		this.buttonLoadGame.fixedToCamera = true;
 
 		// ADDING THE AVATAR CONTAINER
-		this.imageAvatarFaceContainer = game.add.graphics(40, 40);
+		this.imageAvatarFaceContainer = game.add.graphics(41, 40);
 		this.imageAvatarFaceContainer.beginFill(0x1f1f1f, 1);
 		this.imageAvatarFaceContainer.drawCircle(0, 0, 70, 70);
 		this.imageAvatarFaceContainer.fixedToCamera = true;
 
 		// ADDING THE AVATAR FACE
-		this.imageAvatarFaceImage = this.add.button(7, 10, "imageFace", null, this, 2, 1, 0);
+		this.imageAvatarFaceImage = this.add.button(8, 10, "imageFace", null, this, 2, 1, 0);
 		this.imageAvatarFaceImage.fixedToCamera = true;
 
 		// ADDING THE AVATAR BORDER
 		this.imageAvatarFaceBorder = game.add.graphics(40, 40);
-		this.imageAvatarFaceBorder.lineStyle(2, 0x654321, 1);
+		this.imageAvatarFaceBorder.lineStyle(3, 0x654321, 1);
 		this.imageAvatarFaceBorder.drawCircle(0, 0, 70, 70);
 		this.imageAvatarFaceBorder.fixedToCamera = true;
 
