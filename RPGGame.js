@@ -188,8 +188,9 @@ RPGGame.Game = function (game)
 	this.buttonSaveGameShadow = null;
 	this.buttonLoadGame = null;
 	this.buttonLoadGameShadow = null;
-	this.imageAvatarContainer = null;
-	this.imageAvatarFace = null;
+	this.imageAvatarFaceContainer = null;
+	this.imageAvatarFaceImage = null;
+	this.imageAvatarFaceBorder = null;
 
 	this.pad = null;
 	this.map = null;
@@ -403,15 +404,20 @@ RPGGame.Game.prototype = {
 		this.buttonLoadGame.fixedToCamera = true;
 
 		// ADDING THE AVATAR CONTAINER
-		this.imageAvatarContainer = game.add.graphics(5, 5);
-		this.imageAvatarContainer.lineStyle(1, 0x000000, 1);
-		this.imageAvatarContainer.beginFill(0xcbe8ee, 1);
-		this.imageAvatarContainer.drawRect(0, 0, 64, 67);
-		this.imageAvatarContainer.fixedToCamera = true;
+		this.imageAvatarFaceContainer = game.add.graphics(40, 40);
+		this.imageAvatarFaceContainer.beginFill(0x1f1f1f, 1);
+		this.imageAvatarFaceContainer.drawCircle(0, 0, 70, 70);
+		this.imageAvatarFaceContainer.fixedToCamera = true;
 
 		// ADDING THE AVATAR FACE
-		this.imageAvatarFace = this.add.button(5, 8, "imageFace", null, this, 2, 1, 0);
-		this.imageAvatarFace.fixedToCamera = true;
+		this.imageAvatarFaceImage = this.add.button(7, 10, "imageFace", null, this, 2, 1, 0);
+		this.imageAvatarFaceImage.fixedToCamera = true;
+
+		// ADDING THE AVATAR BORDER
+		this.imageAvatarFaceBorder = game.add.graphics(40, 40);
+		this.imageAvatarFaceBorder.lineStyle(2, 0x654321, 1);
+		this.imageAvatarFaceBorder.drawCircle(0, 0, 70, 70);
+		this.imageAvatarFaceBorder.fixedToCamera = true;
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
