@@ -196,6 +196,7 @@ RPGGame.Game = function (game)
 	this.imageAvatarHealthValue = null;
 	this.imageAvatarManaBackground = null;
 	this.imageAvatarManaBorder = null;
+	this.imageAvatarManaMask = null;
 	this.imageAvatarManaValue = null;
 	this.imageAvatarFaceContainer = null;
 	this.imageAvatarFaceImage = null;
@@ -439,7 +440,7 @@ RPGGame.Game.prototype = {
 		// ADDING THE HEALTH METER VALUE
 		this.imageAvatarHealthValue = game.add.graphics();
 		this.imageAvatarHealthValue.beginFill(0x9cba45, 1);
-		this.imageAvatarHealthValue.drawRect(30, 23.5, 170, 17, 1);
+		this.imageAvatarHealthValue.drawRect(30, 23.5, 160, 17, 1);
 		this.imageAvatarHealthValue.mask = this.imageAvatarHealthMask;
 		this.imageAvatarBackground.addChild(this.imageAvatarHealthValue);
 
@@ -455,10 +456,17 @@ RPGGame.Game.prototype = {
 		this.imageAvatarManaBorder.drawRoundedRect(30, 46, 195, 16, 7);
 		this.imageAvatarBackground.addChild(this.imageAvatarManaBorder);
 
+		// ADDING THE MANA METER MASK
+		this.imageAvatarManaMask = game.add.graphics();
+		this.imageAvatarManaMask.beginFill(0xFFFFFF, 1)
+		this.imageAvatarManaMask.drawRoundedRect(30, 46, 195, 16, 7);
+		this.imageAvatarBackground.addChild(this.imageAvatarManaMask);
+
 		// ADDING THE MANA METER VALUE
 		this.imageAvatarManaValue = game.add.graphics();
 		this.imageAvatarManaValue.beginFill(0x8669a9, 1);
-		this.imageAvatarManaValue.drawRect(30, 45.5, 130, 17.5, 1);
+		this.imageAvatarManaValue.drawRect(30, 45.5, 195, 17.5, 1);
+		this.imageAvatarManaValue.mask = this.imageAvatarManaMask;
 		this.imageAvatarBackground.addChild(this.imageAvatarManaValue);
 
 		// ADDING THE AVATAR CONTAINER
