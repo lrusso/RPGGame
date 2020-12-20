@@ -195,6 +195,7 @@ RPGGame.Game = function (game)
 	this.imageStatsHealthMask = null;
 	this.imageStatsHealthValue = null;
 
+	this.imageStatsGoldContainer = null;
 	this.imageStatsGoldBackground = null;
 	this.imageStatsGoldImage = null;
 
@@ -440,15 +441,21 @@ RPGGame.Game.prototype = {
 		this.imageStatsHealthValue.mask = this.imageStatsHealthMask;
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthValue);
 
+		// ADDING THE GOLD COUNTER CONTAINER
+		this.imageStatsGoldContainer = game.add.graphics();
+		this.imageStatsGoldContainer.beginFill(0x000000, 0);
+		this.imageStatsGoldContainer.drawRoundedRect(5, 35, 60, 28, 10);
+		this.imageStatsGoldContainer.fixedToCamera = true;
+
 		// ADDING THE GOLD COUNTER BACKGROUND
 		this.imageStatsGoldBackground = game.add.graphics();
 		this.imageStatsGoldBackground.beginFill(0x000000, 0.45);
 		this.imageStatsGoldBackground.drawRoundedRect(5, 35, 60, 28, 10);
-		this.imageStatsGoldBackground.fixedToCamera = true;
+		this.imageStatsGoldContainer.addChild(this.imageStatsGoldBackground);
 
 		// ADDING THE GOLD COUNTER ICON
-		this.imageStatsGoldImage = this.add.button(10, 39, "imageGold", null, this, 2, 1, 0);
-		this.imageStatsGoldImage.fixedToCamera = true;
+		this.imageStatsGoldImage = this.add.button(9, 39, "imageGold", null, this, 2, 1, 0);
+		this.imageStatsGoldContainer.addChild(this.imageStatsGoldImage);
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
