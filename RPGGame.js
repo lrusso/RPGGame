@@ -198,6 +198,8 @@ RPGGame.Game = function (game)
 	this.imageStatsGoldContainer = null;
 	this.imageStatsGoldBackground = null;
 	this.imageStatsGoldImage = null;
+	this.imageStatsGoldShadowValue = null;
+	this.imageStatsGoldValue = null;
 
 	this.pad = null;
 	this.map = null;
@@ -205,6 +207,8 @@ RPGGame.Game = function (game)
 	this.layer = null;
 	this.hero = null;
 	this.cursors = null;
+
+	this.statsGold = null;
 
 	this.waterTimer = null;
 	this.waterDelay = null;
@@ -260,6 +264,8 @@ RPGGame.Game.prototype = {
 		this.layer = null;
 		this.hero = null;
 		this.cursors = null;
+
+		this.statsGold = 0;
 
 		this.waterTimer = null;
 		this.waterDelay = 500;
@@ -444,18 +450,26 @@ RPGGame.Game.prototype = {
 		// ADDING THE GOLD COUNTER CONTAINER
 		this.imageStatsGoldContainer = game.add.graphics();
 		this.imageStatsGoldContainer.beginFill(0x000000, 0);
-		this.imageStatsGoldContainer.drawRoundedRect(5, 35, 60, 28, 10);
+		this.imageStatsGoldContainer.drawRoundedRect(5, 35, 62, 28, 10);
 		this.imageStatsGoldContainer.fixedToCamera = true;
 
 		// ADDING THE GOLD COUNTER BACKGROUND
 		this.imageStatsGoldBackground = game.add.graphics();
 		this.imageStatsGoldBackground.beginFill(0x000000, 0.45);
-		this.imageStatsGoldBackground.drawRoundedRect(5, 35, 60, 28, 10);
+		this.imageStatsGoldBackground.drawRoundedRect(5, 35, 62, 28, 10);
 		this.imageStatsGoldContainer.addChild(this.imageStatsGoldBackground);
 
 		// ADDING THE GOLD COUNTER ICON
 		this.imageStatsGoldImage = this.add.button(9, 39, "imageGold", null, this, 2, 1, 0);
 		this.imageStatsGoldContainer.addChild(this.imageStatsGoldImage);
+
+		// ADDING THE GOLD COUNTER SHADOW VALUE
+		this.imageStatsGoldShadowValue = game.add.text(35, 40, this.statsGold, { font: "bold 16px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.imageStatsGoldContainer.addChild(this.imageStatsGoldShadowValue);
+
+		// ADDING THE GOLD COUNTER VALUE
+		this.imageStatsGoldValue = game.add.text(33, 40, this.statsGold, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.imageStatsGoldContainer.addChild(this.imageStatsGoldValue);
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
