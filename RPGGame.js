@@ -602,7 +602,7 @@ RPGGame.Game.prototype = {
 		// DESTROYING THE COIN ICON
 		coin.kill();
 
-		// UPDATING THE GOLD COUNTER VALUE
+		// UPDATING THE STATS GOLD VALUE
 		this.statsGold = this.statsGold + 1;
 
 		// UPDATING THE GOLD COUNTER SHADOW VALUE
