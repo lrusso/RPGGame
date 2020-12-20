@@ -599,7 +599,17 @@ RPGGame.Game.prototype = {
 
 	collectCoin: function(player, coin)
 		{
+		// DESTROYING THE COIN ICON
 		coin.kill();
+
+		// UPDATING THE GOLD COUNTER VALUE
+		this.statsGold = this.statsGold + 1;
+
+		// UPDATING THE GOLD COUNTER SHADOW VALUE
+		this.imageStatsGoldShadowValue.setText(this.statsGold);
+
+		// UPDATING THE GOLD COUNTER VALUE
+		this.imageStatsGoldValue.setText(this.statsGold);
 		},
 
 	getCurrentTime: function()
