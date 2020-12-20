@@ -188,16 +188,14 @@ RPGGame.Game = function (game)
 	this.buttonSaveGameShadow = null;
 	this.buttonLoadGame = null;
 	this.buttonLoadGameShadow = null;
-	this.imageAvatarBackground = null;
 
+	this.imageAvatarBackground = null;
 	this.imageAvatarHealthBackground = null;
 	this.imageAvatarHealthBorder = null;
 	this.imageAvatarHealthValue = null;
-
 	this.imageAvatarManaBackground = null;
 	this.imageAvatarManaBorder = null;
 	this.imageAvatarManaValue = null;
-
 	this.imageAvatarFaceContainer = null;
 	this.imageAvatarFaceImage = null;
 	this.imageAvatarFaceBorder = null;
