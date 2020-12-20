@@ -188,6 +188,16 @@ RPGGame.Game = function (game)
 	this.buttonSaveGameShadow = null;
 	this.buttonLoadGame = null;
 	this.buttonLoadGameShadow = null;
+	this.imageAvatarBackground = null;
+
+	this.imageAvatarHealthBackground = null;
+	this.imageAvatarHealthBorder = null;
+	this.imageAvatarHealthValue = null;
+
+	this.imageAvatarManaBackground = null;
+	this.imageAvatarManaBorder = null;
+	this.imageAvatarManaValue = null;
+
 	this.imageAvatarFaceContainer = null;
 	this.imageAvatarFaceImage = null;
 	this.imageAvatarFaceBorder = null;
@@ -402,6 +412,48 @@ RPGGame.Game.prototype = {
 		this.buttonLoadGameShadow.fixedToCamera = true;
 		this.buttonLoadGame = this.add.button(742, 3, "loadgame", null, this, 2, 1, 0);
 		this.buttonLoadGame.fixedToCamera = true;
+
+		// ADDING THE AVATAR BACKGROUND
+		this.imageAvatarBackground = game.add.graphics();
+		this.imageAvatarBackground.beginFill(0x000000, 0.45);
+		this.imageAvatarBackground.drawRoundedRect(30, 17, 201, 51, 10);
+		this.imageAvatarBackground.fixedToCamera = true;
+
+		// ADDING THE HEALTH METER BACKGROUND
+		this.imageAvatarHealthBackground = game.add.graphics();
+		this.imageAvatarHealthBackground.beginFill(0x000000, 1);
+		this.imageAvatarHealthBackground.drawRoundedRect(30, 24, 195, 16, 7);
+		this.imageAvatarBackground.addChild(this.imageAvatarHealthBackground);
+
+		// ADDING THE HEALTH METER BORDER
+		this.imageAvatarHealthBorder = game.add.graphics();
+		this.imageAvatarHealthBorder.lineStyle(2, 0x654321, 1);
+		this.imageAvatarHealthBorder.drawRoundedRect(30, 24, 195, 16, 7);
+		this.imageAvatarBackground.addChild(this.imageAvatarHealthBorder);
+
+		// ADDING THE HEALTH METER VALUE
+		this.imageAvatarHealthValue = game.add.graphics();
+		this.imageAvatarHealthValue.beginFill(0x9cba45, 1);
+		this.imageAvatarHealthValue.drawRect(30, 23.5, 170, 17, 1);
+		this.imageAvatarBackground.addChild(this.imageAvatarHealthValue);
+
+		// ADDING THE MANA METER BACKGROUND
+		this.imageAvatarManaBackground = game.add.graphics();
+		this.imageAvatarManaBackground.beginFill(0x000000, 1);
+		this.imageAvatarManaBackground.drawRoundedRect(30, 46, 195, 16, 7);
+		this.imageAvatarBackground.addChild(this.imageAvatarManaBackground);
+
+		// ADDING THE MANA METER BORDER
+		this.imageAvatarManaBorder = game.add.graphics();
+		this.imageAvatarManaBorder.lineStyle(2, 0x654321, 1);
+		this.imageAvatarManaBorder.drawRoundedRect(30, 46, 195, 16, 7);
+		this.imageAvatarBackground.addChild(this.imageAvatarManaBorder);
+
+		// ADDING THE MANA METER VALUE
+		this.imageAvatarManaValue = game.add.graphics();
+		this.imageAvatarManaValue.beginFill(0x8669a9, 1);
+		this.imageAvatarManaValue.drawRect(30, 45.5, 130, 17.5, 1);
+		this.imageAvatarBackground.addChild(this.imageAvatarManaValue);
 
 		// ADDING THE AVATAR CONTAINER
 		this.imageAvatarFaceContainer = game.add.graphics(41, 40);
