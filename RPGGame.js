@@ -430,7 +430,7 @@ RPGGame.Game.prototype = {
 
 		// ADDING THE HEALTH METER BORDER
 		this.imageStatsHealthBorder = game.add.graphics();
-		this.imageStatsHealthBorder.lineStyle(2, 0x654321, 1);
+		this.imageStatsHealthBorder.lineStyle(2, 0x3f2a14, 1);
 		this.imageStatsHealthBorder.drawRoundedRect(10, 11, 195, 16, 7);
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthBorder);
 
