@@ -437,13 +437,13 @@ RPGGame.Game.prototype = {
 		// ADDING THE HEALTH METER MASK
 		this.imageStatsHealthMask = game.add.graphics();
 		this.imageStatsHealthMask.beginFill(0xFFFFFF, 1)
-		this.imageStatsHealthMask.drawRoundedRect(10, 11, 195, 16, 7);
+		this.imageStatsHealthMask.drawRoundedRect(11, 11, 195, 16, 7);
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthMask);
 
 		// ADDING THE HEALTH METER VALUE
 		this.imageStatsHealthValue = game.add.graphics();
 		this.imageStatsHealthValue.beginFill(0x9cba45, 1);
-		this.imageStatsHealthValue.drawRect(10, 10.5, 160, 17, 1);
+		this.imageStatsHealthValue.drawRect(10, 12, 160, 14, 1);
 		this.imageStatsHealthValue.mask = this.imageStatsHealthMask;
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthValue);
 
