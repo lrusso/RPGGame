@@ -514,7 +514,7 @@ RPGGame.Game.prototype = {
 			this.buttonA.sprite.inputEnabled = true;
 			this.buttonA.sprite.events.onInputUp.add(function()
 				{
-				console.log('Tap in A');
+				console.log("Tap in A");
 				},this);
 			}
 		},
