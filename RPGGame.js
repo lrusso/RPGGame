@@ -222,6 +222,8 @@ RPGGame.Game = function (game)
 	this.cursors = null;
 
 	this.statsGold = null;
+	this.statsHealth = null;
+	this.playerIsHealing = null;
 
 	this.waterTimer = null;
 	this.waterDelay = null;
@@ -280,6 +282,8 @@ RPGGame.Game.prototype = {
 		this.cursors = null;
 
 		this.statsGold = 0;
+		this.statsHealth = 80;
+		this.playerIsHealing = false;
 
 		this.waterTimer = null;
 		this.waterDelay = 500;
@@ -470,13 +474,13 @@ RPGGame.Game.prototype = {
 		// ADDING THE HEALTH METER MASK
 		this.imageStatsHealthMask = game.add.graphics();
 		this.imageStatsHealthMask.beginFill(0xFFFFFF, 1)
-		this.imageStatsHealthMask.drawRoundedRect(11, 11, 195, 16, 7);
+		this.imageStatsHealthMask.drawRoundedRect(11, 11, 193, 16, 7);
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthMask);
 
 		// ADDING THE HEALTH METER VALUE
 		this.imageStatsHealthValue = game.add.graphics();
 		this.imageStatsHealthValue.beginFill(0x9cba45, 1);
-		this.imageStatsHealthValue.drawRect(10, 12, 160, 14, 1);
+		this.imageStatsHealthValue.drawRect(10, 12, this.statsHealth * 195 / 100, 14, 1);
 		this.imageStatsHealthValue.mask = this.imageStatsHealthMask;
 		this.imageStatsHealthContainer.addChild(this.imageStatsHealthValue);
 
@@ -638,6 +642,20 @@ RPGGame.Game.prototype = {
 			game.physics.arcade.velocityFromAngle(-90, 100, this.enemy.body.velocity);
 			this.enemy.animations.play("walk_up", 10, true);
 			}
+
+		// CHECKING IF THE PLAYER IS HEALING
+		if (this.playerIsHealing==true)
+			{
+			if (this.statsHealth<100)
+				{
+				this.statsHealth = this.statsHealth + 1;
+				this.imageStatsHealthValue.drawRect(10, 12, this.statsHealth * 195 / 100, 14, 1);
+				}
+				else
+				{
+				this.playerIsHealing = false;
+				}
+			}
 		},
 
 	render: function ()
@@ -717,6 +735,9 @@ RPGGame.Game.prototype = {
 			{
 			// SHOWING A DIALOG
 			game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
+
+			// SETTING THAT THE PLAYER WILL BE HEALING
+			game.state.states["RPGGame.Game"].playerIsHealing = true;
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PRIEST
 			return true;
