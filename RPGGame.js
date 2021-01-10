@@ -646,13 +646,18 @@ RPGGame.Game.prototype = {
 		// CHECKING IF THE PLAYER IS HEALING
 		if (this.playerIsHealing==true)
 			{
+			// CHECKING IF THE PLAYER NEED TO BE HEALED
 			if (this.statsHealth<100)
 				{
+				// UPDATING THE PLAYER HEALTH VALUE
 				this.statsHealth = this.statsHealth + 1;
+
+				// UPDATING THE HEALTH BAR
 				this.imageStatsHealthValue.drawRect(10, 12, this.statsHealth * 195 / 100, 14, 1);
 				}
 				else
 				{
+				// SETTING THAT THE PLAYER IS HEALED
 				this.playerIsHealing = false;
 				}
 			}
