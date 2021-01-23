@@ -890,27 +890,41 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 1
 		this.map.setTileIndexCallback(this.PORTAL1_TILE_ID, function ()
 			{
-			// SETTING THAT THE CHARACTER IS TELEPORTING
-			game.state.states["RPGGame.Game"].teleporting = true;
-
-			// TELEPORTING THE CHARACTER TO THE ISLAND
-			game.state.states["RPGGame.Game"].hero.position.x = 850;
-			game.state.states["RPGGame.Game"].hero.position.y = 150;
-
-			// WAITING 50 MS
-			setTimeout(function()
+			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
+			if (game.state.states["RPGGame.Game"].teleporting==false)
 				{
-				// SHOWING THE CHARACTER LOOKING DOWN
-				game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-				game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
-				},50)
+				// SETTING THAT THE CHARACTER IS TELEPORTING
+				game.state.states["RPGGame.Game"].teleporting = true;
 
-			// WAITING 250 MS
-			setTimeout(function()
-				{
-				// SETTING THAT THE CHARACTER IS NOT TELEPORTING
-				game.state.states["RPGGame.Game"].teleporting = false;
-				},250);
+				// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
+				game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
+
+				// WAITING 500 MS
+				setTimeout(function()
+					{
+					// TELEPORTING THE CHARACTER TO THE ISLAND
+					game.state.states["RPGGame.Game"].hero.position.x = 850;
+					game.state.states["RPGGame.Game"].hero.position.y = 150;
+
+					// FACING DOWN THE CHARACTER
+					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
+					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
+					},500);
+
+				// WAITING 600 MS
+				setTimeout(function()
+					{
+					// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
+					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
+					}, 600);
+
+				// WAITING 1000 MS
+				setTimeout(function()
+					{
+					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
+					game.state.states["RPGGame.Game"].teleporting = false;
+					},1000);
+				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 1
 			return true;
@@ -919,27 +933,41 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 2
 		this.map.setTileIndexCallback(this.PORTAL2_TILE_ID, function ()
 			{
-			// SETTING THAT THE CHARACTER IS TELEPORTING
-			game.state.states["RPGGame.Game"].teleporting = true;
-
-			// TELEPORTING THE CHARACTER TO THE MAINLAND
-			game.state.states["RPGGame.Game"].hero.position.x = 435;
-			game.state.states["RPGGame.Game"].hero.position.y = 150;
-
-			// WAITING 50 MS
-			setTimeout(function()
+			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
+			if (game.state.states["RPGGame.Game"].teleporting==false)
 				{
-				// SHOWING THE CHARACTER LOOKING DOWN
-				game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-				game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
-				},50)
+				// SETTING THAT THE CHARACTER IS TELEPORTING
+				game.state.states["RPGGame.Game"].teleporting = true;
 
-			// WAITING 250 MS
-			setTimeout(function()
-				{
-				// SETTING THAT THE CHARACTER IS NOT TELEPORTING
-				game.state.states["RPGGame.Game"].teleporting = false;
-				},250);
+				// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
+				game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
+
+				// WAITING 500 MS
+				setTimeout(function()
+					{
+					// TELEPORTING THE CHARACTER TO THE ISLAND
+					game.state.states["RPGGame.Game"].hero.position.x = 435;
+					game.state.states["RPGGame.Game"].hero.position.y = 150;
+
+					// FACING DOWN THE CHARACTER
+					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
+					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
+					},500);
+
+				// WAITING 600 MS
+				setTimeout(function()
+					{
+					// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
+					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
+					}, 600);
+
+				// WAITING 1000 MS
+				setTimeout(function()
+					{
+					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
+					game.state.states["RPGGame.Game"].teleporting = false;
+					},1000);
+				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 2
 			return true;
