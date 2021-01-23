@@ -893,46 +893,8 @@ RPGGame.Game.prototype = {
 			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
 			if (game.state.states["RPGGame.Game"].teleporting==false)
 				{
-				// SETTING THAT THE CHARACTER IS TELEPORTING
-				game.state.states["RPGGame.Game"].teleporting = true;
-
-				// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
-				game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
-
-				// WAITING 500 MS
-				setTimeout(function()
-					{
-					// TELEPORTING THE CHARACTER TO THE ISLAND
-					game.state.states["RPGGame.Game"].hero.position.x = 850;
-					game.state.states["RPGGame.Game"].hero.position.y = 130;
-
-					// STARTING THE CHARACTER WALKING DOWN ANIMATION
-					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-					},500);
-
-				// WAITING 600 MS
-				setTimeout(function()
-					{
-					// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
-					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
-					}, 600);
-
-				// WAITING 700 MS
-				setTimeout(function()
-					{
-					// THE CHARACTER IS WALKING DOWN
-					game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: 150}, 200, Phaser.Easing.Linear.None, true);
-					}, 700);
-
-				// WAITING 1000 MS
-				setTimeout(function()
-					{
-					// STOPING THE CHARACTER WALKING DOWN ANIMATION
-					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
-
-					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
-					game.state.states["RPGGame.Game"].teleporting = false;
-					}, 1000);
+				// TELEPORTING THE CHARACTER TO THE ISLAND
+				game.state.states["RPGGame.Game"].teleportTo(850,130);
 				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 1
@@ -945,51 +907,57 @@ RPGGame.Game.prototype = {
 			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
 			if (game.state.states["RPGGame.Game"].teleporting==false)
 				{
-				// SETTING THAT THE CHARACTER IS TELEPORTING
-				game.state.states["RPGGame.Game"].teleporting = true;
-
-				// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
-				game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
-
-				// WAITING 500 MS
-				setTimeout(function()
-					{
-					// TELEPORTING THE CHARACTER TO THE ISLAND
-					game.state.states["RPGGame.Game"].hero.position.x = 435;
-					game.state.states["RPGGame.Game"].hero.position.y = 130;
-
-					// STARTING THE CHARACTER WALKING DOWN ANIMATION
-					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-					},500);
-
-				// WAITING 600 MS
-				setTimeout(function()
-					{
-					// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
-					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
-					}, 600);
-
-				// WAITING 700 MS
-				setTimeout(function()
-					{
-					// THE CHARACTER IS WALKING DOWN
-					game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: 150}, 200, Phaser.Easing.Linear.None, true);
-					}, 700);
-
-				// WAITING 1000 MS
-				setTimeout(function()
-					{
-					// STOPING THE CHARACTER WALKING DOWN ANIMATION
-					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
-
-					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
-					game.state.states["RPGGame.Game"].teleporting = false;
-					}, 1000);
+				// TELEPORTING THE CHARACTER TO THE MAINLAND
+				game.state.states["RPGGame.Game"].teleportTo(435,130);
 				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 2
 			return true;
 			}, game, this.layer);
+		},
+
+	teleportTo: function(x, y)
+		{
+		// SETTING THAT THE CHARACTER IS TELEPORTING
+		game.state.states["RPGGame.Game"].teleporting = true;
+
+		// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
+		game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
+
+		// WAITING 500 MS
+		setTimeout(function()
+			{
+			// TELEPORTING THE CHARACTER TO THE ISLAND
+			game.state.states["RPGGame.Game"].hero.position.x = x;
+			game.state.states["RPGGame.Game"].hero.position.y = y;
+
+			// STARTING THE CHARACTER WALKING DOWN ANIMATION
+			game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
+			},500);
+
+		// WAITING 600 MS
+		setTimeout(function()
+			{
+			// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
+			game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
+			}, 600);
+
+		// WAITING 700 MS
+		setTimeout(function()
+			{
+			// THE CHARACTER IS WALKING DOWN
+			game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: y + 20}, 200, Phaser.Easing.Linear.None, true);
+			}, 700);
+
+		// WAITING 1000 MS
+		setTimeout(function()
+			{
+			// STOPING THE CHARACTER WALKING DOWN ANIMATION
+			game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
+
+			// SETTING THAT THE CHARACTER IS NOT TELEPORTING
+			game.state.states["RPGGame.Game"].teleporting = false;
+			}, 1000);
 		},
 
 	showDialog: function(myText, x, y, tile_id)
