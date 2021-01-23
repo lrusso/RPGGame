@@ -445,7 +445,7 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.hero);
 
 		// ADDING THE ENEMY
-		this.enemy = game.add.sprite(931, 90, "enemy");
+		this.enemy = game.add.sprite(931, 122, "enemy");
 		this.enemy.anchor.set(0.6);
 		this.enemy.animations.add("walk_left", [4, 3, 5]);
 		this.enemy.animations.add("walk_right", [7, 6, 8]);
@@ -699,12 +699,12 @@ RPGGame.Game.prototype = {
 			}
 
 		// MOVING THE ENEMY UP AND DOWN
-		if (this.enemy.position.y<=90)
+		if (this.enemy.position.y<=122)
 			{
 			game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
 			this.enemy.animations.play("walk_down", 10, true);
 			}
-		else if (this.enemy.position.y>=240)
+		else if (this.enemy.position.y>=272)
 			{
 			game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
 			this.enemy.animations.play("walk_up", 10, true);
