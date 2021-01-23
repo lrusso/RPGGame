@@ -904,11 +904,10 @@ RPGGame.Game.prototype = {
 					{
 					// TELEPORTING THE CHARACTER TO THE ISLAND
 					game.state.states["RPGGame.Game"].hero.position.x = 850;
-					game.state.states["RPGGame.Game"].hero.position.y = 150;
+					game.state.states["RPGGame.Game"].hero.position.y = 130;
 
-					// FACING DOWN THE CHARACTER
+					// STARTING THE CHARACTER WALKING DOWN ANIMATION
 					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
 					},500);
 
 				// WAITING 600 MS
@@ -918,12 +917,22 @@ RPGGame.Game.prototype = {
 					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
 					}, 600);
 
+				// WAITING 700 MS
+				setTimeout(function()
+					{
+					// THE CHARACTER IS WALKING DOWN
+					game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: 150}, 200, Phaser.Easing.Linear.None, true);
+					}, 700);
+
 				// WAITING 1000 MS
 				setTimeout(function()
 					{
+					// STOPING THE CHARACTER WALKING DOWN ANIMATION
+					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
+
 					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 					game.state.states["RPGGame.Game"].teleporting = false;
-					},1000);
+					}, 1000);
 				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 1
@@ -947,11 +956,10 @@ RPGGame.Game.prototype = {
 					{
 					// TELEPORTING THE CHARACTER TO THE ISLAND
 					game.state.states["RPGGame.Game"].hero.position.x = 435;
-					game.state.states["RPGGame.Game"].hero.position.y = 150;
+					game.state.states["RPGGame.Game"].hero.position.y = 130;
 
-					// FACING DOWN THE CHARACTER
+					// STARTING THE CHARACTER WALKING DOWN ANIMATION
 					game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
 					},500);
 
 				// WAITING 600 MS
@@ -961,12 +969,22 @@ RPGGame.Game.prototype = {
 					game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
 					}, 600);
 
+				// WAITING 700 MS
+				setTimeout(function()
+					{
+					// THE CHARACTER IS WALKING DOWN
+					game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: 150}, 200, Phaser.Easing.Linear.None, true);
+					}, 700);
+
 				// WAITING 1000 MS
 				setTimeout(function()
 					{
+					// STOPING THE CHARACTER WALKING DOWN ANIMATION
+					game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
+
 					// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 					game.state.states["RPGGame.Game"].teleporting = false;
-					},1000);
+					}, 1000);
 				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 2
