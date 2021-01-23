@@ -236,6 +236,7 @@ RPGGame.Game = function (game)
 	this.waterTimer = null;
 	this.waterDelay = null;
 
+	this.teleporting = null;
 	this.portalTimer = null;
 	this.portalDelay = null;
 
@@ -302,6 +303,7 @@ RPGGame.Game.prototype = {
 		this.waterTimer = null;
 		this.waterDelay = 500;
 
+		this.teleporting = false;
 		this.portalTimer = null;
 		this.portalDelay = 200;
 
@@ -618,62 +620,66 @@ RPGGame.Game.prototype = {
 		this.hero.body.velocity.x = 0;
 		this.hero.body.velocity.y = 0;
 
-		// CHECKING IF IT IS A MOBILE DEVICE
-		if (this.isMobileDevice == false)
+		// CHECKING IF THE USER IS NOT TELEPORTING
+		if (this.teleporting==false)
 			{
-			if (this.cursors.left.isDown)
+			// CHECKING IF IT IS A MOBILE DEVICE
+			if (this.isMobileDevice == false)
 				{
-				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_left", 10, true);
-				}
-			else if (this.cursors.right.isDown)
-				{
-				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_right", 10, true);
-				}
-			else if (this.cursors.up.isDown)
-				{
-				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_up", 10, true);
-				}
-			else if (this.cursors.down.isDown)
-				{
-				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_down", 10, true);
-				}
-			else
-				{
-				this.hero.animations.stop(null, true);
-				}
-			}
-			else
-			{
-			if (this.stick.isDown == true)
-				{
-				if (this.stick.direction === Phaser.LEFT)
+				if (this.cursors.left.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_left", 10, true);
 					}
-				else if (this.stick.direction === Phaser.RIGHT)
+				else if (this.cursors.right.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_right", 10, true);
 					}
-				else if (this.stick.direction === Phaser.UP)
+				else if (this.cursors.up.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_up", 10, true);
 					}
-				else if (this.stick.direction === Phaser.DOWN)
+				else if (this.cursors.down.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_down", 10, true);
 					}
+				else
+					{
+					this.hero.animations.stop(null, true);
+					}
 				}
-			else
+				else
 				{
-				this.hero.animations.stop(null, true);
+				if (this.stick.isDown == true)
+					{
+					if (this.stick.direction === Phaser.LEFT)
+						{
+						game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
+						this.hero.animations.play("walk_left", 10, true);
+						}
+					else if (this.stick.direction === Phaser.RIGHT)
+						{
+						game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
+						this.hero.animations.play("walk_right", 10, true);
+						}
+					else if (this.stick.direction === Phaser.UP)
+						{
+						game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
+						this.hero.animations.play("walk_up", 10, true);
+						}
+					else if (this.stick.direction === Phaser.DOWN)
+						{
+						game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
+						this.hero.animations.play("walk_down", 10, true);
+						}
+					}
+				else
+					{
+					this.hero.animations.stop(null, true);
+					}
 				}
 			}
 
@@ -884,6 +890,9 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 1
 		this.map.setTileIndexCallback(this.PORTAL1_TILE_ID, function ()
 			{
+			// SETTING THAT THE CHARACTER IS TELEPORTING
+			game.state.states["RPGGame.Game"].teleporting = true;
+
 			// TELEPORTING THE CHARACTER TO THE ISLAND
 			game.state.states["RPGGame.Game"].hero.position.x = 850;
 			game.state.states["RPGGame.Game"].hero.position.y = 150;
@@ -896,6 +905,13 @@ RPGGame.Game.prototype = {
 				game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
 				},50)
 
+			// WAITING 250 MS
+			setTimeout(function()
+				{
+				// SETTING THAT THE CHARACTER IS NOT TELEPORTING
+				game.state.states["RPGGame.Game"].teleporting = false;
+				},250);
+
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 1
 			return true;
 			}, game, this.layer);
@@ -903,6 +919,9 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 2
 		this.map.setTileIndexCallback(this.PORTAL2_TILE_ID, function ()
 			{
+			// SETTING THAT THE CHARACTER IS TELEPORTING
+			game.state.states["RPGGame.Game"].teleporting = true;
+
 			// TELEPORTING THE CHARACTER TO THE MAINLAND
 			game.state.states["RPGGame.Game"].hero.position.x = 435;
 			game.state.states["RPGGame.Game"].hero.position.y = 150;
@@ -914,6 +933,13 @@ RPGGame.Game.prototype = {
 				game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
 				game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
 				},50)
+
+			// WAITING 250 MS
+			setTimeout(function()
+				{
+				// SETTING THAT THE CHARACTER IS NOT TELEPORTING
+				game.state.states["RPGGame.Game"].teleporting = false;
+				},250);
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 2
 			return true;
