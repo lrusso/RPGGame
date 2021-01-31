@@ -948,12 +948,9 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE MERCHANT'S DOOR
 		this.map.setTileIndexCallback(this.DOOR_MERCHANT_CLOSED_ID, function ()
 			{
-			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID)
-				{
-				game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID;
-				game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID;
-				game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID);
-				}
+			game.state.states["RPGGame.Game"].DOOR_CURRENT = game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID;
+			game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID;
+			game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_MERCHANT_CLOSED_ID,game.state.states["RPGGame.Game"].DOOR_MERCHANT_OPENED_ID);
 			}, game, this.layer);
 
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS THROUGH THE PRIEST'S DOOR
@@ -991,11 +988,16 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS ON THE FLOOR
 		this.map.setTileIndexCallback(this.FLOOR_TILE_ID, function ()
 			{
+			// CHECKING IF THERE IS A DOOR TO BE CLOSED
 			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
 				{
+				// WAITING 25 MS
 				setTimeout(function()
 					{
+					// SWAPING THE DOOR STATE
 					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
+
+					// CLEARING THE VARIABLES
 					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
 					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
 					},25)
@@ -1005,11 +1007,16 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER WALKS ON THE GRASS
 		this.map.setTileIndexCallback(this.GRASS_TILE_ID, function ()
 			{
+			// CHECKING IF THERE IS A DOOR TO BE CLOSED
 			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
 				{
+				// WAITING 25 MS
 				setTimeout(function()
 					{
+					// SWAPING THE DOOR STATE
 					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
+
+					// CLEARING THE VARIABLES
 					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
 					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
 					},25)
