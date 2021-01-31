@@ -506,6 +506,9 @@ RPGGame.Game.prototype = {
 		this.buttonSoundOnGame.inputEnabled = true;
 		this.buttonSoundOnGame.events.onInputUp.add(function()
 			{
+			// SETTING THAT THE SOUND IS DISABLED
+			this.soundEnabled = false;
+
 			// SHOWING THE SOUND OFF GAME ICON
 			this.buttonSoundOffGame.visible = true;
 			this.buttonSoundOffGameShadow.visible = true;
@@ -513,9 +516,6 @@ RPGGame.Game.prototype = {
 			// HIDING THE SOUND ON GAME ICON
 			this.buttonSoundOnGame.visible = false;
 			this.buttonSoundOnGameShadow.visible = false;
-
-			// SETTING THAT THE SOUND IS DISABLED
-			this.soundEnabled = false;
 
 			// CHECKING IF THE MUSIC PLAYER IS CREATED
 			if (this.musicPlayer!=null)
@@ -536,6 +536,9 @@ RPGGame.Game.prototype = {
 		this.buttonSoundOffGame.inputEnabled = true;
 		this.buttonSoundOffGame.events.onInputUp.add(function()
 			{
+			// SETTING THAT THE SOUND IS ENABLED
+			this.soundEnabled = true;
+
 			// SHOWING THE SOUND ON GAME ICON
 			this.buttonSoundOnGame.visible = true;
 			this.buttonSoundOnGameShadow.visible = true;
@@ -544,17 +547,18 @@ RPGGame.Game.prototype = {
 			this.buttonSoundOffGame.visible = false;
 			this.buttonSoundOffGameShadow.visible = false;
 
-			// SETTING THAT THE SOUND IS ENABLED
-			this.soundEnabled = true;
+			// CHECKING IF THE MUSIC PLAYER IS NOT CREATED
+			if (this.musicPlayer==null)
+				{
+				// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
+				this.musicPlayer = this.add.audio("musicBackground");
 
-			// PLAYING THE BACKGROUND MUSIC
-			this.musicPlayer = this.add.audio("musicBackground");
+				// SETTING THE BACKGROUND MUSIC VOLUME
+				this.musicPlayer.volume = 0.3;
 
-			// SETTING THE BACKGROUND MUSIC
-			this.musicPlayer.volume = 0.3;
-
-			// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
-			this.musicPlayer.loop = true;
+				// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
+				this.musicPlayer.loop = true;
+				}
 
 			// PLAYING THE BACKGROUND MUSIC
 			this.musicPlayer.play();
