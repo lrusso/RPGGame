@@ -1008,7 +1008,7 @@ RPGGame.Game.prototype = {
 		// CHECKING IF THE SOUND IS ENABLED
 		if (game.state.states["RPGGame.Game"].soundEnabled==true)
 			{
-			// PLAYING THE HEALING SOUND
+			// PLAYING THE TELEPORTING SOUND
 			game.state.states["RPGGame.Game"].audioPlayer = game.state.states["RPGGame.Game"].add.audio("teleporting");
 			game.state.states["RPGGame.Game"].audioPlayer.play();
 			}
