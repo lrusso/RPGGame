@@ -1003,18 +1003,18 @@ RPGGame.Game.prototype = {
 	teleportTo: function(x, y)
 		{
 		// SETTING THAT THE CHARACTER IS TELEPORTING
-		game.state.states["RPGGame.Game"].teleporting = true;
+		this.teleporting = true;
 
 		// CHECKING IF THE SOUND IS ENABLED
-		if (game.state.states["RPGGame.Game"].soundEnabled==true)
+		if (this.soundEnabled==true)
 			{
 			// PLAYING THE TELEPORTING SOUND
-			game.state.states["RPGGame.Game"].audioPlayer = game.state.states["RPGGame.Game"].add.audio("teleporting");
-			game.state.states["RPGGame.Game"].audioPlayer.play();
+			this.audioPlayer = this.add.audio("teleporting");
+			this.audioPlayer.play();
 			}
 
 		// STARTING FADING OUT ANIMATION TO START THE TELEPORTING
-		game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
+		game.add.tween(this.hero).to({alpha: 0}, 200, Phaser.Easing.Linear.None, true);
 
 		// WAITING 500 MS
 		setTimeout(function()
