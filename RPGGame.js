@@ -14,7 +14,8 @@ var STRING_KING = "";
 var STRING_GUARD1 = "";
 var STRING_GUARD2 = "";
 var STRING_MERCHANT = "";
-var STRING_PRIEST = "";
+var STRING_PRIEST1 = "";
+var STRING_PRIEST2 = "";
 var STRING_WIZARD = "";
 var STRING_ABOUT = "";
 
@@ -25,7 +26,8 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_GUARD1 = "Te estoy vigilando.";
 	STRING_GUARD2 = "Vete de aqu" + String.fromCharCode(237) + ".";
 	STRING_MERCHANT = "Dime qu" + String.fromCharCode(233) + " necesitas.";
-	STRING_PRIEST = "Curar" + String.fromCharCode(233) + " tus heridas.";
+	STRING_PRIEST1 = "Curar" + String.fromCharCode(233) + " tus heridas.";
+	STRING_PRIEST2 = "Ahora te encuentras bien.";
 	STRING_WIZARD = "Compartir" + String.fromCharCode(233) + " mi conocimiento.";
 	STRING_ABOUT = "Dise" + String.fromCharCode(241) + "ado por www.lrusso.com";
 	}
@@ -35,7 +37,8 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_GUARD1 = "I'm watching you.";
 	STRING_GUARD2 = "Go away.";
 	STRING_MERCHANT = "What do you need?";
-	STRING_PRIEST = "I'll heal your wounds.";
+	STRING_PRIEST1 = "I'll heal your wounds.";
+	STRING_PRIEST2 = "You are fine now.";
 	STRING_WIZARD = "I'll share my knowledge.";
 	STRING_ABOUT = "Designed by www.lrusso.com";
 	}
@@ -862,23 +865,32 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PRIEST
 		this.map.setTileIndexCallback(this.PRIEST_TILE_ID, function ()
 			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
-
-			// CHECKING IF THE PLAYER IS ALREADY HEALING
-			if (game.state.states["RPGGame.Game"].playerIsHealing==false)
+			// CHECKING IF THE PLAYER IS HEALED
+			if (game.state.states["RPGGame.Game"].statsHealth==100)
 				{
-				// CHECKING IF THE SOUND IS ENABLED
-				if (game.state.states["RPGGame.Game"].soundEnabled==true)
-					{
-					// PLAYING THE HEALING SOUND
-					game.state.states["RPGGame.Game"].audioPlayer = game.state.states["RPGGame.Game"].add.audio("healing");
-					game.state.states["RPGGame.Game"].audioPlayer.play();
-					}
+				// SHOWING A DIALOG SAYING THAT THE PLAYER IS HEALED
+				game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST2, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
 				}
+				else
+				{
+				// SHOWING A DIALOG SAYING THAT THE PLAYER WILL BE HEALED
+				game.state.states["RPGGame.Game"].showDialog(STRING_PRIEST1, 270, 66, game.state.states["RPGGame.Game"].PRIEST_TILE_ID);
 
-			// SETTING THAT THE PLAYER WILL BE HEALING
-			game.state.states["RPGGame.Game"].playerIsHealing = true;
+				// CHECKING IF THE PLAYER IS ALREADY HEALING
+				if (game.state.states["RPGGame.Game"].playerIsHealing==false)
+					{
+					// CHECKING IF THE SOUND IS ENABLED
+					if (game.state.states["RPGGame.Game"].soundEnabled==true)
+						{
+						// PLAYING THE HEALING SOUND
+						game.state.states["RPGGame.Game"].audioPlayer = game.state.states["RPGGame.Game"].add.audio("healing");
+						game.state.states["RPGGame.Game"].audioPlayer.play();
+						}
+					}
+
+				// SETTING THAT THE PLAYER WILL BE HEALING
+				game.state.states["RPGGame.Game"].playerIsHealing = true;
+				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE PRIEST
 			return true;
