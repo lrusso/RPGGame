@@ -584,7 +584,7 @@ RPGGame.Game.prototype = {
 			if (this.teleporting==false)
 				{
 				// GETTING THE GAME STATE AS A BLOB VALUE
-				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name})],{type:"text/plain"});
+				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name })],{type:"text/plain"});
 
 				// SETTING THE FILE NAME
 				var filename = "RPGGame.sav";
