@@ -584,7 +584,7 @@ RPGGame.Game.prototype = {
 			if (this.teleporting==false)
 				{
 				// GETTING THE GAME STATE AS A BLOB VALUE
-				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold })],{type:"text/plain"});
+				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name})],{type:"text/plain"});
 
 				// SETTING THE FILE NAME
 				var filename = "RPGGame.sav";
@@ -711,8 +711,12 @@ RPGGame.Game.prototype = {
 			this.setHealth(GAMEDATA.statsHealth);
 
 			// UPDATING THE HERO'S POSITION
-			game.state.states["RPGGame.Game"].hero.position.x = GAMEDATA.x;
-			game.state.states["RPGGame.Game"].hero.position.y = GAMEDATA.y;
+			this.hero.position.x = GAMEDATA.x;
+			this.hero.position.y = GAMEDATA.y;
+
+			// UPDATING THE HERO'S ANIMATION
+			this.hero.animations.play(GAMEDATA.lastAnimation, 10, true);
+			this.hero.animations.stop(null, true);
 			}
 		},
 
