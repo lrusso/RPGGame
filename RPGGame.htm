@@ -23,10 +23,12 @@
 			.lds-spinner div:nth-child(11){transform:rotate(300deg);animation-delay:-0.1s}
 			.lds-spinner div:nth-child(12){transform:rotate(330deg);animation-delay:0s}
 			@keyframes lds-spinner{0%{opacity:1}100%{opacity:0}}
+			input{display:none}
 		</style>
 	</head>
 	<body>
 		<div class="pleasewait" id="loading"><div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+		<input type="file" id="gui_controls_file" onchange="game.state.states['RPGGame.Game'].loadGame(event.target.files);"/>
 		<div id="content" oncontextmenu="return false;"></div>
 		<script src="RPGGame.js"></script>
 	</body>

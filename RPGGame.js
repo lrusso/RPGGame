@@ -10,6 +10,9 @@ function isMobileDevice(){return!!(navigator.userAgent.match(/Android/i)||naviga
 // GETTING THE USER LANGUAGE
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
+// VARIABLE FOR STORING A SAVEGAME FILE DATA IN ORDER TO BE READ AND LOADED
+var GAMEDATA = null;
+
 var STRING_KING = "";
 var STRING_GUARD1 = "";
 var STRING_GUARD2 = "";
@@ -574,6 +577,27 @@ RPGGame.Game.prototype = {
 		this.buttonSaveGameShadow.fixedToCamera = true;
 		this.buttonSaveGame = this.add.button(677, 3, "savegame", null, this, 2, 1, 0);
 		this.buttonSaveGame.fixedToCamera = true;
+		this.buttonSaveGame.inputEnabled = true;
+		this.buttonSaveGame.events.onInputUp.add(function()
+			{
+			// CHECKING IF THE USER IS NOT TELEPORTING
+			if (this.teleporting==false)
+				{
+				// GETTING THE GAME STATE AS A BLOB VALUE
+				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold })],{type:"text/plain"});
+
+				// SETTING THE FILE NAME
+				var filename = "RPGGame.sav";
+
+				// DOWNLOADING THE FILE
+				var link = document.createElement("a");
+				link.style.display = "none";
+				document.body.appendChild(link);
+				link.href = URL.createObjectURL(blobValue);
+				link.download = filename;
+				link.click();
+				}
+			},this);
 
 		// ADDING THE LOAD GAME ICON
 		this.buttonLoadGameShadow = game.add.sprite(769, 29, "loadgame");
@@ -583,6 +607,12 @@ RPGGame.Game.prototype = {
 		this.buttonLoadGameShadow.fixedToCamera = true;
 		this.buttonLoadGame = this.add.button(742, 3, "loadgame", null, this, 2, 1, 0);
 		this.buttonLoadGame.fixedToCamera = true;
+		this.buttonLoadGame.inputEnabled = true;
+		this.buttonLoadGame.events.onInputUp.add(function()
+			{
+			// SHOWING THE OPEN FILE SYSTEM DIALOG
+			document.getElementById("gui_controls_file").click();
+			},this);
 
 		// ADDING THE HEALTH METER CONTAINER
 		this.imageStatsHealthContainer = game.add.graphics();
@@ -669,6 +699,20 @@ RPGGame.Game.prototype = {
 				{
 				console.log("Tap in A");
 				},this);
+			}
+
+		// CHECKING IF A SAVEGAME WAS LOADED
+		if (GAMEDATA!=null)
+			{
+			// UPDATING THE GOLD VALUE
+			this.setGold(GAMEDATA.statsGold);
+
+			// UPDATING THE HEALTH VALUE
+			this.setHealth(GAMEDATA.statsHealth);
+
+			// UPDATING THE HERO'S POSITION
+			game.state.states["RPGGame.Game"].hero.position.x = GAMEDATA.x;
+			game.state.states["RPGGame.Game"].hero.position.y = GAMEDATA.y;
 			}
 		},
 
@@ -804,10 +848,7 @@ RPGGame.Game.prototype = {
 			if (this.statsHealth<100)
 				{
 				// UPDATING THE PLAYER HEALTH VALUE
-				this.statsHealth = this.statsHealth + 1;
-
-				// UPDATING THE HEALTH BAR
-				this.imageStatsHealthValue.drawRect(10, 12, this.statsHealth * 195 / 100, 14, 1);
+				this.setHealth(this.statsHealth + 1);
 				}
 				else
 				{
@@ -815,6 +856,27 @@ RPGGame.Game.prototype = {
 				this.playerIsHealing = false;
 				}
 			}
+		},
+
+	setHealth: function (newHealth)
+		{
+		// UPDATING THE PLAYER HEALTH VALUE
+		this.statsHealth = newHealth;
+
+		// UPDATING THE HEALTH BAR
+		this.imageStatsHealthValue.drawRect(10, 12, this.statsHealth * 195 / 100, 14, 1);
+		},
+
+	setGold: function (newGold)
+		{
+		// UPDATING THE STATS GOLD VALUE
+		this.statsGold = newGold;
+
+		// UPDATING THE GOLD COUNTER SHADOW VALUE
+		this.imageStatsGoldShadowValue.setText(this.statsGold);
+
+		// UPDATING THE GOLD COUNTER VALUE
+		this.imageStatsGoldValue.setText(this.statsGold);
 		},
 
 	render: function ()
@@ -833,13 +895,7 @@ RPGGame.Game.prototype = {
 		coin.kill();
 
 		// UPDATING THE STATS GOLD VALUE
-		this.statsGold = this.statsGold + 1;
-
-		// UPDATING THE GOLD COUNTER SHADOW VALUE
-		this.imageStatsGoldShadowValue.setText(this.statsGold);
-
-		// UPDATING THE GOLD COUNTER VALUE
-		this.imageStatsGoldValue.setText(this.statsGold);
+		this.setGold(this.statsGold + 1);
 
 		// CHECKING IF THE SOUND IS ENABLED
 		if (this.soundEnabled==true)
@@ -1105,6 +1161,41 @@ RPGGame.Game.prototype = {
 			// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 			game.state.states["RPGGame.Game"].teleporting = false;
 			}, 1000);
+		},
+
+	loadGame: function (files)
+		{
+		try
+			{
+			// GETTING THE FILE EXTENSION
+			var extension = files[0].name.split(".").pop().toLowerCase();
+
+			// CHECKING THE FILE EXTENSION
+			if (extension=="sav")
+				{
+				// READING THE FILE
+				var filereader = new FileReader();
+				filereader.file_name = files[0].name;
+				filereader.onload = function()
+					{
+					// GETTING THE GAME DATA
+					GAMEDATA = JSON.parse(this.result);
+
+					// RESTARTING THE GAME STATE
+					game.state.states["RPGGame.Game"].state.restart();
+
+					// CLEARING THE SELECTED FILE VALUE
+					document.getElementById("gui_controls_file").value = null;
+					};
+
+				// READING THE SELECTED FILE
+				filereader.readAsText(files[0]);
+				}
+			}
+			catch(err)
+			{
+			console.log(err)
+			}
 		},
 
 	showDialog: function(myText, x, y, tile_id)
