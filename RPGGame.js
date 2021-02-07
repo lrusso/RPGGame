@@ -1194,7 +1194,6 @@ RPGGame.Game.prototype = {
 			}
 			catch(err)
 			{
-			console.log(err)
 			}
 		},
 
