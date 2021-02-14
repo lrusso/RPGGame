@@ -918,13 +918,13 @@ RPGGame.Game.prototype = {
 
 	collectCoin: function(player, coin)
 		{
-		// REMOVING THE COIN FROM THE COIN ARRAY
+		// LOOPING EVERY AVAILABLE COIN IN THE MAP
 		for (var i = 0; i < this.coinsArray.length; i++)
 			{
 			// CHECKING IF IT IS THE COLLIDED COIN
 			if(this.coinsArray[i][0]==coin.x && this.coinsArray[i][1]==coin.y)
 				{
-				// REMOVING THE COIN FROM THE COIN ARRAY
+				// REMOVING THE COLLIDED COIN FROM THE COIN ARRAY
 				this.coinsArray.splice(i, 1);
 				}
 			}
