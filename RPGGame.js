@@ -462,6 +462,7 @@ RPGGame.Game.prototype = {
 		// CHECKING IF A SAVEGAME WAS LOADED
 		if (GAMEDATA!=null)
 			{
+			// LOADING THE COINS LOCATION (IF ANY) FROM THE SAVEGAME
 			this.coinsArray = GAMEDATA.coinsArray;
 			}
 			else
