@@ -930,7 +930,7 @@ RPGGame.Game.prototype = {
 				}
 			}
 
-		// DESTROYING THE COIN ICON
+		// DESTROYING THE COIN SPRITE
 		coin.kill();
 
 		// UPDATING THE STATS GOLD VALUE
