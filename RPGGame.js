@@ -932,7 +932,12 @@ RPGGame.Game.prototype = {
 				// CHECKING IF THE USER IS PRESSING SPACE OR THE SWORD BUTTON IN A MOBILE DEVICE
 				if (this.keySpace.isDown==true || this.playerAttackingMobileDevice==true)
 					{
-					this.attackStart();
+					// CHECKING IF THE SLASH ANIMATION IS NOT PLAYING
+					if (this.slashAnimation.isPlaying==false)
+						{
+						// PLAYING THE SLASH ANIMATION
+						this.slashAnimation.play("slash_attack");
+						}
 					}
 				}
 				else
@@ -1310,16 +1315,6 @@ RPGGame.Game.prototype = {
 			// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 			game.state.states["RPGGame.Game"].teleporting = false;
 			}, 1000);
-		},
-
-	attackStart: function ()
-		{
-		// CHECKING IF THE SLASH ANIMATION IS NOT PLAYING
-		if (this.slashAnimation.isPlaying==false)
-			{
-			// PLAYING THE SLASH ANIMATION
-			this.slashAnimation.play("slash_attack");
-			}
 		},
 
 	loadGame: function (files)
