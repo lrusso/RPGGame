@@ -519,17 +519,6 @@ RPGGame.Game.prototype = {
 		// ENABLING THE COIN'S PHYSICS IN ORDER TO DETECT COLLISIONS
 		game.physics.arcade.enable(this.coins);
 
-		// ADDING THE HERO
-		this.hero = game.add.sprite(420, 307, "imageHero");
-		this.hero.anchor.set(0.6);
-		this.hero.animations.add("walk_left", [4, 3, 5]);
-		this.hero.animations.add("walk_right", [7, 6, 8]);
-		this.hero.animations.add("walk_up", [10, 9, 11]);
-		this.hero.animations.add("walk_down", [1, 0, 2]);
-
-		// ENABLING THE HERO'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
-		game.physics.arcade.enable(this.hero);
-
 		// ADDING THE ENEMY
 		this.enemy = game.add.sprite(931, 122, "imageEnemy");
 		this.enemy.anchor.set(0.6);
@@ -540,6 +529,17 @@ RPGGame.Game.prototype = {
 
 		// ENABLING THE ENEMY'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
 		game.physics.arcade.enable(this.enemy);
+
+		// ADDING THE HERO
+		this.hero = game.add.sprite(420, 307, "imageHero");
+		this.hero.anchor.set(0.6);
+		this.hero.animations.add("walk_left", [4, 3, 5]);
+		this.hero.animations.add("walk_right", [7, 6, 8]);
+		this.hero.animations.add("walk_up", [10, 9, 11]);
+		this.hero.animations.add("walk_down", [1, 0, 2]);
+
+		// ENABLING THE HERO'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
+		game.physics.arcade.enable(this.hero);
 
 		// ADJUSTING THE COLLISION BODY SIZE
 		this.hero.body.setSize(20, 24, -1.5, 3);
@@ -909,6 +909,9 @@ RPGGame.Game.prototype = {
 
 		// SETTING THE FUNCTION THAT WILL BE CALLED WHEN THE HERO OVERLAPS A COIN
 		game.physics.arcade.overlap(this.hero, this.coins, this.collectCoin, null, this);
+
+		// SETTING THAT THE HERO WILL COLLIDE WITH THE ENEMY
+		game.physics.arcade.collide(this.hero, this.enemy);
 
 		// SETTING THAT THE ENEMY WILL COLLIDE WITH ELEMENTS WITHIN THE MAP
 		game.physics.arcade.collide(this.enemy, this.layer);
