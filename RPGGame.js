@@ -263,6 +263,7 @@ RPGGame.Game = function (game)
 	this.keyS = null;
 	this.keyD = null;
 	this.keyW = null;
+	this.keySpace = null;
 	this.map = null;
 	this.coins = null;
 	this.coinsArray = null;
@@ -274,6 +275,7 @@ RPGGame.Game = function (game)
 	this.statsGold = null;
 	this.statsHealth = null;
 	this.playerIsHealing = null;
+	this.playerIsAttacking = null;
 
 	this.waterTimer = null;
 	this.waterDelay = null;
@@ -341,6 +343,7 @@ RPGGame.Game.prototype = {
 		this.keyS = null;
 		this.keyD = null;
 		this.keyW = null;
+		this.keySpace = null;
 		this.map = null;
 		this.coins = null;
 		this.coinsArray = null;
@@ -352,6 +355,7 @@ RPGGame.Game.prototype = {
 		this.statsGold = 0;
 		this.statsHealth = 80;
 		this.playerIsHealing = false;
+		this.playerIsAttacking = false;
 
 		this.waterTimer = null;
 		this.waterDelay = 500;
@@ -710,11 +714,12 @@ RPGGame.Game.prototype = {
 		this.imageStatsGoldValue = game.add.text(33, 40, this.statsGold, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.imageStatsGoldContainer.addChild(this.imageStatsGoldValue);
 
-		// REGISTERING THE 'A', 'S', 'D' AND 'W' KEYS
+		// REGISTERING THE 'A', 'S', 'D', 'W' AND SPACEBAR KEYS
 		this.keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
 		this.keyW = game.input.keyboard.addKey(Phaser.Keyboard.W);
+		this.keySpace = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
@@ -745,11 +750,11 @@ RPGGame.Game.prototype = {
 			this.buttonA.fixedToCamera = true;
 			this.buttonA.events.onInputDown.add(function()
 				{
-				console.log('start attacking');
+				this.attackStart();
 				},this);
 			this.buttonA.events.onInputUp.add(function()
 				{
-				console.log('stop attacking');
+				this.attackStop();
 				},this);
 			}
 
@@ -826,7 +831,7 @@ RPGGame.Game.prototype = {
 		if (this.teleporting==false)
 			{
 			// CHECKING IF IT IS A MOBILE DEVICE
-			if (this.isMobileDevice == false)
+			if (this.isMobileDevice==false)
 				{
 				if (this.cursors.left.isDown || this.keyA.isDown)
 					{
@@ -851,6 +856,16 @@ RPGGame.Game.prototype = {
 				else
 					{
 					this.hero.animations.stop(null, true);
+					}
+
+				if (this.keySpace.isDown)
+					{
+					this.attackStart();
+					}
+
+				if (this.keySpace.isUp && this.playerIsAttacking==true)
+					{
+					this.attackStop();
 					}
 				}
 				else
@@ -1228,6 +1243,18 @@ RPGGame.Game.prototype = {
 			// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 			game.state.states["RPGGame.Game"].teleporting = false;
 			}, 1000);
+		},
+
+	attackStart: function ()
+		{
+		this.playerIsAttacking = true;
+		console.log("START ATTACKING");
+		},
+
+	attackStop: function ()
+		{
+		this.playerIsAttacking = false;
+		console.log("STOP ATTACKING");
 		},
 
 	loadGame: function (files)
