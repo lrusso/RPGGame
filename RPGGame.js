@@ -55,7 +55,7 @@ RPGGame.Preloader.prototype = {
 	init: function ()
 		{
 		// SETTING THE MAXPOINTERS VALUE
-		this.input.maxPointers = 1;
+		this.input.maxPointers = 2;
 
 		// SETTING THE ROUNDPIXELS PROPERTY TO TRUE (IMPORTANT, DO NOT MODIFY)
 		this.game.renderer.renderSession.roundPixels = true;
@@ -802,41 +802,40 @@ RPGGame.Game.prototype = {
 		// ADDING THE SLASH SPRITE TO THE HERO SPRITE
 		this.hero.addChild(this.slash);
 
-		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
-		if (this.toast==true)
-			{
-			// ADDING THE ABOUT TOAST
-			this.showToast(STRING_ABOUT, true);
-
-			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
-			this.toast = false;
-			}
-
 		// ADDING THE CURSOR KEYS LISTENER
 		this.cursors = game.input.keyboard.createCursorKeys();
 
-		// CHECKING IF IT IS A MOBILE DEVICE
-		if (this.isMobileDevice==true)
+		// ADDING THE STICK FOR MOBILE DEVICES
+		this.stick = this.pad.addDPad(100, 335, 0, "dpad");
+		this.stick.sprite.scale.set(0.8);
+		this.stick.sprite.tint = 0xA9A9A9;
+
+		// ADDING THE SWORD BUTTON FOR MOBILE DEVICES
+		this.buttonSword = game.add.sprite(655, 290, "imageButton");
+		this.buttonSword.scale.set(0.8);
+		this.buttonSword.tint = 0xA9A9A9;
+		this.buttonSword.inputEnabled = true;
+		this.buttonSword.fixedToCamera = true;
+		this.buttonSword.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;},this);
+		this.buttonSword.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;},this);
+
+		// ADDING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
+		this.buttonSwordIcon = game.add.sprite(693, 329, "imageButtonSword");
+		this.buttonSwordIcon.scale.set(0.7);
+		this.buttonSwordIcon.tint = 0xA9A9A9;
+		this.buttonSwordIcon.fixedToCamera = true;
+
+		// CHECKING IF IT IS NOT A MOBILE DEVICE
+		if (this.isMobileDevice==false)
 			{
-			// ADDING THE STICK
-			this.stick = this.pad.addDPad(100, 335, 0, "dpad");
-			this.stick.sprite.scale.set(0.8);
-			this.stick.sprite.tint = 0xA9A9A9;
+			// HIDING THE STICK FOR MOBILE DEVICES
+			this.stick.visible = false;
 
-			// ADDING THE SWORD BUTTON
-			this.buttonSword = game.add.sprite(655, 290, "imageButton");
-			this.buttonSword.scale.set(0.8);
-			this.buttonSword.tint = 0xA9A9A9;
-			this.buttonSword.inputEnabled = true;
-			this.buttonSword.fixedToCamera = true;
-			this.buttonSword.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;},this);
-			this.buttonSword.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;},this);
+			// HIDING THE SWORD BUTTON FOR MOBILE DEVICES
+			this.buttonSword.visible = false;
 
-			// ADDING THE SWORD ICON IN THE SWORD BUTTON
-			this.buttonSwordIcon = game.add.sprite(693, 329, "imageButtonSword");
-			this.buttonSwordIcon.scale.set(0.7);
-			this.buttonSwordIcon.tint = 0xA9A9A9;
-			this.buttonSwordIcon.fixedToCamera = true;
+			// HIDING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
+			this.buttonSwordIcon.visible = false;
 			}
 
 		// CHECKING IF A SAVEGAME WAS LOADED
@@ -855,6 +854,16 @@ RPGGame.Game.prototype = {
 			// UPDATING THE HERO'S ANIMATION
 			this.hero.animations.play(GAMEDATA.lastAnimation, 10, true);
 			this.hero.animations.stop(null, true);
+			}
+
+		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
+		if (this.toast==true)
+			{
+			// ADDING THE ABOUT TOAST
+			this.showToast(STRING_ABOUT, true);
+
+			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
+			this.toast = false;
 			}
 		},
 
@@ -911,73 +920,39 @@ RPGGame.Game.prototype = {
 		// CHECKING IF THE USER IS NOT TELEPORTING
 		if (this.teleporting==false)
 			{
-			// CHECKING IF IT IS A MOBILE DEVICE
-			if (this.isMobileDevice==false)
+			if (this.cursors.left.isDown==true || this.keyA.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.LEFT))
 				{
-				if (this.cursors.left.isDown==true || this.keyA.isDown==true)
-					{
-					game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-					this.hero.animations.play("walk_left", 10, true);
-					}
-				else if (this.cursors.right.isDown==true || this.keyD.isDown==true)
-					{
-					game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
-					this.hero.animations.play("walk_right", 10, true);
-					}
-				else if (this.cursors.up.isDown==true || this.keyW.isDown==true)
-					{
-					game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
-					this.hero.animations.play("walk_up", 10, true);
-					}
-				else if (this.cursors.down.isDown==true || this.keyS.isDown==true)
-					{
-					game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
-					this.hero.animations.play("walk_down", 10, true);
-					}
-				else
-					{
-					this.hero.animations.stop(null, true);
-					}
-
-				// CHECKING IF THE USER IS PRESSING SPACE OR THE SWORD BUTTON IN A MOBILE DEVICE
-				if (this.keySpace.isDown==true || this.playerAttackingMobileDevice==true)
-					{
-					// CHECKING IF THE SLASH ANIMATION IS NOT PLAYING
-					if (this.slashAnimation.isPlaying==false)
-						{
-						// PLAYING THE SLASH ANIMATION
-						this.slashAnimation.play("slash_attack");
-						}
-					}
+				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_left", 10, true);
 				}
-				else
+			else if (this.cursors.right.isDown==true || this.keyD.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.RIGHT))
 				{
-				if (this.stick.isDown==true)
+				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_right", 10, true);
+				}
+			else if (this.cursors.up.isDown==true || this.keyW.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.UP))
+				{
+				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_up", 10, true);
+				}
+			else if (this.cursors.down.isDown==true || this.keyS.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.DOWN))
+				{
+				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_down", 10, true);
+				}
+			else
+				{
+				this.hero.animations.stop(null, true);
+				}
+
+			// CHECKING IF THE USER IS PRESSING SPACE OR THE SWORD BUTTON IN A MOBILE DEVICE
+			if (this.keySpace.isDown==true || this.playerAttackingMobileDevice==true)
+				{
+				// CHECKING IF THE SLASH ANIMATION IS NOT PLAYING
+				if (this.slashAnimation.isPlaying==false)
 					{
-					if (this.stick.direction === Phaser.LEFT)
-						{
-						game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-						this.hero.animations.play("walk_left", 10, true);
-						}
-					else if (this.stick.direction === Phaser.RIGHT)
-						{
-						game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
-						this.hero.animations.play("walk_right", 10, true);
-						}
-					else if (this.stick.direction === Phaser.UP)
-						{
-						game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
-						this.hero.animations.play("walk_up", 10, true);
-						}
-					else if (this.stick.direction === Phaser.DOWN)
-						{
-						game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
-						this.hero.animations.play("walk_down", 10, true);
-						}
-					}
-				else
-					{
-					this.hero.animations.stop(null, true);
+					// PLAYING THE SLASH ANIMATION
+					this.slashAnimation.play("slash_attack");
 					}
 				}
 			}
