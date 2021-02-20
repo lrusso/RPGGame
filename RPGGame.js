@@ -702,7 +702,7 @@ RPGGame.Game.prototype = {
 		this.imageStatsGoldValue = game.add.text(33, 40, this.statsGold, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.imageStatsGoldContainer.addChild(this.imageStatsGoldValue);
 
-		// REGISTERING THE 'A','S', 'D' AND 'W' KEYS
+		// REGISTERING THE 'A', 'S', 'D' AND 'W' KEYS
 		this.keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
