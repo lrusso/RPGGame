@@ -253,6 +253,10 @@ RPGGame.Game = function (game)
 	this.imageStatsGoldValue = null;
 
 	this.pad = null;
+	this.keyA = null;
+	this.keyS = null;
+	this.keyD = null;
+	this.keyW = null;
 	this.map = null;
 	this.coins = null;
 	this.coinsArray = null;
@@ -325,6 +329,10 @@ RPGGame.Game.prototype = {
 	init: function ()
 		{
 		this.pad = null;
+		this.keyA = null;
+		this.keyS = null;
+		this.keyD = null;
+		this.keyW = null;
 		this.map = null;
 		this.coins = null;
 		this.coinsArray = null;
@@ -694,6 +702,12 @@ RPGGame.Game.prototype = {
 		this.imageStatsGoldValue = game.add.text(33, 40, this.statsGold, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.imageStatsGoldContainer.addChild(this.imageStatsGoldValue);
 
+		// REGISTERING THE 'A','S', 'D' AND 'W' KEYS
+		this.keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
+		this.keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
+		this.keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
+		this.keyW = game.input.keyboard.addKey(Phaser.Keyboard.W);
+
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
 			{
@@ -801,22 +815,22 @@ RPGGame.Game.prototype = {
 			// CHECKING IF IT IS A MOBILE DEVICE
 			if (this.isMobileDevice == false)
 				{
-				if (this.cursors.left.isDown)
+				if (this.cursors.left.isDown || this.keyA.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_left", 10, true);
 					}
-				else if (this.cursors.right.isDown)
+				else if (this.cursors.right.isDown || this.keyD.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_right", 10, true);
 					}
-				else if (this.cursors.up.isDown)
+				else if (this.cursors.up.isDown || this.keyW.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_up", 10, true);
 					}
-				else if (this.cursors.down.isDown)
+				else if (this.cursors.down.isDown || this.keyS.isDown)
 					{
 					game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_down", 10, true);
