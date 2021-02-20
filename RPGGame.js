@@ -746,7 +746,7 @@ RPGGame.Game.prototype = {
 			this.stick.sprite.scale.set(0.8);
 			this.stick.sprite.tint = 0xA9A9A9;
 
-			// ADDING THE BUTTON SWORD
+			// ADDING THE SWORD BUTTON
 			this.buttonSword = game.add.sprite(655, 290, "imageButton");
 			this.buttonSword.scale.set(0.8);
 			this.buttonSword.tint = 0xA9A9A9;
@@ -755,7 +755,7 @@ RPGGame.Game.prototype = {
 			this.buttonSword.events.onInputDown.add(function(){this.attackStart();},this);
 			this.buttonSword.events.onInputUp.add(function(){this.attackStop();},this);
 
-			// ADDING THE BUTTON SWORD ICON
+			// ADDING THE SWORD ICON IN THE SWORD BUTTON
 			this.buttonSwordIcon = game.add.sprite(693, 329, "imageButtonSword");
 			this.buttonSwordIcon.scale.set(0.7);
 			this.buttonSwordIcon.tint = 0xA9A9A9;
