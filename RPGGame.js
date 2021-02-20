@@ -833,22 +833,22 @@ RPGGame.Game.prototype = {
 			// CHECKING IF IT IS A MOBILE DEVICE
 			if (this.isMobileDevice==false)
 				{
-				if (this.cursors.left.isDown == true || this.keyA.isDown == true)
+				if (this.cursors.left.isDown==true || this.keyA.isDown==true)
 					{
 					game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_left", 10, true);
 					}
-				else if (this.cursors.right.isDown == true || this.keyD.isDown == true)
+				else if (this.cursors.right.isDown==true || this.keyD.isDown==true)
 					{
 					game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_right", 10, true);
 					}
-				else if (this.cursors.up.isDown == true || this.keyW.isDown == true)
+				else if (this.cursors.up.isDown==true || this.keyW.isDown==true)
 					{
 					game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_up", 10, true);
 					}
-				else if (this.cursors.down.isDown == true || this.keyS.isDown == true)
+				else if (this.cursors.down.isDown==true || this.keyS.isDown==true)
 					{
 					game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 					this.hero.animations.play("walk_down", 10, true);
@@ -858,18 +858,18 @@ RPGGame.Game.prototype = {
 					this.hero.animations.stop(null, true);
 					}
 
-				if (this.keySpace.isDown == true)
+				if (this.keySpace.isDown==true)
 					{
 					this.attackStart();
 					}
-				else if (this.keySpace.isUp && this.playerIsAttacking==true)
+				else if (this.keySpace.isUp==true && this.playerIsAttacking==true)
 					{
 					this.attackStop();
 					}
 				}
 				else
 				{
-				if (this.stick.isDown == true)
+				if (this.stick.isDown==true)
 					{
 					if (this.stick.direction === Phaser.LEFT)
 						{
