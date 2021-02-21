@@ -276,6 +276,7 @@ RPGGame.Game = function (game)
 	this.layer = null;
 	this.hero = null;
 	this.enemy = null;
+	this.enemyHealth = null;
 	this.cursors = null;
 
 	this.slash = null;
@@ -360,6 +361,7 @@ RPGGame.Game.prototype = {
 		this.layer = null;
 		this.hero = null;
 		this.enemy = null;
+		this.enemyHealth = 20;
 		this.cursors = null;
 
 		this.slash = null;
@@ -644,19 +646,8 @@ RPGGame.Game.prototype = {
 			// CHECKING IF THE USER IS NOT TELEPORTING
 			if (this.teleporting==false)
 				{
-				// GETTING THE GAME STATE AS A BLOB VALUE
-				var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"text/plain"});
-
-				// SETTING THE FILE NAME
-				var filename = "RPGGame.sav";
-
-				// DOWNLOADING THE FILE
-				var link = document.createElement("a");
-				link.style.display = "none";
-				document.body.appendChild(link);
-				link.href = URL.createObjectURL(blobValue);
-				link.download = filename;
-				link.click();
+				// SAVING THE GAME
+				this.saveGame();
 				}
 			},this);
 
@@ -793,6 +784,9 @@ RPGGame.Game.prototype = {
 				this.audioPlayer.volume = 0.5;
 				this.audioPlayer.play();
 				}
+
+			// HANDLING THE HERO ATTACK EVENT
+			this.handleHeroAttack();
 			}, this);
 
 		// SETTING THE LOGIC WHEN THE SLASH ANIMATION IS COMPLETED
@@ -1308,7 +1302,74 @@ RPGGame.Game.prototype = {
 			}, 1000);
 		},
 
-	loadGame: function (files)
+	handleHeroAttack: function()
+		{
+		// CHECKING IF THE SLASH HITS THE ENEMY
+		if (Phaser.Rectangle.intersects(this.slash.getBounds(), this.enemy.getBounds())==true)
+			{
+			// GETTING A RANDOM NUMBER BETWEEN 1 AND 10
+			var randomMin = 1;
+			var randomMax = 10;
+			var randomNumber = Math.floor(Math.random() * (randomMax - randomMin + 1)) + randomMin;
+
+			// CHECKING RANDOM NUMBER
+			if (randomNumber>5)
+				{
+				// CAUSING DAMAGE TO THE ENEMY
+				this.enemyHealth = this.enemyHealth - 7;
+				}
+
+			// CHECKING IF THE ENEMY IS DEAD
+			if (this.enemyHealth<=0)
+				{
+				// GETTING THE LOCATION WHERE THE ENEMY DIED
+				var enemyDiedAtX = this.enemy.position.x - 16;
+				var enemyDiedAtY = this.enemy.position.y - 16;
+
+				// MOVING THE ENEMY OFF THE SCREEN
+				this.enemy.position.y = -99;
+
+				// ADDING A COIN WHERE THE ENEMY DIED
+				this.addCoin(enemyDiedAtX, enemyDiedAtY);
+				}
+			}
+		},
+
+	addCoin: function(enemyDiedAtX, enemyDiedAtY)
+		{
+		// ADDING THE COIN TO THE COIN ARRAY
+		this.coinsArray.push([enemyDiedAtX,enemyDiedAtY]);
+
+		// ADDING THE COINS TO THE MAP
+		var itemCoin = game.add.sprite(enemyDiedAtX, enemyDiedAtY, "imageCoin");
+		this.coins.addChild(itemCoin);
+
+		// ANIMATING ALL THE COINS IN THE MAP
+		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
+		this.coins.callAll("animations.play", "animations", "spin");
+
+		// ENABLING THE COIN'S PHYSICS IN ORDER TO DETECT COLLISIONS
+		game.physics.arcade.enable(this.coins);
+		},
+
+	saveGame: function()
+		{
+		// GETTING THE GAME STATE AS A BLOB VALUE
+		var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"text/plain"});
+
+		// SETTING THE FILE NAME
+		var filename = "RPGGame.sav";
+
+		// DOWNLOADING THE FILE
+		var link = document.createElement("a");
+		link.style.display = "none";
+		document.body.appendChild(link);
+		link.href = URL.createObjectURL(blobValue);
+		link.download = filename;
+		link.click();
+		},
+
+	loadGame: function(files)
 		{
 		try
 			{
