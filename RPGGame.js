@@ -278,8 +278,7 @@ RPGGame.Game = function (game)
 	this.enemy = null;
 	this.enemyHealth = null;
 	this.enemyHealthMax = null;
-	this.enemyInitialX = null;
-	this.enemyInitialY = null;
+	this.enemyInitialLocation = null;
 	this.cursors = null;
 
 	this.slash = null;
@@ -369,8 +368,7 @@ RPGGame.Game.prototype = {
 		this.enemy = null;
 		this.enemyHealth = 20;
 		this.enemyHealthMax = 20;
-		this.enemyInitialX = 931;
-		this.enemyInitialY = 122;
+		this.enemyInitialLocation = [931,122];
 		this.cursors = null;
 
 		this.slash = null;
@@ -534,7 +532,7 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.coins);
 
 		// ADDING THE ENEMY
-		this.enemy = game.add.sprite(this.enemyInitialX, this.enemyInitialY, "imageEnemy");
+		this.enemy = game.add.sprite(this.enemyInitialLocation[0], this.enemyInitialLocation[1], "imageEnemy");
 		this.enemy.anchor.set(0.6);
 		this.enemy.animations.add("walk_left", [4, 3, 5]);
 		this.enemy.animations.add("walk_right", [7, 6, 8]);
@@ -1312,15 +1310,15 @@ RPGGame.Game.prototype = {
 			// SETTING THAT THE CHARACTER IS NOT TELEPORTING
 			game.state.states["RPGGame.Game"].teleporting = false;
 
-			// CHECKING IF DESTINY WAS THE MAINLAND
+			// CHECKING IF DESTINY IS THE MAINLAND
 			if (locationValues==game.state.states["RPGGame.Game"].locationMainland)
 				{
 				// CHECKING IF THE ENEMY IS DEAD
 				if (game.state.states["RPGGame.Game"].enemyHealth<=0)
 					{
 					// MOVING THE ENEMY BACK TO THE ISLAND
-					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialX;
-					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialY;
+					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation[0];
+					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation[1];
 
 					// RESTORING THE ENEMY HEALTH
 					game.state.states["RPGGame.Game"].enemyHealth = game.state.states["RPGGame.Game"].enemyHealthMax;
