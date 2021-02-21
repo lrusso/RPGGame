@@ -530,6 +530,9 @@ RPGGame.Game.prototype = {
 		// ENABLING THE ENEMY'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
 		game.physics.arcade.enable(this.enemy);
 
+		// SETTING THAT THE ENEMY CAN'T BE MOVED BY THE HERO
+		this.enemy.body.immovable = true;
+
 		// ADDING THE HERO
 		this.hero = game.add.sprite(420, 307, "imageHero");
 		this.hero.anchor.set(0.6);
