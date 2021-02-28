@@ -796,6 +796,9 @@ RPGGame.Game.prototype = {
 			// UPDATING THE HERO'S WEAPON TYPE
 			this.statsWeaponType = GAMEDATA.statsWeaponType;
 
+			// UPDATING THE WEAPON SLASH
+			this.createWeaponSlash(this.statsWeaponType);
+
 			// UPDATING THE HERO'S POSITION
 			this.hero.position.x = GAMEDATA.x;
 			this.hero.position.y = GAMEDATA.y;
