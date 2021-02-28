@@ -1047,7 +1047,7 @@ RPGGame.Game.prototype = {
 				else
 				{
 				// CHECKING IF THE USER HAS ENOUGH COINS TO GET A BETTER WEAPON
-				if (game.state.states["RPGGame.Game"].statsGold>=2)
+				if (game.state.states["RPGGame.Game"].statsGold>=10)
 					{
 					// UPDATING THE HERO'S WEAPON TYPE
 					game.state.states["RPGGame.Game"].statsWeaponType = 1;
@@ -1056,7 +1056,7 @@ RPGGame.Game.prototype = {
 					game.state.states["RPGGame.Game"].createWeaponSlash(game.state.states["RPGGame.Game"].statsWeaponType);
 
 					// REMOVING THE COINS FROM THE USER
-					game.state.states["RPGGame.Game"].setGold(game.state.states["RPGGame.Game"].statsGold - 2);
+					game.state.states["RPGGame.Game"].setGold(game.state.states["RPGGame.Game"].statsGold - 10);
 
 					// SHOWING THE DIALOG SAYING THAT NOW THE USER HAS THE BEST WEAPON
 					game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT2, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
