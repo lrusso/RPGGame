@@ -16,7 +16,8 @@ var GAMEDATA = null;
 var STRING_KING = "";
 var STRING_GUARD1 = "";
 var STRING_GUARD2 = "";
-var STRING_MERCHANT = "";
+var STRING_MERCHANT1 = "";
+var STRING_MERCHANT2 = "";
 var STRING_PRIEST1 = "";
 var STRING_PRIEST2 = "";
 var STRING_WIZARD = "";
@@ -28,7 +29,8 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_KING = "Yo soy el Rey.";
 	STRING_GUARD1 = "Te estoy vigilando.";
 	STRING_GUARD2 = "Vete de aqu" + String.fromCharCode(237) + ".";
-	STRING_MERCHANT = "Mejora tu arma por 10 monedas.";
+	STRING_MERCHANT1 = "Mejora tu arma por 10 monedas.";
+	STRING_MERCHANT2 = "Tu arma ahora es la mejor.";
 	STRING_PRIEST1 = "Curar" + String.fromCharCode(233) + " tus heridas.";
 	STRING_PRIEST2 = "Ahora te encuentras bien.";
 	STRING_WIZARD = "Compartir" + String.fromCharCode(233) + " mi conocimiento.";
@@ -39,7 +41,8 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_KING = "I'm the King.";
 	STRING_GUARD1 = "I'm watching you.";
 	STRING_GUARD2 = "Go away.";
-	STRING_MERCHANT = "A better weapon for 10 coins.";
+	STRING_MERCHANT1 = "A better weapon for 10 coins.";
+	STRING_MERCHANT2 = "Your weapon is now the best.";
 	STRING_PRIEST1 = "I'll heal your wounds.";
 	STRING_PRIEST2 = "You are fine now.";
 	STRING_WIZARD = "I'll share my knowledge.";
@@ -286,6 +289,7 @@ RPGGame.Game = function (game)
 
 	this.statsGold = null;
 	this.statsHealth = null;
+	this.statsWeaponType = null;
 	this.playerIsHealing = null;
 	this.playerAttackingMobileDevice = null;
 
@@ -376,6 +380,7 @@ RPGGame.Game.prototype = {
 
 		this.statsGold = 0;
 		this.statsHealth = 80;
+		this.statsWeaponType = 0;
 		this.playerIsHealing = false;
 		this.playerAttackingMobileDevice = false;
 
@@ -854,6 +859,9 @@ RPGGame.Game.prototype = {
 			// UPDATING THE HEALTH VALUE
 			this.setHealth(GAMEDATA.statsHealth);
 
+			// UPDATING THE HERO'S WEAPON TYPE
+			this.statsWeaponType = GAMEDATA.statsWeaponType;
+
 			// UPDATING THE HERO'S POSITION
 			this.hero.position.x = GAMEDATA.x;
 			this.hero.position.y = GAMEDATA.y;
@@ -1096,8 +1104,32 @@ RPGGame.Game.prototype = {
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE MERCHANT
 		this.map.setTileIndexCallback(this.MERCHANT_TILE_ID, function ()
 			{
-			// SHOWING A DIALOG
-			game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
+			// CHECKING IF THE USER HAS ALREADY A BETTER WEAPON
+			if (game.state.states["RPGGame.Game"].statsWeaponType>0)
+				{
+				// SHOWING THE DIALOG SAYING THAT NOW THE USER HAS THE BEST WEAPON
+				game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT2, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
+				}
+				else
+				{
+				// CHECKING IF THE USER HAS ENOUGH COINS TO GET A BETTER WEAPON
+				if (game.state.states["RPGGame.Game"].statsGold>=10)
+					{
+					// UPDATING THE HERO'S WEAPON TYPE
+					game.state.states["RPGGame.Game"].statsWeaponType = 1;
+
+					// REMOVING THE COINS FROM THE USER
+					game.state.states["RPGGame.Game"].setGold(game.state.states["RPGGame.Game"].statsGold - 10);
+
+					// SHOWING THE DIALOG SAYING THAT NOW THE USER HAS THE BEST WEAPON
+					game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT2, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
+					}
+					else
+					{
+					// SHOWING THE DIALOG SAYING THAT 10 COINS ARE REQUIRED TO GET A BETTER WEAPON
+					game.state.states["RPGGame.Game"].showDialog(STRING_MERCHANT1, 144, 66, game.state.states["RPGGame.Game"].MERCHANT_TILE_ID);
+					}
+				}
 
 			// PREVENTING THE CHARACTER TO WALK OVER THE MERCHANT
 			return true;
@@ -1380,7 +1412,7 @@ RPGGame.Game.prototype = {
 	saveGame: function()
 		{
 		// GETTING THE GAME STATE AS A BLOB VALUE
-		var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"text/plain"});
+		var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, statsWeaponType: this.statsWeaponType, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"text/plain"});
 
 		// SETTING THE FILE NAME
 		var filename = "RPGGame.sav";
