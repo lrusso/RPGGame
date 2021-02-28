@@ -28,7 +28,7 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_KING = "Yo soy el Rey.";
 	STRING_GUARD1 = "Te estoy vigilando.";
 	STRING_GUARD2 = "Vete de aqu" + String.fromCharCode(237) + ".";
-	STRING_MERCHANT = "Dime qu" + String.fromCharCode(233) + " necesitas.";
+	STRING_MERCHANT = "Mejora tu arma por 10 monedas.";
 	STRING_PRIEST1 = "Curar" + String.fromCharCode(233) + " tus heridas.";
 	STRING_PRIEST2 = "Ahora te encuentras bien.";
 	STRING_WIZARD = "Compartir" + String.fromCharCode(233) + " mi conocimiento.";
@@ -39,7 +39,7 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_KING = "I'm the King.";
 	STRING_GUARD1 = "I'm watching you.";
 	STRING_GUARD2 = "Go away.";
-	STRING_MERCHANT = "What do you need?";
+	STRING_MERCHANT = "A better weapon for 10 coins.";
 	STRING_PRIEST1 = "I'll heal your wounds.";
 	STRING_PRIEST2 = "You are fine now.";
 	STRING_WIZARD = "I'll share my knowledge.";
