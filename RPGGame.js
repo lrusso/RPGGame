@@ -1477,7 +1477,7 @@ RPGGame.Game.prototype = {
 					game.state.states["RPGGame.Game"].enemyHealth = game.state.states["RPGGame.Game"].enemyHealthMax;
 					}
 
-				// THE ENEMY IS ALIVE AND RESTORING THE ORIGINAL POSITION
+				// ELSE, THE ENEMY IS ALIVE AND RESTORING THE ORIGINAL POSITION
 				else
 					{
 					// MOVING THE ENEMY BACK TO THE ORIGINAL POSITION
