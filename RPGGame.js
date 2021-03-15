@@ -1276,30 +1276,38 @@ RPGGame.Game.prototype = {
 	handlePortals: function ()
 		{
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 1
-		this.map.setTileIndexCallback(this.PORTAL1_TILE_ID, function ()
+		this.map.setTileIndexCallback(this.PORTAL1_TILE_ID, function (sprite, tile)
 			{
-			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
-			if (game.state.states["RPGGame.Game"].teleporting==false)
+			// CHECKING IF THE HERO IS WALKING THROUGH THE PORTAL
+			if (sprite.key=="imageHero")
 				{
-				// TELEPORTING THE CHARACTER TO THE ISLAND
-				game.state.states["RPGGame.Game"].teleportTo(game.state.states["RPGGame.Game"].locationIsland);
+				// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
+				if (game.state.states["RPGGame.Game"].teleporting==false)
+					{
+					// TELEPORTING THE CHARACTER TO THE ISLAND
+					game.state.states["RPGGame.Game"].teleportTo(game.state.states["RPGGame.Game"].locationIsland);
+					}
 				}
 
-			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 1
+			// PREVENTING THE SPRITE TO WALK OVER THE PORTAL 1
 			return true;
 			}, game, this.layer);
 
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE PORTAL 2
-		this.map.setTileIndexCallback(this.PORTAL2_TILE_ID, function ()
+		this.map.setTileIndexCallback(this.PORTAL2_TILE_ID, function (sprite, tile)
 			{
-			// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
-			if (game.state.states["RPGGame.Game"].teleporting==false)
+			// CHECKING IF THE HERO IS WALKING THROUGH THE PORTAL
+			if (sprite.key=="imageHero")
 				{
-				// TELEPORTING THE CHARACTER TO THE MAINLAND
-				game.state.states["RPGGame.Game"].teleportTo(game.state.states["RPGGame.Game"].locationMainland);
+				// CHECKING IF THE CHARACTER IS NOT ALREADY TELEPORTING
+				if (game.state.states["RPGGame.Game"].teleporting==false)
+					{
+					// TELEPORTING THE CHARACTER TO THE MAINLAND
+					game.state.states["RPGGame.Game"].teleportTo(game.state.states["RPGGame.Game"].locationMainland);
+					}
 				}
 
-			// PREVENTING THE CHARACTER TO WALK OVER THE PORTAL 2
+			// PREVENTING THE SPRITE TO WALK OVER THE PORTAL 2
 			return true;
 			}, game, this.layer);
 		},
@@ -1481,10 +1489,10 @@ RPGGame.Game.prototype = {
 					game.state.states["RPGGame.Game"].enemyHealth = game.state.states["RPGGame.Game"].enemyHealthMax;
 					}
 
-				// ELSE, THE ENEMY IS ALIVE AND RESTORING THE ORIGINAL POSITION
+				// ELSE, THE ENEMY IS ALIVE AND MOVING BACK TO THE ORIGINAL POSITION
 				else
 					{
-					// MOVING THE ENEMY BACK TO THE ORIGINAL POSITION
+					// MOVING THE ENEMY BACK TO THE ISLAND
 					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation[0];
 					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation[1];
 					}
