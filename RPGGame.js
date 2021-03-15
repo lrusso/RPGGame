@@ -1336,8 +1336,21 @@ RPGGame.Game.prototype = {
 			}
 			else
 			{
-			// MAKING THE ENEMY TO LOOK DOWN
-			this.enemy.animations.play("walk_down", 10, true);
+			// CHECKING IF THE ENEMY IS AT THE LEFT
+			if (this.hero.position.x<=this.enemy.position.x)
+				{
+				// MAKING THE ENEMY TO LOOK TO THE LEFT
+				this.enemy.animations.play("walk_left", 10, true);
+				}
+
+			// CHECKING IF THE ENEMY IS AT THE RIGHT
+			else if (this.hero.position.x>this.enemy.position.x)
+				{
+				// MAKING THE ENEMY TO LOOK TO THE RIGHT
+				this.enemy.animations.play("walk_right", 10, true);
+				}
+
+			// STOPPING THE ENEMY ANIMATION
 			this.enemy.animations.stop(null, true);
 
 			// CLEARING THE ENEMY VELOCITY
