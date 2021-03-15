@@ -923,28 +923,41 @@ RPGGame.Game.prototype = {
 		// CHECKING IF THE PLAYER IS NOT TELEPORTING AND THAT THE PLAYER IS NOT DEAD
 		if (this.teleporting==false && this.playerIsDead==false)
 			{
+			// CHECKING IF THE USER IS PRESSING THE LEFT KEY, 'A' KEY OR THE STICK LEFT DIRECTION
 			if (this.cursors.left.isDown==true || this.keyA.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.LEFT))
 				{
+				// MOVING THE HERO TO THE LEFT
 				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_left", 10, true);
 				}
+
+			// CHECKING IF THE USER IS PRESSING THE RIGHT KEY, 'D' KEY OR THE STICK RIGHT DIRECTION
 			else if (this.cursors.right.isDown==true || this.keyD.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.RIGHT))
 				{
+				// MOVING THE HERO TO THE RIGHT
 				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_right", 10, true);
 				}
+
+			// CHECKING IF THE USER IS PRESSING THE UP KEY, 'W' KEY OR THE STICK UP DIRECTION
 			else if (this.cursors.up.isDown==true || this.keyW.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.UP))
 				{
+				// MOVING THE HERO TO THE NORTH
 				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_up", 10, true);
 				}
+
+			// CHECKING IF THE USER IS PRESSING THE DOWN KEY, 'A' KEY OR THE STICK DOWN DIRECTION
 			else if (this.cursors.down.isDown==true || this.keyS.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.DOWN))
 				{
+				// MOVING THE HERO TO THE SOUTH
 				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_down", 10, true);
 				}
+
 			else
 				{
+				// STOPPING THE HERO ANIMATION
 				this.hero.animations.stop(null, true);
 				}
 
