@@ -960,18 +960,6 @@ RPGGame.Game.prototype = {
 				}
 			}
 
-		// MOVING THE ENEMY UP AND DOWN
-		if (this.enemy.position.y<=122)
-			{
-			game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
-			this.enemy.animations.play("walk_down", 10, true);
-			}
-		else if (this.enemy.position.y>=272)
-			{
-			game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-			this.enemy.animations.play("walk_up", 10, true);
-			}
-
 		// CHECKING IF THE PLAYER IS HEALING
 		if (this.playerIsHealing==true)
 			{
@@ -1011,6 +999,9 @@ RPGGame.Game.prototype = {
 			// SHOWING THE GAME OVER MESSAGE
 			this.showToast(STRING_GAMEOVER, false);
 			}
+
+		// HANDLING THE ENEMY BEHAVIOUR
+		this.handleEnemyBehaviour();
 		},
 
 	setHealth: function (newHealth)
@@ -1313,6 +1304,48 @@ RPGGame.Game.prototype = {
 			}, game, this.layer);
 		},
 
+	handleEnemyBehaviour: function()
+		{
+		// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
+		var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
+
+		// CHECKING IF THE HERO IS TOO FAR
+		if (distanceBetweenHeroAndEnemy>140)
+			{
+			// MOVING THE ENEMY UP AND DOWN
+			if (this.enemy.position.y<=122)
+				{
+				// MAKING THE ENEMY TO MOVE DOWN
+				game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_down", 10, true);
+				}
+			else if (this.enemy.position.y>=272)
+				{
+				// MAKING THE ENEMY TO MOVE UP
+				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_up", 10, true);
+				}
+
+			// CHECKING IF THE ENEMY IS NOT MOVING
+			if (this.enemy.body.velocity.x==0)
+				{
+				// MAKING THE ENEMY TO MOVE UP
+				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_up", 10, true);
+				}
+			}
+			else
+			{
+			// MAKING THE ENEMY TO LOOK DOWN
+			this.enemy.animations.play("walk_down", 10, true);
+			this.enemy.animations.stop(null, true);
+
+			// CLEARING THE ENEMY VELOCITY
+			this.enemy.body.velocity.x = 0;
+			this.enemy.body.velocity.y = 0;
+			}
+		},
+
 	teleportTo: function(locationValues)
 		{
 		// SETTING THAT THE CHARACTER IS TELEPORTING
@@ -1526,6 +1559,14 @@ RPGGame.Game.prototype = {
 
 		// ENABLING THE COIN'S PHYSICS IN ORDER TO DETECT COLLISIONS
 		game.physics.arcade.enable(this.coins);
+		},
+
+	distance: function(x1, y1, x2, y2)
+		{
+		var dx = x1 - x2;
+		var dy = y1 - y2;
+
+		return Math.sqrt(dx * dx + dy * dy);
 		},
 
 	saveGame: function()
