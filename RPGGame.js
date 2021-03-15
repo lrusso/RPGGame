@@ -1306,95 +1306,40 @@ RPGGame.Game.prototype = {
 
 	handleEnemyBehaviour: function()
 		{
-		// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
-		var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
-
-		// CHECKING IF THE HERO IS TOO FAR
-		if (distanceBetweenHeroAndEnemy>140)
+		// CHECKING THAT THE HERO IS NOT TELEPORTING
+		if (this.teleporting==false)
 			{
-			// MOVING THE ENEMY UP AND DOWN
-			if (this.enemy.position.y<=122)
-				{
-				// MAKING THE ENEMY TO MOVE DOWN
-				game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
-				this.enemy.animations.play("walk_down", 10, true);
-				}
-			else if (this.enemy.position.y>=272)
-				{
-				// MAKING THE ENEMY TO MOVE UP
-				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-				this.enemy.animations.play("walk_up", 10, true);
-				}
+			// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
+			var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
 
-			// CHECKING IF THE ENEMY IS NOT MOVING
-			if (this.enemy.body.velocity.x==0)
+			// CHECKING IF THE HERO IS TOO FAR
+			if (distanceBetweenHeroAndEnemy>140)
 				{
-				// MAKING THE ENEMY TO MOVE UP
-				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-				this.enemy.animations.play("walk_up", 10, true);
-				}
-			}
-
-		// CHECKING IF THE HERO IS WITHIN A SLASHING DISTANCE
-		else if (distanceBetweenHeroAndEnemy<=48)
-			{
-			// STOPPING THE ENEMY ANIMATION
-			this.enemy.animations.stop(null, true);
-
-			// CLEARING THE ENEMY VELOCITY
-			this.enemy.body.velocity.x = 0;
-			this.enemy.body.velocity.y = 0;
-			}
-			else
-			{
-			// GETTING THE X AND Y DISTANCE
-			var distanceX = this.enemy.position.x - this.hero.position.x;
-			var distanceY = this.enemy.position.y - this.hero.position.y;
-			if (distanceX<0){distanceX=distanceX * -1;}
-			if (distanceY<0){distanceY=distanceY * -1;}
-
-			// CHECKING IF THE HERO IS HORIZONTALLY FAR
-			if (distanceX>10)
-				{
-				// CHECKING IF THE HERO IS AT THE LEFT
-				if (this.hero.position.x<=this.enemy.position.x)
+				// MOVING THE ENEMY UP AND DOWN
+				if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation[0])
 					{
-					// MAKING THE ENEMY TO LOOK TO THE LEFT
-					this.enemy.animations.play("walk_left", 10, true);
-					game.physics.arcade.velocityFromAngle(180, 100, this.enemy.body.velocity);
-					}
-
-				// CHECKING IF THE HERO IS AT THE RIGHT
-				else if (this.hero.position.x>this.enemy.position.x)
-					{
-					// MAKING THE ENEMY TO LOOK TO THE RIGHT
-					this.enemy.animations.play("walk_right", 10, true);
-					game.physics.arcade.velocityFromAngle(0, 100, this.enemy.body.velocity);
-					}
-				}
-
-			// CHECKING IF THE HERO IS VERTICALLY FAR
-			else if (distanceY>10)
-				{
-				// CHECKING IF THE HERO IS AT THE NORTH
-				if (this.hero.position.y<=this.enemy.position.y)
-					{
-					// MAKING THE ENEMY TO LOOK TO THE NORTH
-					this.enemy.animations.play("walk_up", 10, true);
-					game.physics.arcade.velocityFromAngle(-90, 100, this.enemy.body.velocity);
-					}
-
-				// CHECKING IF THE HERO IS AT THE SOUTH
-				else if (this.hero.position.y>this.enemy.position.y)
-					{
-					// MAKING THE ENEMY TO LOOK TO THE SOUTH
+					// MAKING THE ENEMY TO MOVE DOWN
+					game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
 					this.enemy.animations.play("walk_down", 10, true);
-					game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
+					}
+				else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation[0])
+					{
+					// MAKING THE ENEMY TO MOVE UP
+					game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+					this.enemy.animations.play("walk_up", 10, true);
+					}
+
+				// CHECKING IF THE ENEMY IS NOT MOVING
+				if (this.enemy.body.velocity.x==0)
+					{
+					// MAKING THE ENEMY TO MOVE UP
+					game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+					this.enemy.animations.play("walk_up", 10, true);
 					}
 				}
 
-			// ELSE, THE ENEMY IS WITHIN A SLASHING DISTANCE
-			else
+			// CHECKING IF THE HERO IS WITHIN A SLASHING DISTANCE
+			else if (distanceBetweenHeroAndEnemy<=48)
 				{
 				// STOPPING THE ENEMY ANIMATION
 				this.enemy.animations.stop(null, true);
@@ -1402,6 +1347,65 @@ RPGGame.Game.prototype = {
 				// CLEARING THE ENEMY VELOCITY
 				this.enemy.body.velocity.x = 0;
 				this.enemy.body.velocity.y = 0;
+				}
+			else
+				{
+				// GETTING THE X AND Y DISTANCE
+				var distanceX = this.enemy.position.x - this.hero.position.x;
+				var distanceY = this.enemy.position.y - this.hero.position.y;
+				if (distanceX<0){distanceX=distanceX * -1;}
+				if (distanceY<0){distanceY=distanceY * -1;}
+
+				// CHECKING IF THE HERO IS HORIZONTALLY FAR
+				if (distanceX>10)
+					{
+					// CHECKING IF THE HERO IS AT THE LEFT
+					if (this.hero.position.x<=this.enemy.position.x)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE LEFT
+						this.enemy.animations.play("walk_left", 10, true);
+						game.physics.arcade.velocityFromAngle(180, 100, this.enemy.body.velocity);
+						}
+
+					// CHECKING IF THE HERO IS AT THE RIGHT
+					else if (this.hero.position.x>this.enemy.position.x)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE RIGHT
+						this.enemy.animations.play("walk_right", 10, true);
+						game.physics.arcade.velocityFromAngle(0, 100, this.enemy.body.velocity);
+						}
+					}
+
+				// CHECKING IF THE HERO IS VERTICALLY FAR
+				else if (distanceY>10)
+					{
+					// CHECKING IF THE HERO IS AT THE NORTH
+					if (this.hero.position.y<=this.enemy.position.y)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE NORTH
+						this.enemy.animations.play("walk_up", 10, true);
+						game.physics.arcade.velocityFromAngle(-90, 100, this.enemy.body.velocity);
+						}
+
+					// CHECKING IF THE HERO IS AT THE SOUTH
+					else if (this.hero.position.y>this.enemy.position.y)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE SOUTH
+						this.enemy.animations.play("walk_down", 10, true);
+						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
+						}
+					}
+
+				// ELSE, THE ENEMY IS WITHIN A SLASHING DISTANCE
+				else
+					{
+					// STOPPING THE ENEMY ANIMATION
+					this.enemy.animations.stop(null, true);
+
+					// CLEARING THE ENEMY VELOCITY
+					this.enemy.body.velocity.x = 0;
+					this.enemy.body.velocity.y = 0;
+					}
 				}
 			}
 		},
