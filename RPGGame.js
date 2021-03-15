@@ -1336,14 +1336,14 @@ RPGGame.Game.prototype = {
 			}
 			else
 			{
-			// CHECKING IF THE ENEMY IS AT THE LEFT
+			// CHECKING IF THE HERO IS AT THE LEFT
 			if (this.hero.position.x<=this.enemy.position.x)
 				{
 				// MAKING THE ENEMY TO LOOK TO THE LEFT
 				this.enemy.animations.play("walk_left", 10, true);
 				}
 
-			// CHECKING IF THE ENEMY IS AT THE RIGHT
+			// CHECKING IF THE HERO IS AT THE RIGHT
 			else if (this.hero.position.x>this.enemy.position.x)
 				{
 				// MAKING THE ENEMY TO LOOK TO THE RIGHT
