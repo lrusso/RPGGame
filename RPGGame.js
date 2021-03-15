@@ -1314,40 +1314,40 @@ RPGGame.Game.prototype = {
 
 	handleEnemyBehaviour: function()
 		{
+		// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
+		var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
+
+		// CHECKING IF THE HERO IS TOO FAR
+		if (distanceBetweenHeroAndEnemy>140)
+			{
+			// MOVING THE ENEMY UP AND DOWN
+			if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation[0])
+				{
+				// MAKING THE ENEMY TO MOVE DOWN
+				game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_down", 10, true);
+				}
+			else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation[0])
+				{
+				// MAKING THE ENEMY TO MOVE UP
+				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_up", 10, true);
+				}
+
+			// CHECKING IF THE ENEMY IS NOT MOVING
+			if (this.enemy.body.velocity.x==0)
+				{
+				// MAKING THE ENEMY TO MOVE UP
+				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
+				this.enemy.animations.play("walk_up", 10, true);
+				}
+			}
+
 		// CHECKING THAT THE HERO IS NOT TELEPORTING
 		if (this.teleporting==false)
 			{
-			// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
-			var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
-
-			// CHECKING IF THE HERO IS TOO FAR
-			if (distanceBetweenHeroAndEnemy>140)
-				{
-				// MOVING THE ENEMY UP AND DOWN
-				if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation[0])
-					{
-					// MAKING THE ENEMY TO MOVE DOWN
-					game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
-					this.enemy.animations.play("walk_down", 10, true);
-					}
-				else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation[0])
-					{
-					// MAKING THE ENEMY TO MOVE UP
-					game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-					this.enemy.animations.play("walk_up", 10, true);
-					}
-
-				// CHECKING IF THE ENEMY IS NOT MOVING
-				if (this.enemy.body.velocity.x==0)
-					{
-					// MAKING THE ENEMY TO MOVE UP
-					game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-					this.enemy.animations.play("walk_up", 10, true);
-					}
-				}
-
 			// CHECKING IF THE HERO IS WITHIN A SLASHING DISTANCE
-			else if (distanceBetweenHeroAndEnemy<=48)
+			if (distanceBetweenHeroAndEnemy<=48)
 				{
 				// STOPPING THE ENEMY ANIMATION
 				this.enemy.animations.stop(null, true);
@@ -1356,7 +1356,9 @@ RPGGame.Game.prototype = {
 				this.enemy.body.velocity.x = 0;
 				this.enemy.body.velocity.y = 0;
 				}
-			else
+
+			// CHECKING IF THE ENEMY MUST BE MOVING CLOSER TO THE HERO
+			else if (distanceBetweenHeroAndEnemy<=140)
 				{
 				// GETTING THE X AND Y DISTANCE
 				var distanceX = this.enemy.position.x - this.hero.position.x;
