@@ -846,7 +846,9 @@ RPGGame.Game.prototype = {
 			this.stick.visible = false;
 
 			// HIDING THE SWORD BUTTON FOR MOBILE DEVICES
-			this.buttonSword.visible = false;
+			this.buttonSwordHandler.visible = false;
+			this.buttonSwordNormal.visible = false;
+			this.buttonSwordPressed.visible = false;
 
 			// HIDING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
 			this.buttonSwordIcon.visible = false;
