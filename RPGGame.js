@@ -1413,11 +1413,57 @@ RPGGame.Game.prototype = {
 		// CHECKING THAT THE HERO IS NOT TELEPORTING
 		if (this.teleporting==false)
 			{
+			// CHECKING IF THE HERO IS WITHIN A SLASHING DISTANCE
+			if (distanceBetweenHeroAndEnemy<=37)
+				{
+				// CHECKING IS THE HERO IS VERTICALLY FARTHER
+				if (distanceX<=6.5)
+					{
+					// CHECKING IF THE HERO IS AT THE NORTH
+					if (this.hero.position.y<=this.enemy.position.y)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE NORTH
+						this.enemy.animations.play("walk_up", 10, true);
+						}
+						else
+						{
+						// MAKING THE ENEMY TO LOOK TO THE SOUTH
+						this.enemy.animations.play("walk_down", 10, true);
+						}
+					}
+
+				// CHECKING IS THE HERO IS HORIZONTALLY FARTHER
+				if (distanceY<=6.5)
+					{
+					// CHECKING IF THE HERO IS AT THE LEFT
+					if (this.hero.position.x<=this.enemy.position.x)
+						{
+						// MAKING THE ENEMY TO LOOK TO THE LEFT
+						this.enemy.animations.play("walk_left", 10, true);
+						}
+						else
+						{
+						// MAKING THE ENEMY TO LOOK TO THE RIGHT
+						this.enemy.animations.play("walk_right", 10, true);
+						}
+					}
+
+				if (distanceX<=6.5 || distanceY<=6.5)
+					{
+					// STOPPING THE ENEMY ANIMATION
+					this.enemy.animations.stop(null, true);
+
+					// CLEARING THE ENEMY VELOCITY
+					this.enemy.body.velocity.x = 0;
+					this.enemy.body.velocity.y = 0;
+					}
+				}
+
 			// CHECKING IF THE ENEMY MUST BE MOVING CLOSER TO THE HERO
-			if (distanceBetweenHeroAndEnemy>48 && distanceBetweenHeroAndEnemy<=250)
+			else if (distanceBetweenHeroAndEnemy<=250)
 				{
 				// CHECKING IF THE HERO IS HORIZONTALLY FAR
-				if (distanceX>=6.5 && distanceX>distanceY)
+				if (distanceX>=6.5)
 					{
 					// CHECKING IF THE HERO IS AT THE LEFT
 					if (this.hero.position.x<=this.enemy.position.x)
@@ -1455,49 +1501,6 @@ RPGGame.Game.prototype = {
 						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
 						}
 					}
-				}
-
-			// CHECKING IF THE HERO IS WITHIN A SLASHING DISTANCE
-			else if (distanceBetweenHeroAndEnemy<=48)
-				{
-				// CHECKING IS THE HERO IS VERTICALLY FARTHER
-				if (distanceX<=48 && distanceX<distanceY)
-					{
-					// CHECKING IF THE HERO IS AT THE NORTH
-					if (this.hero.position.y<=this.enemy.position.y)
-						{
-						// MAKING THE ENEMY TO LOOK TO THE NORTH
-						this.enemy.animations.play("walk_up", 10, true);
-						}
-						else
-						{
-						// MAKING THE ENEMY TO LOOK TO THE SOUTH
-						this.enemy.animations.play("walk_down", 10, true);
-						}
-					}
-
-				// CHECKING IS THE HERO IS HORIZONTALLY FARTHER
-				if (distanceY<=48 && distanceY<distanceX)
-					{
-					// CHECKING IF THE HERO IS AT THE LEFT
-					if (this.hero.position.x<=this.enemy.position.x)
-						{
-						// MAKING THE ENEMY TO LOOK TO THE LEFT
-						this.enemy.animations.play("walk_left", 10, true);
-						}
-						else
-						{
-						// MAKING THE ENEMY TO LOOK TO THE RIGHT
-						this.enemy.animations.play("walk_right", 10, true);
-						}
-					}
-
-				// STOPPING THE ENEMY ANIMATION
-				this.enemy.animations.stop(null, true);
-
-				// CLEARING THE ENEMY VELOCITY
-				this.enemy.body.velocity.x = 0;
-				this.enemy.body.velocity.y = 0;
 				}
 			}
 		},
