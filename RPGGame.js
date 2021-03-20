@@ -1716,42 +1716,12 @@ RPGGame.Game.prototype = {
 		// CREATING THE HERO SLASH ANIMATION
 		this.heroSlashAnimation = this.heroSlash.animations.add("slash_attack", [4, 0, 1, 2, 3, 4], 20, false);
 
+		// SETTING THAT THE ANIMATION WILL REQUIRE AN UPDATE EVENT
+		this.heroSlashAnimation.enableUpdate = true;
+
 		// SETTING THE LOGIC WHEN THE HERO SLASH ANIMATION STARTS
 		this.heroSlashAnimation.onStart.add(function()
 			{
-			// CHECKING IF THE HERO IS LOOKING DOWN
-			if (this.hero.animations.currentAnim.name=="walk_down")
-				{
-				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING DOWN
-				this.heroSlash.rotation = (80 * Math.PI)/180;
-				this.heroSlash.y = 32;
-				this.heroSlash.x = -20;
-				}
-			// CHECKING IF THE HERO IS LOOKING UP
-			else if (this.hero.animations.currentAnim.name=="walk_up")
-				{
-				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING UP
-				this.heroSlash.rotation = (-100 * Math.PI)/180;
-				this.heroSlash.y = -40;
-				this.heroSlash.x = 15;
-				}
-			// CHECKING IF THE HERO IS LOOKING TO THE RIGHT
-			else if (this.hero.animations.currentAnim.name=="walk_right")
-				{
-				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING TO THE RIGHT
-				this.heroSlash.rotation = (0 * Math.PI)/180;
-				this.heroSlash.y = 20;
-				this.heroSlash.x = 32;
-				}
-			// CHECKING IF THE HERO IS LOOKING TO THE LEFT
-			else if (this.hero.animations.currentAnim.name=="walk_left")
-				{
-				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING TO THE LEFT
-				this.heroSlash.rotation = (170 * Math.PI)/180;
-				this.heroSlash.y = -20;
-				this.heroSlash.x = -40;
-				}
-
 			// SHOWING THE HERO SLASH SPRITE
 			this.heroSlash.visible = true;
 
@@ -1768,15 +1738,49 @@ RPGGame.Game.prototype = {
 			this.handleHeroAttack();
 			}, this);
 
+		// SETTING THE LOGIC WHEN THE HERO SLASH ANIMATION IS BEEN DISPLAYED
+		this.heroSlashAnimation.onUpdate.add(function()
+			{
+			// CHECKING IF THE HERO IS LOOKING DOWN
+			if (this.hero.animations.currentAnim.name=="walk_down")
+				{
+				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING DOWN
+				this.heroSlash.rotation = (80 * Math.PI)/180;
+				this.heroSlash.x = this.hero.position.x + -20;
+				this.heroSlash.y = this.hero.position.y + 32;
+				}
+			// CHECKING IF THE HERO IS LOOKING UP
+			else if (this.hero.animations.currentAnim.name=="walk_up")
+				{
+				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING UP
+				this.heroSlash.rotation = (-100 * Math.PI)/180;
+				this.heroSlash.x = this.hero.position.x + 15;
+				this.heroSlash.y = this.hero.position.y + -40;
+				}
+			// CHECKING IF THE HERO IS LOOKING TO THE RIGHT
+			else if (this.hero.animations.currentAnim.name=="walk_right")
+				{
+				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING TO THE RIGHT
+				this.heroSlash.rotation = (0 * Math.PI)/180;
+				this.heroSlash.x = this.hero.position.x + 32;
+				this.heroSlash.y = this.hero.position.y + 20;
+				}
+			// CHECKING IF THE HERO IS LOOKING TO THE LEFT
+			else if (this.hero.animations.currentAnim.name=="walk_left")
+				{
+				// ROTATING THE HERO SLASH SPRITE IN ORDER TO POINTING TO THE LEFT
+				this.heroSlash.rotation = (170 * Math.PI)/180;
+				this.heroSlash.x = this.hero.position.x + -40;
+				this.heroSlash.y = this.hero.position.y + -20;
+				}
+			}, this);
+
 		// SETTING THE LOGIC WHEN THE HERO SLASH ANIMATION IS COMPLETED
 		this.heroSlashAnimation.onComplete.add(function ()
 			{
 			// HIDING THE HERO SLASH SPRITE
 			this.heroSlash.visible = false;
 			}, this);
-
-		// ADDING THE HERO SLASH SPRITE TO THE HERO SPRITE
-		this.hero.addChild(this.heroSlash);
 		},
 
 	createEnemyWeaponSlash: function()
@@ -1788,7 +1792,7 @@ RPGGame.Game.prototype = {
 			this.enemySlash.destroy();
 			}
 
-		// CHECKING IF THE SLASH ANIMATION ALREADY EXISTS
+		// CHECKING IF THE ENEMY SLASH ANIMATION ALREADY EXISTS
 		if (this.enemySlashAnimation!=null)
 			{
 			// DESTROYING THE ENEMY SLASH ANIMATION
@@ -1804,42 +1808,12 @@ RPGGame.Game.prototype = {
 		// CREATING THE ENEMY SLASH ANIMATION
 		this.enemySlashAnimation = this.enemySlash.animations.add("slash_attack", [4, 0, 1, 2, 3, 4], 20, false);
 
+		// SETTING THAT THE ANIMATION WILL REQUIRE AN UPDATE EVENT
+		this.enemySlashAnimation.enableUpdate = true;
+
 		// SETTING THE LOGIC WHEN THE ENEMY SLASH ANIMATION STARTS
 		this.enemySlashAnimation.onStart.add(function()
 			{
-			// CHECKING IF THE ENEMY IS LOOKING DOWN
-			if (this.enemy.animations.currentAnim.name=="walk_down")
-				{
-				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING DOWN
-				this.enemySlash.rotation = (80 * Math.PI)/180;
-				this.enemySlash.y = 32;
-				this.enemySlash.x = -20;
-				}
-			// CHECKING IF THE ENEMY IS LOOKING UP
-			else if (this.enemy.animations.currentAnim.name=="walk_up")
-				{
-				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING UP
-				this.enemySlash.rotation = (-100 * Math.PI)/180;
-				this.enemySlash.y = -40;
-				this.enemySlash.x = 15;
-				}
-			// CHECKING IF THE ENEMY IS LOOKING TO THE RIGHT
-			else if (this.enemy.animations.currentAnim.name=="walk_right")
-				{
-				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING TO THE RIGHT
-				this.enemySlash.rotation = (0 * Math.PI)/180;
-				this.enemySlash.y = 20;
-				this.enemySlash.x = 32;
-				}
-			// CHECKING IF THE ENEMY IS LOOKING TO THE LEFT
-			else if (this.enemy.animations.currentAnim.name=="walk_left")
-				{
-				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING TO THE LEFT
-				this.enemySlash.rotation = (170 * Math.PI)/180;
-				this.enemySlash.y = -20;
-				this.enemySlash.x = -40;
-				}
-
 			// SHOWING THE ENEMY SLASH SPRITE
 			this.enemySlash.visible = true;
 
@@ -1856,15 +1830,49 @@ RPGGame.Game.prototype = {
 			this.handleEnemyAttack();
 			}, this);
 
+		// SETTING THE LOGIC WHEN THE ENEMY SLASH ANIMATION IS BEEN DISPLAYED
+		this.enemySlashAnimation.onUpdate.add(function()
+			{
+			// CHECKING IF THE ENEMY IS LOOKING DOWN
+			if (this.enemy.animations.currentAnim.name=="walk_down")
+				{
+				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING DOWN
+				this.enemySlash.rotation = (80 * Math.PI)/180;
+				this.enemySlash.x = this.enemy.position.x + -20;
+				this.enemySlash.y = this.enemy.position.y + 32;
+				}
+			// CHECKING IF THE ENEMY IS LOOKING UP
+			else if (this.enemy.animations.currentAnim.name=="walk_up")
+				{
+				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING UP
+				this.enemySlash.rotation = (-100 * Math.PI)/180;
+				this.enemySlash.x = this.enemy.position.x + 15;
+				this.enemySlash.y = this.enemy.position.y + -40;
+				}
+			// CHECKING IF THE ENEMY IS LOOKING TO THE RIGHT
+			else if (this.enemy.animations.currentAnim.name=="walk_right")
+				{
+				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING TO THE RIGHT
+				this.enemySlash.rotation = (0 * Math.PI)/180;
+				this.enemySlash.x = this.enemy.position.x + 32;
+				this.enemySlash.y = this.enemy.position.y + 20;
+				}
+			// CHECKING IF THE ENEMY IS LOOKING TO THE LEFT
+			else if (this.enemy.animations.currentAnim.name=="walk_left")
+				{
+				// ROTATING THE ENEMY SLASH SPRITE IN ORDER TO POINTING TO THE LEFT
+				this.enemySlash.rotation = (170 * Math.PI)/180;
+				this.enemySlash.x = this.enemy.position.x + -40;
+				this.enemySlash.y = this.enemy.position.y + -20;
+				}
+			}, this);
+
 		// SETTING THE LOGIC WHEN THE ENEMY SLASH ANIMATION IS COMPLETED
 		this.enemySlashAnimation.onComplete.add(function ()
 			{
 			// HIDING THE ENEMY SLASH SPRITE
 			this.enemySlash.visible = false;
 			}, this);
-
-		// ADDING THE ENEMY SLASH SPRITE TO THE ENEMY SPRITE
-		this.enemy.addChild(this.enemySlash);
 		},
 
 	getDistance: function(x1, y1, x2, y2)
