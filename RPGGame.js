@@ -419,7 +419,7 @@ RPGGame.Game.prototype = {
 		this.enemy = null;
 		this.enemyHealth = 20;
 		this.enemyHealthMax = 20;
-		this.enemyInitialLocation = [931,122];
+		this.enemyInitialLocation = { x: 931, y: 122 };
 		this.cursors = null;
 
 		this.slash = null;
@@ -432,8 +432,8 @@ RPGGame.Game.prototype = {
 		this.playerIsHealing = false;
 		this.playerAttackingMobileDevice = false;
 
-		this.locationMainland = [435,130];
-		this.locationIsland = [850,130];
+		this.locationMainland = { x: 435, y: 130 };
+		this.locationIsland = { x: 850, y: 130 };
 
 		this.waterTimer = null;
 		this.waterDelay = 500;
@@ -586,7 +586,7 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.coins);
 
 		// ADDING THE ENEMY
-		this.enemy = game.add.sprite(this.enemyInitialLocation[0], this.enemyInitialLocation[1], "imageEnemy");
+		this.enemy = game.add.sprite(this.enemyInitialLocation.x, this.enemyInitialLocation.y, "imageEnemy");
 		this.enemy.anchor.set(0.6);
 		this.enemy.animations.add("walk_left", [4, 3, 5]);
 		this.enemy.animations.add("walk_right", [7, 6, 8]);
@@ -1417,13 +1417,13 @@ RPGGame.Game.prototype = {
 		if (distanceBetweenHeroAndEnemy>250)
 			{
 			// MOVING THE ENEMY UP AND DOWN
-			if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation[0])
+			if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation.x)
 				{
 				// MAKING THE ENEMY TO MOVE DOWN
 				game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
 				this.enemy.animations.play("walk_down", 10, true);
 				}
-			else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation[0])
+			else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation.x)
 				{
 				// MAKING THE ENEMY TO MOVE UP
 				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
@@ -1588,8 +1588,8 @@ RPGGame.Game.prototype = {
 		setTimeout(function()
 			{
 			// TELEPORTING THE CHARACTER TO THE ISLAND
-			game.state.states["RPGGame.Game"].hero.position.x = locationValues[0];
-			game.state.states["RPGGame.Game"].hero.position.y = locationValues[1];
+			game.state.states["RPGGame.Game"].hero.position.x = locationValues.x;
+			game.state.states["RPGGame.Game"].hero.position.y = locationValues.y;
 
 			// STARTING THE CHARACTER WALKING DOWN ANIMATION
 			game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
@@ -1606,7 +1606,7 @@ RPGGame.Game.prototype = {
 		setTimeout(function()
 			{
 			// THE CHARACTER IS WALKING DOWN
-			game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: locationValues[1] + 20}, 200, Phaser.Easing.Linear.None, true);
+			game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: locationValues.y + 20}, 200, Phaser.Easing.Linear.None, true);
 			}, 700);
 
 		// WAITING 1000 MS
@@ -1625,8 +1625,8 @@ RPGGame.Game.prototype = {
 				if (game.state.states["RPGGame.Game"].enemyHealth<=0)
 					{
 					// MOVING THE ENEMY BACK TO THE ISLAND
-					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation[0];
-					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation[1];
+					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation.x;
+					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation.y;
 
 					// RESTORING THE ENEMY HEALTH
 					game.state.states["RPGGame.Game"].enemyHealth = game.state.states["RPGGame.Game"].enemyHealthMax;
@@ -1636,8 +1636,8 @@ RPGGame.Game.prototype = {
 				else
 					{
 					// MOVING THE ENEMY BACK TO THE ISLAND
-					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation[0];
-					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation[1];
+					game.state.states["RPGGame.Game"].enemy.position.x = game.state.states["RPGGame.Game"].enemyInitialLocation.x;
+					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation.y;
 					}
 				}
 			}, 1000);
