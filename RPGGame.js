@@ -800,8 +800,8 @@ RPGGame.Game.prototype = {
 		this.keyW = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.keySpace = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-		// ADDING THE WEAPON SLASH
-		this.createWeaponSlash(this.statsWeaponType);
+		// ADDING THE HERO'S WEAPON SLASH
+		this.createHeroWeaponSlash(this.statsWeaponType);
 
 		// ADDING THE CURSOR KEYS LISTENER
 		this.cursors = game.input.keyboard.createCursorKeys();
@@ -866,8 +866,8 @@ RPGGame.Game.prototype = {
 			// UPDATING THE HERO'S WEAPON TYPE
 			this.statsWeaponType = GAMEDATA.statsWeaponType;
 
-			// UPDATING THE WEAPON SLASH
-			this.createWeaponSlash(this.statsWeaponType);
+			// UPDATING THE HERO'S WEAPON SLASH
+			this.createHeroWeaponSlash(this.statsWeaponType);
 
 			// UPDATING THE HERO'S POSITION
 			this.hero.position.x = GAMEDATA.x;
@@ -1035,8 +1035,8 @@ RPGGame.Game.prototype = {
 			this.showToast(STRING_GAMEOVER, false);
 			}
 
-		// HANDLING THE ENEMY BEHAVIOUR
-		this.handleEnemyBehaviour();
+		// HANDLING THE ENEMY MOVEMENTS
+		this.handleEnemyMovements();
 		},
 
 	render: function ()
@@ -1108,11 +1108,6 @@ RPGGame.Game.prototype = {
 			}
 		},
 
-	getCurrentTime: function()
-		{
-		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
-		},
-
 	handleNPCs: function()
 		{
 		// SETTING WHAT WILL HAPPEN WHEN THE CHARACTER COLLIDES WITH THE KING
@@ -1162,8 +1157,8 @@ RPGGame.Game.prototype = {
 					// UPDATING THE HERO'S WEAPON TYPE
 					game.state.states["RPGGame.Game"].statsWeaponType = 1;
 
-					// UPDATING THE WEAPON SLASH
-					game.state.states["RPGGame.Game"].createWeaponSlash(game.state.states["RPGGame.Game"].statsWeaponType);
+					// UPDATING THE HERO'S WEAPON SLASH
+					game.state.states["RPGGame.Game"].createHeroWeaponSlash(game.state.states["RPGGame.Game"].statsWeaponType);
 
 					// REMOVING THE COINS FROM THE PLAYER
 					game.state.states["RPGGame.Game"].setGold(game.state.states["RPGGame.Game"].statsGold - 10);
@@ -1383,7 +1378,33 @@ RPGGame.Game.prototype = {
 			}, game, this.layer);
 		},
 
-	handleEnemyBehaviour: function()
+	handleHeroAttack: function()
+		{
+		// CHECKING IF THE SLASH HITS THE ENEMY
+		if (Phaser.Rectangle.intersects(this.slash.getBounds(), this.enemy.getBounds())==true)
+			{
+			// GETTING A RANDOM NUMBER BETWEEN 1 AND 10
+			var randomMin = 1;
+			var randomMax = 10;
+			var randomNumber = Math.floor(Math.random() * (randomMax - randomMin + 1)) + randomMin;
+
+			// CHECKING RANDOM NUMBER
+			if (randomNumber>5)
+				{
+				// CAUSING DAMAGE TO THE ENEMY
+				this.enemyHealth = this.enemyHealth - 7;
+				}
+
+			// CHECKING IF THE ENEMY IS DEAD
+			if (this.enemyHealth<=0)
+				{
+				// HANDLING THE ENEMY'S DEATH
+				this.handleEnemyDeath();
+				}
+			}
+		},
+
+	handleEnemyMovements: function()
 		{
 		// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
 		var distanceBetweenHeroAndEnemy = this.getDistance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
@@ -1501,19 +1522,43 @@ RPGGame.Game.prototype = {
 						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
 						}
 					}
-
-				// CHECKING IF THERE IS AN OVERLAPPING BETWEEN THE HERO AND THE ENEMY
-				if (this.checkOverlap(this.hero,this.enemy))
-					{
-					// STOPPING THE ENEMY ANIMATION
-					this.enemy.animations.stop(null, true);
-
-					// CLEARING THE ENEMY VELOCITY
-					this.enemy.body.velocity.x = 0;
-					this.enemy.body.velocity.y = 0;
-					}
 				}
 			}
+
+		// CHECKING IF THERE IS AN OVERLAPPING BETWEEN THE HERO AND THE ENEMY
+		if (this.checkOverlapping(this.hero,this.enemy))
+			{
+			// STOPPING THE ENEMY ANIMATION
+			this.enemy.animations.stop(null, true);
+
+			// CLEARING THE ENEMY VELOCITY
+			this.enemy.body.velocity.x = 0;
+			this.enemy.body.velocity.y = 0;
+			}
+		},
+
+	handleEnemyDeath: function()
+		{
+		// GETTING THE LOCATION WHERE THE ENEMY DIED
+		var enemyDiedAtX = this.enemy.position.x - 16;
+		var enemyDiedAtY = this.enemy.position.y - 16;
+
+		// MOVING THE ENEMY OFF THE SCREEN
+		this.enemy.position.y = -99;
+
+		// ADDING A COIN TO THE COIN ARRAY
+		this.coinsArray.push([enemyDiedAtX,enemyDiedAtY]);
+
+		// ADDING A COIN TO THE MAP
+		var itemCoin = game.add.sprite(enemyDiedAtX, enemyDiedAtY, "imageCoin");
+		this.coins.addChild(itemCoin);
+
+		// ANIMATING ALL THE COINS IN THE MAP
+		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
+		this.coins.callAll("animations.play", "animations", "spin");
+
+		// ENABLING THE COIN'S PHYSICS IN ORDER TO DETECT COLLISIONS
+		game.physics.arcade.enable(this.coins);
 		},
 
 	teleportTo: function(locationValues)
@@ -1598,40 +1643,7 @@ RPGGame.Game.prototype = {
 			}, 1000);
 		},
 
-	handleHeroAttack: function()
-		{
-		// CHECKING IF THE SLASH HITS THE ENEMY
-		if (Phaser.Rectangle.intersects(this.slash.getBounds(), this.enemy.getBounds())==true)
-			{
-			// GETTING A RANDOM NUMBER BETWEEN 1 AND 10
-			var randomMin = 1;
-			var randomMax = 10;
-			var randomNumber = Math.floor(Math.random() * (randomMax - randomMin + 1)) + randomMin;
-
-			// CHECKING RANDOM NUMBER
-			if (randomNumber>5)
-				{
-				// CAUSING DAMAGE TO THE ENEMY
-				this.enemyHealth = this.enemyHealth - 7;
-				}
-
-			// CHECKING IF THE ENEMY IS DEAD
-			if (this.enemyHealth<=0)
-				{
-				// GETTING THE LOCATION WHERE THE ENEMY DIED
-				var enemyDiedAtX = this.enemy.position.x - 16;
-				var enemyDiedAtY = this.enemy.position.y - 16;
-
-				// MOVING THE ENEMY OFF THE SCREEN
-				this.enemy.position.y = -99;
-
-				// ADDING A COIN WHERE THE ENEMY DIED
-				this.addCoin(enemyDiedAtX, enemyDiedAtY);
-				}
-			}
-		},
-
-	createWeaponSlash: function(weaponType)
+	createHeroWeaponSlash: function(weaponType)
 		{
 		// CHECKING IF THE SLASH ALREADY EXISTS
 		if (this.slash!=null)
@@ -1729,23 +1741,6 @@ RPGGame.Game.prototype = {
 		this.hero.addChild(this.slash);
 		},
 
-	addCoin: function(enemyDiedAtX, enemyDiedAtY)
-		{
-		// ADDING THE COIN TO THE COIN ARRAY
-		this.coinsArray.push([enemyDiedAtX,enemyDiedAtY]);
-
-		// ADDING THE COINS TO THE MAP
-		var itemCoin = game.add.sprite(enemyDiedAtX, enemyDiedAtY, "imageCoin");
-		this.coins.addChild(itemCoin);
-
-		// ANIMATING ALL THE COINS IN THE MAP
-		this.coins.callAll("animations.add", "animations", "spin", [0, 1, 2, 3, 4, 5], 10, true);
-		this.coins.callAll("animations.play", "animations", "spin");
-
-		// ENABLING THE COIN'S PHYSICS IN ORDER TO DETECT COLLISIONS
-		game.physics.arcade.enable(this.coins);
-		},
-
 	getDistance: function(x1, y1, x2, y2)
 		{
 		var dx = x1 - x2;
@@ -1754,7 +1749,7 @@ RPGGame.Game.prototype = {
 		return Math.sqrt(dx * dx + dy * dy);
 		},
 
-	checkOverlap: function(spriteA, spriteB)
+	checkOverlapping: function(spriteA, spriteB)
 		{
 		var boundsA = spriteA.getBounds();
 		var boundsB = spriteB.getBounds();
@@ -1907,7 +1902,12 @@ RPGGame.Game.prototype = {
 				game.add.tween(game.state.states["RPGGame.Game"].toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				}, 3000);
 			}
-		}
+		},
+
+	getCurrentTime: function()
+		{
+		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+		},
 	};
 
 // CREATING THE GAME INSTANCE
