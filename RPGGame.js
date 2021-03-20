@@ -1386,7 +1386,7 @@ RPGGame.Game.prototype = {
 	handleEnemyBehaviour: function()
 		{
 		// GETTING THE DISTANCE BETWEEN THE HERO AND THE ENEMY
-		var distanceBetweenHeroAndEnemy = this.distance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
+		var distanceBetweenHeroAndEnemy = this.getDistance(this.hero.position.x,this.hero.position.y,this.enemy.position.x,this.enemy.position.y);
 		var distanceX = this.enemy.position.x - this.hero.position.x;
 		var distanceY = this.enemy.position.y - this.hero.position.y;
 		if (distanceX<0){distanceX=distanceX * -1;}
@@ -1500,6 +1500,17 @@ RPGGame.Game.prototype = {
 						this.enemy.animations.play("walk_down", 10, true);
 						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
 						}
+					}
+
+				// CHECKING IF THERE IS AN OVERLAPPING BETWEEN THE HERO AND THE ENEMY
+				if (this.checkOverlap(this.hero,this.enemy))
+					{
+					// STOPPING THE ENEMY ANIMATION
+					this.enemy.animations.stop(null, true);
+
+					// CLEARING THE ENEMY VELOCITY
+					this.enemy.body.velocity.x = 0;
+					this.enemy.body.velocity.y = 0;
 					}
 				}
 			}
@@ -1735,12 +1746,19 @@ RPGGame.Game.prototype = {
 		game.physics.arcade.enable(this.coins);
 		},
 
-	distance: function(x1, y1, x2, y2)
+	getDistance: function(x1, y1, x2, y2)
 		{
 		var dx = x1 - x2;
 		var dy = y1 - y2;
 
 		return Math.sqrt(dx * dx + dy * dy);
+		},
+
+	checkOverlap: function(spriteA, spriteB)
+		{
+		var boundsA = spriteA.getBounds();
+		var boundsB = spriteB.getBounds();
+		return Phaser.Rectangle.intersects(boundsA, boundsB);
 		},
 
 	saveGame: function()
