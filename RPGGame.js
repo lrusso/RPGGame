@@ -572,13 +572,13 @@ RPGGame.Game.prototype = {
 			else
 			{
 			// ADDING ALL THE COINS LOCATION
-			this.coinsArray.push([416,480]);
+			this.coinsArray.push({x:416,y:480});
 			}
 
 		// ADDING THE COINS TO THE MAP
 		for (var i = 0; i < this.coinsArray.length; i++)
 			{
-			var itemCoin = game.add.sprite(this.coinsArray[i][0], this.coinsArray[i][1], "imageCoin");
+			var itemCoin = game.add.sprite(this.coinsArray[i].x, this.coinsArray[i].y, "imageCoin");
 			this.coins.addChild(itemCoin);
 			}
 
@@ -1090,7 +1090,7 @@ RPGGame.Game.prototype = {
 		for (var i = 0; i < this.coinsArray.length; i++)
 			{
 			// CHECKING IF IT IS THE COLLIDED COIN
-			if(this.coinsArray[i][0]==coin.x && this.coinsArray[i][1]==coin.y)
+			if(this.coinsArray[i].x==coin.x && this.coinsArray[i].y==coin.y)
 				{
 				// REMOVING THE COLLIDED COIN FROM THE COIN ARRAY
 				this.coinsArray.splice(i, 1);
@@ -1564,7 +1564,7 @@ RPGGame.Game.prototype = {
 		this.enemy.position.y = -99;
 
 		// ADDING A COIN TO THE COIN ARRAY
-		this.coinsArray.push([enemyDiedAtX,enemyDiedAtY]);
+		this.coinsArray.push({x:enemyDiedAtX,y:enemyDiedAtY});
 
 		// ADDING A COIN TO THE MAP
 		var itemCoin = game.add.sprite(enemyDiedAtX, enemyDiedAtY, "imageCoin");
