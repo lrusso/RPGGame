@@ -1039,6 +1039,16 @@ RPGGame.Game.prototype = {
 		this.handleEnemyBehaviour();
 		},
 
+	render: function ()
+		{
+		// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
+		if(RPGGame.showDebug==true)
+			{
+			// SHOWING THE HERO'S COLLISION BODY SIZE
+			game.debug.body(this.hero);
+			}
+		},
+
 	setHealth: function (newHealth)
 		{
 		// CHECKING IF THE HEALTH IS INCREASING OR DECREASING (WORKAROUND)
@@ -1067,16 +1077,6 @@ RPGGame.Game.prototype = {
 
 		// UPDATING THE GOLD COUNTER VALUE
 		this.imageStatsGoldValue.setText(this.statsGold);
-		},
-
-	render: function ()
-		{
-		// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
-		if(RPGGame.showDebug==true)
-			{
-			// SHOWING THE HERO'S COLLISION BODY SIZE
-			game.debug.body(this.hero);
-			}
 		},
 
 	collectCoin: function(player, coin)
