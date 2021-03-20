@@ -1474,6 +1474,7 @@ RPGGame.Game.prototype = {
 						}
 					}
 
+				// CHECKING IF THE ENEMY IS NEAR ENOUGH TO HERO
 				if (distanceX<=6.5 || distanceY<=6.5)
 					{
 					// STOPPING THE ENEMY ANIMATION
@@ -1484,6 +1485,7 @@ RPGGame.Game.prototype = {
 					this.enemy.body.velocity.y = 0;
 					}
 
+				// CHECKING IF THE HERO IS ALIVE
 				if (this.statsHealth>0)
 					{
 					// CHECKING IF THE SLASH ANIMATION IS NOT PLAYING
