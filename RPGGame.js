@@ -1925,6 +1925,9 @@ RPGGame.Game.prototype = {
 					// GETTING THE GAME DATA
 					GAMEDATA = JSON.parse(this.result);
 
+					// REMOVING THE JOYSTICK
+					game.state.states["RPGGame.Game"].stick.destroy();
+
 					// RESTARTING THE GAME STATE
 					game.state.states["RPGGame.Game"].state.restart();
 
