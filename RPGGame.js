@@ -952,39 +952,105 @@ RPGGame.Game.prototype = {
 		// CHECKING IF THE PLAYER IS NOT TELEPORTING AND THAT THE PLAYER IS NOT DEAD
 		if (this.teleporting==false && this.playerIsDead==false)
 			{
-			// CHECKING IF THE USER IS PRESSING THE LEFT KEY, 'A' KEY OR THE STICK LEFT DIRECTION
-			if (this.cursors.left.isDown==true || this.keyA.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.LEFT))
-				{
-				// MOVING THE HERO TO THE LEFT
-				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_left", 10, true);
-				}
+			// DETECTING THE KEYS
+			var moveUp = this.cursors.up.isDown || this.keyW.isDown;
+			var moveDown = this.cursors.down.isDown || this.keyS.isDown;
+			var moveLeft = this.cursors.left.isDown || this.keyA.isDown;
+			var moveRight = this.cursors.right.isDown || this.keyD.isDown;
 
-			// CHECKING IF THE USER IS PRESSING THE RIGHT KEY, 'D' KEY OR THE STICK RIGHT DIRECTION
-			else if (this.cursors.right.isDown==true || this.keyD.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.RIGHT))
+			// VARIABLE TO CHECK IF THERE WAS A MOVEMENT AFTER ALL THE VALIDATIONS
+			var someMovement = false;
+
+			// CHECKING IF A RIGHT MOVEMENT MUST BE PERFORMED
+			if ((moveRight==true && moveUp==false && moveDown==false && moveLeft==false) || (this.stick.isDown==true && (this.stick.octant==0 || this.stick.octant==360)))
 				{
 				// MOVING THE HERO TO THE RIGHT
 				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_right", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
 				}
 
-			// CHECKING IF THE USER IS PRESSING THE UP KEY, 'W' KEY OR THE STICK UP DIRECTION
-			else if (this.cursors.up.isDown==true || this.keyW.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.UP))
+			// CHECKING IF A LEFT MOVEMENT MUST BE PERFORMED
+			if ((moveLeft==true && moveUp==false && moveDown==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==180))
 				{
-				// MOVING THE HERO TO THE NORTH
+				// MOVING THE HERO TO THE LEFT
+				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
+				this.hero.animations.play("walk_left", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
+				}
+
+			// CHECKING IF A UP MOVEMENT MUST BE PERFORMED
+			if ((moveUp==true && moveLeft==false && moveRight==false && moveDown==false) || (this.stick.isDown==true && this.stick.octant==270))
+				{
+				// MOVING THE HERO TO THE TOP
 				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_up", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
 				}
 
-			// CHECKING IF THE USER IS PRESSING THE DOWN KEY, 'A' KEY OR THE STICK DOWN DIRECTION
-			else if (this.cursors.down.isDown==true || this.keyS.isDown==true || (this.stick.isDown==true && this.stick.direction === Phaser.DOWN))
+			// CHECKING IF A DOWN MOVEMENT MUST BE PERFORMED
+			if ((moveDown==true && moveLeft==false && moveRight==false && moveUp==false) || (this.stick.isDown==true && this.stick.octant==90))
 				{
-				// MOVING THE HERO TO THE SOUTH
+				// MOVING DOWN THE HERO
 				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
 				this.hero.animations.play("walk_down", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
 				}
 
-			else
+			// CHECKING IF A RIGHT-TOP MOVEMENT MUST BE PERFORMED
+			if ((moveRight==true && moveUp==true && moveDown==false && moveLeft==false) || (this.stick.isDown==true && this.stick.octant==315))
+				{
+				// MOVING THE HERO TO THE RIGHT-TOP
+				game.physics.arcade.velocityFromAngle(-45, 125, this.hero.body.velocity);
+				this.hero.animations.play("walk_right", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
+				}
+
+			// CHECKING IF A RIGHT-DOWN MOVEMENT MUST BE PERFORMED
+			if ((moveRight==true && moveDown==true && moveUp==false && moveLeft==false) || (this.stick.isDown==true && this.stick.octant==45))
+				{
+				// MOVING THE HERO TO THE RIGHT-DOWN
+				game.physics.arcade.velocityFromAngle(45, 125, this.hero.body.velocity);
+				this.hero.animations.play("walk_right", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
+				}
+
+			// CHECKING IF A LEFT-TOP MOVEMENT MUST BE PERFORMED
+			if ((moveLeft==true && moveUp==true && moveDown==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==225))
+				{
+				// MOVING THE HERO TO THE LEFT-TOP
+				game.physics.arcade.velocityFromAngle(-135, 125, this.hero.body.velocity);
+				this.hero.animations.play("walk_left", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
+				}
+
+			// CHECKING IF A LEFT-DOWN MOVEMENT MUST BE PERFORMED
+			if ((moveLeft==true && moveDown==true && moveUp==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==135))
+				{
+				// MOVING THE HERO TO THE LEFT-DOWN
+				game.physics.arcade.velocityFromAngle(135, 125, this.hero.body.velocity);
+				this.hero.animations.play("walk_left", 10, true);
+
+				// SETTING THAT A MOVEMENT HAPPENED
+				someMovement = true;
+				}
+
+			// CHECKING IF THERE WASN'T A MOVEMENT
+			if (someMovement==false)
 				{
 				// STOPPING THE HERO ANIMATION
 				this.hero.animations.stop(null, true);
