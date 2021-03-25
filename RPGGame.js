@@ -619,7 +619,7 @@ RPGGame.Game.prototype = {
 		// ENABLING THE HERO'S PHYSICS IN ORDER TO MOVE ARROUND THE MAP
 		game.physics.arcade.enable(this.hero);
 
-		// ADJUSTING THE COLLISION BODY SIZE
+		// ADJUSTING THE HERO'S COLLISION BODY SIZE
 		this.hero.body.setSize(20, 24, -1.5, 3);
 
 		// MAKING THE GAME CAMERA TO FOLLOW THE HERO
