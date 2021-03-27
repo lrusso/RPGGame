@@ -1649,7 +1649,7 @@ RPGGame.Game.prototype = {
 						// SHOWING THE WALKING LEFT ANIMATION
 						this.enemy.animations.play("walk_left", 10, true);
 
-						// MAKING THE ENEMY TO LOOK TO THE LEFT
+						// MAKING THE ENEMY TO MOVE TO THE LEFT
 						game.physics.arcade.velocityFromAngle(180, 100, this.enemy.body.velocity);
 						}
 
@@ -1659,7 +1659,7 @@ RPGGame.Game.prototype = {
 						// SHOWING THE WALKING RIGHT ANIMATION
 						this.enemy.animations.play("walk_right", 10, true);
 
-						// MAKING THE ENEMY TO LOOK TO THE RIGHT
+						// MAKING THE ENEMY TO MOVE TO THE RIGHT
 						game.physics.arcade.velocityFromAngle(0, 100, this.enemy.body.velocity);
 						}
 					}
@@ -1673,7 +1673,7 @@ RPGGame.Game.prototype = {
 						// SHOWING THE WALKING UP ANIMATION
 						this.enemy.animations.play("walk_up", 10, true);
 
-						// MAKING THE ENEMY TO LOOK TO THE NORTH
+						// MAKING THE ENEMY TO MOVE TO THE NORTH
 						game.physics.arcade.velocityFromAngle(-90, 100, this.enemy.body.velocity);
 						}
 
@@ -1683,7 +1683,7 @@ RPGGame.Game.prototype = {
 						// SHOWING THE WALKING DOWN ANIMATION
 						this.enemy.animations.play("walk_down", 10, true);
 
-						// MAKING THE ENEMY TO LOOK TO THE SOUTH
+						// MAKING THE ENEMY TO MOVE TO THE SOUTH
 						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
 						}
 					}
