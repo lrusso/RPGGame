@@ -1000,9 +1000,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A RIGHT MOVEMENT MUST BE PERFORMED
 			if ((moveRight==true && moveUp==false && moveDown==false && moveLeft==false) || (this.stick.isDown==true && (this.stick.octant==0 || this.stick.octant==360)))
 				{
+				// SHOWING THE WALKING RIGHT ANIMATION
+				this.hero.animations.play("walk_right", 10, true);
+
 				// MOVING THE HERO TO THE RIGHT
 				game.physics.arcade.velocityFromAngle(0, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_right", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1011,9 +1013,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A LEFT MOVEMENT MUST BE PERFORMED
 			if ((moveLeft==true && moveUp==false && moveDown==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==180))
 				{
+				// SHOWING THE WALKING LEFT ANIMATION
+				this.hero.animations.play("walk_left", 10, true);
+
 				// MOVING THE HERO TO THE LEFT
 				game.physics.arcade.velocityFromAngle(180, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_left", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1022,9 +1026,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A UP MOVEMENT MUST BE PERFORMED
 			if ((moveUp==true && moveLeft==false && moveRight==false && moveDown==false) || (this.stick.isDown==true && this.stick.octant==270))
 				{
+				// SHOWING THE WALKING UP ANIMATION
+				this.hero.animations.play("walk_up", 10, true);
+
 				// MOVING THE HERO TO THE TOP
 				game.physics.arcade.velocityFromAngle(-90, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_up", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1033,9 +1039,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A DOWN MOVEMENT MUST BE PERFORMED
 			if ((moveDown==true && moveLeft==false && moveRight==false && moveUp==false) || (this.stick.isDown==true && this.stick.octant==90))
 				{
+				// SHOWING THE WALKING DOWN ANIMATION
+				this.hero.animations.play("walk_down", 10, true);
+
 				// MOVING DOWN THE HERO
 				game.physics.arcade.velocityFromAngle(90, 100, this.hero.body.velocity);
-				this.hero.animations.play("walk_down", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1044,9 +1052,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A RIGHT-TOP MOVEMENT MUST BE PERFORMED
 			if ((moveRight==true && moveUp==true && moveDown==false && moveLeft==false) || (this.stick.isDown==true && this.stick.octant==315))
 				{
+				// SHOWING THE WALKING RIGHT ANIMATION
+				this.hero.animations.play("walk_right", 10, true);
+
 				// MOVING THE HERO TO THE RIGHT-TOP
 				game.physics.arcade.velocityFromAngle(-45, 125, this.hero.body.velocity);
-				this.hero.animations.play("walk_right", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1055,9 +1065,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A RIGHT-DOWN MOVEMENT MUST BE PERFORMED
 			if ((moveRight==true && moveDown==true && moveUp==false && moveLeft==false) || (this.stick.isDown==true && this.stick.octant==45))
 				{
+				// SHOWING THE WALKING RIGHT ANIMATION
+				this.hero.animations.play("walk_right", 10, true);
+
 				// MOVING THE HERO TO THE RIGHT-DOWN
 				game.physics.arcade.velocityFromAngle(45, 125, this.hero.body.velocity);
-				this.hero.animations.play("walk_right", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1066,9 +1078,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A LEFT-TOP MOVEMENT MUST BE PERFORMED
 			if ((moveLeft==true && moveUp==true && moveDown==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==225))
 				{
+				// SHOWING THE WALKING LEFT ANIMATION
+				this.hero.animations.play("walk_left", 10, true);
+
 				// MOVING THE HERO TO THE LEFT-TOP
 				game.physics.arcade.velocityFromAngle(-135, 125, this.hero.body.velocity);
-				this.hero.animations.play("walk_left", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1077,9 +1091,11 @@ RPGGame.Game.prototype = {
 			// CHECKING IF A LEFT-DOWN MOVEMENT MUST BE PERFORMED
 			if ((moveLeft==true && moveDown==true && moveUp==false && moveRight==false) || (this.stick.isDown==true && this.stick.octant==135))
 				{
+				// SHOWING THE WALKING LEFT ANIMATION
+				this.hero.animations.play("walk_left", 10, true);
+
 				// MOVING THE HERO TO THE LEFT-DOWN
 				game.physics.arcade.velocityFromAngle(135, 125, this.hero.body.velocity);
-				this.hero.animations.play("walk_left", 10, true);
 
 				// SETTING THAT A MOVEMENT HAPPENED
 				someMovement = true;
@@ -1544,15 +1560,19 @@ RPGGame.Game.prototype = {
 			// MOVING THE ENEMY UP AND DOWN
 			if (this.enemy.position.y<=122 && this.enemy.position.x==this.enemyInitialLocation.x)
 				{
+				// SHOWING THE WALKING DOWN ANIMATION
+				this.enemy.animations.play("walk_down", 10, true);
+
 				// MAKING THE ENEMY TO MOVE DOWN
 				game.physics.arcade.velocityFromAngle(90, 80, this.enemy.body.velocity);
-				this.enemy.animations.play("walk_down", 10, true);
 				}
 			else if (this.enemy.position.y>=272 && this.enemy.position.x==this.enemyInitialLocation.x)
 				{
+				// SHOWING THE WALKING UP ANIMATION
+				this.enemy.animations.play("walk_up", 10, true);
+
 				// MAKING THE ENEMY TO MOVE UP
 				game.physics.arcade.velocityFromAngle(-90, 80, this.enemy.body.velocity);
-				this.enemy.animations.play("walk_up", 10, true);
 				}
 			}
 
@@ -1568,12 +1588,12 @@ RPGGame.Game.prototype = {
 					// CHECKING IF THE HERO IS AT THE NORTH
 					if (this.hero.position.y<=this.enemy.position.y)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE NORTH
+						// SHOWING THE WALKING UP ANIMATION
 						this.enemy.animations.play("walk_up", 10, true);
 						}
 						else
 						{
-						// MAKING THE ENEMY TO LOOK TO THE SOUTH
+						// SHOWING THE WALKING DOWN ANIMATION
 						this.enemy.animations.play("walk_down", 10, true);
 						}
 					}
@@ -1584,12 +1604,12 @@ RPGGame.Game.prototype = {
 					// CHECKING IF THE HERO IS AT THE LEFT
 					if (this.hero.position.x<=this.enemy.position.x)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE LEFT
+						// SHOWING THE WALKING LEFT ANIMATION
 						this.enemy.animations.play("walk_left", 10, true);
 						}
 						else
 						{
-						// MAKING THE ENEMY TO LOOK TO THE RIGHT
+						// SHOWING THE WALKING RIGHT ANIMATION
 						this.enemy.animations.play("walk_right", 10, true);
 						}
 					}
@@ -1626,16 +1646,20 @@ RPGGame.Game.prototype = {
 					// CHECKING IF THE HERO IS AT THE LEFT
 					if (this.hero.position.x<=this.enemy.position.x)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE LEFT
+						// SHOWING THE WALKING LEFT ANIMATION
 						this.enemy.animations.play("walk_left", 10, true);
+
+						// MAKING THE ENEMY TO LOOK TO THE LEFT
 						game.physics.arcade.velocityFromAngle(180, 100, this.enemy.body.velocity);
 						}
 
 					// CHECKING IF THE HERO IS AT THE RIGHT
 					else if (this.hero.position.x>this.enemy.position.x)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE RIGHT
+						// SHOWING THE WALKING RIGHT ANIMATION
 						this.enemy.animations.play("walk_right", 10, true);
+
+						// MAKING THE ENEMY TO LOOK TO THE RIGHT
 						game.physics.arcade.velocityFromAngle(0, 100, this.enemy.body.velocity);
 						}
 					}
@@ -1646,16 +1670,20 @@ RPGGame.Game.prototype = {
 					// CHECKING IF THE HERO IS AT THE NORTH
 					if (this.hero.position.y<=this.enemy.position.y)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE NORTH
+						// SHOWING THE WALKING UP ANIMATION
 						this.enemy.animations.play("walk_up", 10, true);
+
+						// MAKING THE ENEMY TO LOOK TO THE NORTH
 						game.physics.arcade.velocityFromAngle(-90, 100, this.enemy.body.velocity);
 						}
 
 					// CHECKING IF THE HERO IS AT THE SOUTH
 					else if (this.hero.position.y>this.enemy.position.y)
 						{
-						// MAKING THE ENEMY TO LOOK TO THE SOUTH
+						// SHOWING THE WALKING DOWN ANIMATION
 						this.enemy.animations.play("walk_down", 10, true);
+
+						// MAKING THE ENEMY TO LOOK TO THE SOUTH
 						game.physics.arcade.velocityFromAngle(90, 100, this.enemy.body.velocity);
 						}
 					}
