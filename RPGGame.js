@@ -921,13 +921,13 @@ RPGGame.Game.prototype = {
 		this.stick.sprite.scale.set(0.8);
 		this.stick.sprite.tint = 0xA9A9A9;
 
-		// ADDING THE BREAK NORMAL BUTTON
+		// ADDING THE SWORD NORMAL BUTTON
 		this.buttonSwordNormal = game.add.sprite(655, 290, "imageButtonNormal");
 		this.buttonSwordNormal.fixedToCamera = true;
 		this.buttonSwordNormal.tint = 0xAFAFAF;
 		this.buttonSwordNormal.scale.set(0.8);
 
-		// ADDING THE BREAK PRESSED BUTTON
+		// ADDING THE SWORD PRESSED BUTTON
 		this.buttonSwordPressed = game.add.sprite(655, 290, "imageButtonPressed");
 		this.buttonSwordPressed.fixedToCamera = true;
 		this.buttonSwordPressed.tint = 0xAFAFAF;
