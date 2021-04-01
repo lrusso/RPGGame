@@ -325,7 +325,6 @@ RPGGame.Game = function (game)
 	this.dialogID = null;
 	this.dialogText = null;
 	this.dialogShadow = null;
-	this.dialogTimeout = null;
 	this.dialogDebug = null;
 
 	this.buttonSoundOnGame = null;
@@ -451,7 +450,6 @@ RPGGame.Game.prototype = {
 		this.dialogID = null;
 		this.dialogText = null;
 		this.dialogShadow = null;
-		this.dialogTimeout = null;
 		this.dialogDebug = null;
 
 		this.buttonSoundOnGame = null;
@@ -2169,9 +2167,6 @@ RPGGame.Game.prototype = {
 					// DESTROYING THE DIALOG DEBUG INDICATOR
 					this.dialogDebug.destroy();
 					}
-
-				// CLEARING THE TIMEOUT FROM THE PREVIOUS DIALOG
-				clearTimeout(this.dialogTimeout);
 				}
 
 			// UPDATING THE DIALOG ID
@@ -2200,7 +2195,7 @@ RPGGame.Game.prototype = {
 				}
 
 			// SETTING THAT IN 3 SECONDS THE DIALOG MUST FADE OUT
-			this.dialogTimeout = setTimeout(function()
+			game.time.events.add(3000, function()
 				{
 				// FADING OUT THE DIALOG SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
@@ -2215,7 +2210,7 @@ RPGGame.Game.prototype = {
 
 				// CLEARING THE DIALOG ID
 				game.state.states["RPGGame.Game"].dialogID = null;
-				}, 3000);
+				});
 			}
 		},
 
