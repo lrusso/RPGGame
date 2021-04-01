@@ -10,6 +10,9 @@ Phaser.VirtualJoystick=function(a,b){Phaser.Plugin.call(this,a,b),this.sticks=nu
 // isMobileDevice.js
 function isMobileDevice(){return!!(navigator.userAgent.match(/Android/i)||navigator.userAgent.match(/webOS/i)||navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPad/i)||navigator.userAgent.match(/iPod/i)||navigator.userAgent.match(/BlackBerry/i)||navigator.userAgent.match(/Windows Phone/i))}
 
+// isWebGLAvailable.min.js
+function isWebGLAvailable(){if(window.WebGLRenderingContext){for(var e=document.createElement("canvas"),t=["webgl2","webgl","experimental-webgl","moz-webgl","webkit-3d"],n=!1,r=0;r<t.length;r++)try{if((n=e.getContext(t[r]))&&"function"==typeof n.getParameter)return!0}catch(e){}return!1}return!1}
+
 // GETTING THE USER LANGUAGE
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
@@ -2248,8 +2251,18 @@ RPGGame.Game.prototype = {
 		},
 	};
 
+// SETTING THE DEFAULT RENDERER MODE
+var rendererMode = Phaser.WEBGL;
+
+// CHECKING IF THE WEBGL RENDERER MODE IS NOT AVAILABLE
+if (isWebGLAvailable()==false)
+	{
+	// CHANGING THE RENDERER MODE
+	rendererMode = Phaser.CANVAS;
+	}
+
 // CREATING THE GAME INSTANCE
-var config = {width: 800, height: 432, renderer: Phaser.WEBGL, parent: "content", disableVisibilityChange: true};
+var config = {width: 800, height: 432, renderer: rendererMode, parent: "content", disableVisibilityChange: true};
 var game = new Phaser.Game(config);
 
 // CREATING THE STATES
