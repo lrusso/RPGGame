@@ -325,6 +325,7 @@ RPGGame.Game = function (game)
 	this.dialogID = null;
 	this.dialogText = null;
 	this.dialogShadow = null;
+	this.dialogTimeout = null;
 	this.dialogDebug = null;
 
 	this.buttonSoundOnGame = null;
@@ -450,6 +451,7 @@ RPGGame.Game.prototype = {
 		this.dialogID = null;
 		this.dialogText = null;
 		this.dialogShadow = null;
+		this.dialogTimeout = null;
 		this.dialogDebug = null;
 
 		this.buttonSoundOnGame = null;
@@ -1464,7 +1466,7 @@ RPGGame.Game.prototype = {
 			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
 				{
 				// WAITING 25 MS
-				setTimeout(function()
+				game.time.events.add(25, function()
 					{
 					// SWAPING THE DOOR STATE
 					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
@@ -1472,7 +1474,7 @@ RPGGame.Game.prototype = {
 					// CLEARING THE VARIABLES
 					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
 					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
-					},25)
+					});
 				}
 			}, game, this.layer);
 
@@ -1483,7 +1485,7 @@ RPGGame.Game.prototype = {
 			if (game.state.states["RPGGame.Game"].DOOR_CURRENT!=null)
 				{
 				// WAITING 25 MS
-				setTimeout(function()
+				game.time.events.add(25, function()
 					{
 					// SWAPING THE DOOR STATE
 					game.state.states["RPGGame.Game"].map.swap(game.state.states["RPGGame.Game"].DOOR_CURRENT,game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED)
@@ -1491,7 +1493,7 @@ RPGGame.Game.prototype = {
 					// CLEARING THE VARIABLES
 					game.state.states["RPGGame.Game"].DOOR_CURRENT = null;
 					game.state.states["RPGGame.Game"].DOOR_CURRENT_CLOSED = null;
-					},25)
+					});
 				}
 			}, game, this.layer);
 		},
@@ -1826,7 +1828,7 @@ RPGGame.Game.prototype = {
 		game.state.states["RPGGame.Game"].enemy.body.velocity.y = 0;
 
 		// WAITING 500 MS
-		setTimeout(function()
+		game.time.events.add(500, function()
 			{
 			// TELEPORTING THE CHARACTER TO THE ISLAND
 			game.state.states["RPGGame.Game"].hero.position.x = locationValues.x;
@@ -1834,24 +1836,24 @@ RPGGame.Game.prototype = {
 
 			// STARTING THE CHARACTER WALKING DOWN ANIMATION
 			game.state.states["RPGGame.Game"].hero.animations.play("walk_down", 10, true);
-			},500);
+			});
 
 		// WAITING 600 MS
-		setTimeout(function()
+		game.time.events.add(600, function()
 			{
 			// STARTING FADING IN ANIMATION TO FINISH THE TELEPORTING
 			game.add.tween(game.state.states["RPGGame.Game"].hero).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
-			}, 600);
+			});
 
 		// WAITING 700 MS
-		setTimeout(function()
+		game.time.events.add(700, function()
 			{
 			// THE CHARACTER IS WALKING DOWN
 			game.add.tween(game.state.states["RPGGame.Game"].hero).to({y: locationValues.y + 20}, 200, Phaser.Easing.Linear.None, true);
-			}, 700);
+			});
 
 		// WAITING 1000 MS
-		setTimeout(function()
+		game.time.events.add(1000, function()
 			{
 			// STOPING THE CHARACTER WALKING DOWN ANIMATION
 			game.state.states["RPGGame.Game"].hero.animations.stop(null, true);
@@ -1881,7 +1883,7 @@ RPGGame.Game.prototype = {
 					game.state.states["RPGGame.Game"].enemy.position.y = game.state.states["RPGGame.Game"].enemyInitialLocation.y;
 					}
 				}
-			}, 1000);
+			});
 		},
 
 	createHeroWeaponSlash: function(weaponType)
@@ -2167,6 +2169,9 @@ RPGGame.Game.prototype = {
 					// DESTROYING THE DIALOG DEBUG INDICATOR
 					this.dialogDebug.destroy();
 					}
+
+				// CLEARING THE TIMEOUT FROM THE PREVIOUS DIALOG
+				clearTimeout(this.dialogTimeout);
 				}
 
 			// UPDATING THE DIALOG ID
@@ -2195,7 +2200,7 @@ RPGGame.Game.prototype = {
 				}
 
 			// SETTING THAT IN 3 SECONDS THE DIALOG MUST FADE OUT
-			game.time.events.add(3000, function()
+			this.dialogTimeout = setTimeout(function()
 				{
 				// FADING OUT THE DIALOG SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
@@ -2210,7 +2215,7 @@ RPGGame.Game.prototype = {
 
 				// CLEARING THE DIALOG ID
 				game.state.states["RPGGame.Game"].dialogID = null;
-				});
+				}, 3000);
 			}
 		},
 
