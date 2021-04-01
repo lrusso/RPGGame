@@ -921,15 +921,6 @@ RPGGame.Game.prototype = {
 		this.stick.sprite.scale.set(0.8);
 		this.stick.sprite.tint = 0xA9A9A9;
 
-		// ADDING THE SWORD BUTTON FOR MOBILE DEVICES
-		this.buttonSwordHandler = game.add.sprite(655, 290, "");
-		this.buttonSwordHandler.width = 120;
-		this.buttonSwordHandler.height = 120;
-		this.buttonSwordHandler.inputEnabled = true;
-		this.buttonSwordHandler.fixedToCamera = true;
-		this.buttonSwordHandler.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;this.buttonSwordNormal.visible=false;this.buttonSwordPressed.visible=true;},this);
-		this.buttonSwordHandler.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;this.buttonSwordNormal.visible=true;this.buttonSwordPressed.visible=false;},this);
-
 		// ADDING THE BREAK NORMAL BUTTON
 		this.buttonSwordNormal = game.add.sprite(655, 290, "imageButtonNormal");
 		this.buttonSwordNormal.fixedToCamera = true;
@@ -948,6 +939,15 @@ RPGGame.Game.prototype = {
 		this.buttonSwordIcon.scale.set(0.7);
 		this.buttonSwordIcon.tint = 0xA9A9A9;
 		this.buttonSwordIcon.fixedToCamera = true;
+
+		// ADDING THE SWORD BUTTON FOR MOBILE DEVICES
+		this.buttonSwordHandler = game.add.graphics();
+		this.buttonSwordHandler.beginFill(0x000000, 0);
+		this.buttonSwordHandler.drawRect(665, 300, 100, 100, 10);
+		this.buttonSwordHandler.inputEnabled = true;
+		this.buttonSwordHandler.fixedToCamera = true;
+		this.buttonSwordHandler.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;this.buttonSwordNormal.visible=false;this.buttonSwordPressed.visible=true;},this);
+		this.buttonSwordHandler.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;this.buttonSwordNormal.visible=true;this.buttonSwordPressed.visible=false;},this);
 
 		// CHECKING IF IT IS NOT A MOBILE DEVICE
 		if (this.isMobileDevice==false)
