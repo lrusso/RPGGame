@@ -934,13 +934,13 @@ RPGGame.Game.prototype = {
 		this.buttonSwordPressed.scale.set(0.8);
 		this.buttonSwordPressed.visible = false;
 
-		// ADDING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
+		// ADDING THE SWORD ICON IN THE SWORD BUTTON
 		this.buttonSwordIcon = game.add.sprite(693, 329, "imageButtonSword");
 		this.buttonSwordIcon.scale.set(0.7);
 		this.buttonSwordIcon.tint = 0xA9A9A9;
 		this.buttonSwordIcon.fixedToCamera = true;
 
-		// ADDING THE SWORD BUTTON FOR MOBILE DEVICES
+		// ADDING THE SWORD BUTTON HANDLER
 		this.buttonSwordHandler = game.add.graphics();
 		this.buttonSwordHandler.beginFill(0x000000, 0);
 		this.buttonSwordHandler.drawRect(665, 300, 100, 100, 10);
