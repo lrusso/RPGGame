@@ -332,6 +332,7 @@ RPGGame.Game = function (game)
 	this.toastShadow = null;
 
 	this.dialogID = null;
+	this.dialogTextShadow = null;
 	this.dialogText = null;
 	this.dialogShadow = null;
 	this.dialogTimeout = null;
@@ -458,6 +459,7 @@ RPGGame.Game.prototype = {
 	init: function()
 		{
 		this.dialogID = null;
+		this.dialogTextShadow = null;
 		this.dialogText = null;
 		this.dialogShadow = null;
 		this.dialogTimeout = null;
@@ -2175,6 +2177,7 @@ RPGGame.Game.prototype = {
 			if (this.dialogID!=null)
 				{
 				// DESTROYING ANY PREVIOUS OBJECT FROM THE PREVIOUS DIALOG
+				this.dialogTextShadow.destroy();
 				this.dialogText.destroy();
 				this.dialogShadow.destroy();
 
@@ -2197,13 +2200,19 @@ RPGGame.Game.prototype = {
 			this.dialogShadow.lineStyle(1, 0xFFFFFF, 1);
 			this.dialogShadow.beginFill(0x000072, 1);
 
+			// CREATING THE DIALOG TEXT SHADOW
+			this.dialogTextShadow = game.add.bitmapText(x, y + 5.75, "ArialBlackShadow", myText, 14);
+			this.dialogTextShadow.position.x = x - this.dialogTextShadow.width / 2 + 0.5;
+			this.dialogTextShadow.tint = 0x000000;
+			this.dialogTextShadow.height = 16;
+
 			// CREATING THE DIALOG TEXT
-			this.dialogText = game.add.text(x, y, myText, { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
-			this.dialogText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
-			this.dialogText.setTextBounds(0, 0, 0, 30);
+			this.dialogText = game.add.bitmapText(x, y + 4.75, "ArialBlackShadow", myText, 14);
+			this.dialogText.position.x = x - this.dialogText.width / 2;
+			this.dialogText.height = 16;
 
 			// DRAWING THE DIALOG SHADOW
-			this.dialogShadow.drawRoundedRect(x - this.dialogText._width / 2 - 12, y - 5, this.dialogText._width + 23, 32, 10);
+			this.dialogShadow.drawRoundedRect(x - this.dialogText.width / 2 - 12, y - 5, this.dialogText.width + 23, 32, 10);
 
 			// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
 			if (RPGGame.showDebug==true)
@@ -2219,6 +2228,7 @@ RPGGame.Game.prototype = {
 				{
 				// FADING OUT THE DIALOG SHADOW AND TEXT
 				game.add.tween(game.state.states["RPGGame.Game"].dialogShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.add.tween(game.state.states["RPGGame.Game"].dialogTextShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 				game.add.tween(game.state.states["RPGGame.Game"].dialogText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 
 				// CHECKING IF A DIALOG DEBUG INDICATOR WAS CREATED
