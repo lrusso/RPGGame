@@ -261,7 +261,7 @@ RPGGame.Preloader.prototype = {
 	create: function()
 		{
 		// STARTING THE GAME
-		this.state.start("RPGGame.Game");
+		this.state.start("RPGGame.Splash");
 		}
 	};
 
