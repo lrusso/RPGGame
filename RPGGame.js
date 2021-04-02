@@ -2232,7 +2232,7 @@ RPGGame.Game.prototype = {
 		{
 		// CREATING THE TOAST SHADOW
 		this.toastShadow = game.add.graphics();
-		this.toastShadow.beginFill(0x000000, 0.75);
+		this.toastShadow.beginFill(0x000000, 0.6);
 		this.toastShadow.fixedToCamera = true;
 
 		// CREATING THE TOAST TEXT
