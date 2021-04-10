@@ -559,6 +559,8 @@ RPGGame.Game.prototype = {
 		this.DOOR_WIZARD_CLOSED_ID = 49;
 		this.DOOR_WIZARD_OPENED_ID = 50;
 
+		this.isMobileDevice = null;
+
 		this.soundEnabled = false;
 		this.musicPlayer = null;
 		this.audioPlayer = null;
