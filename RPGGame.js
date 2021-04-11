@@ -2270,8 +2270,8 @@ RPGGame.Game.prototype = {
 		},
 	};
 
-// WORKAROUND FOR IOS - CHECKING EVERY 200 MS IF THE DOCUMENT HAS FOCUS IN ORDER TO PAUSE OR RESUME THE GAME
-setInterval(function(){try{if(document.hasFocus()==true){game.paused=false;}else{game.paused=true;}}catch(err){}},200);
+// WORKAROUND FOR IOS - UPDATING EVERY 200 MS THE GAME STATE ACCORDING THE DOCUMENT VISIBILITY AND DEVICE TYPE
+var isMobileDeviceChecker=isMobileDevice();setInterval(function(){try{if(isMobileDeviceChecker==true){game.paused=document.hidden;}else{if(document.hasFocus()==true){game.paused=false;}else{game.paused=true;}}}catch(err){}},200);
 
 // SETTING THE DEFAULT RENDERER MODE
 var rendererMode = Phaser.WEBGL;
