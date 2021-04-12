@@ -933,6 +933,8 @@ RPGGame.Game.prototype = {
 		this.stick = this.pad.addDPad(100, 335, 0, "dpad");
 		this.stick.sprite.scale.set(0.8);
 		this.stick.sprite.tint = 0xA9A9A9;
+		this.stick.sprite.inputEnabled = true;
+		this.stick.sprite.events.onInputDown.add(function(){this.update();},this);
 
 		// ADDING THE SWORD NORMAL BUTTON
 		this.buttonSwordNormal = game.add.sprite(655, 290, "imageButtonNormal");
@@ -959,7 +961,7 @@ RPGGame.Game.prototype = {
 		this.buttonSwordHandler.drawRect(665, 300, 100, 100, 10);
 		this.buttonSwordHandler.inputEnabled = true;
 		this.buttonSwordHandler.fixedToCamera = true;
-		this.buttonSwordHandler.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;this.buttonSwordNormal.visible=false;this.buttonSwordPressed.visible=true;},this);
+		this.buttonSwordHandler.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;this.buttonSwordNormal.visible=false;this.buttonSwordPressed.visible=true;this.update();},this);
 		this.buttonSwordHandler.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;this.buttonSwordNormal.visible=true;this.buttonSwordPressed.visible=false;},this);
 
 		// CHECKING IF IT IS NOT A MOBILE DEVICE
