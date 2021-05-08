@@ -970,6 +970,9 @@ RPGGame.Game.prototype = {
 			// HIDING THE STICK FOR MOBILE DEVICES
 			this.stick.visible = false;
 
+			// DISABLING THE STICK FOR MOBILE DEVICES
+			this.stick.enabled = false;
+
 			// HIDING THE SWORD BUTTON FOR MOBILE DEVICES
 			this.buttonSwordHandler.visible = false;
 			this.buttonSwordNormal.visible = false;
