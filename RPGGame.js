@@ -935,12 +935,15 @@ RPGGame.Game.prototype = {
 		this.stick.sprite.tint = 0xA9A9A9;
 		this.stick.sprite.inputEnabled = true;
 		this.stick.sprite.events.onInputDown.add(function(){this.update();},this);
+		this.stick.enabled = false;
+		this.stick.visible = false;
 
 		// ADDING THE SWORD NORMAL BUTTON
 		this.buttonSwordNormal = game.add.sprite(655, 290, "imageButtonNormal");
 		this.buttonSwordNormal.fixedToCamera = true;
 		this.buttonSwordNormal.tint = 0xAFAFAF;
 		this.buttonSwordNormal.scale.set(0.8);
+		this.buttonSwordNormal.visible = false;
 
 		// ADDING THE SWORD PRESSED BUTTON
 		this.buttonSwordPressed = game.add.sprite(655, 290, "imageButtonPressed");
@@ -954,6 +957,7 @@ RPGGame.Game.prototype = {
 		this.buttonSwordIcon.scale.set(0.7);
 		this.buttonSwordIcon.tint = 0xA9A9A9;
 		this.buttonSwordIcon.fixedToCamera = true;
+		this.buttonSwordIcon.visible = false;
 
 		// ADDING THE SWORD BUTTON HANDLER
 		this.buttonSwordHandler = game.add.graphics();
@@ -963,23 +967,24 @@ RPGGame.Game.prototype = {
 		this.buttonSwordHandler.fixedToCamera = true;
 		this.buttonSwordHandler.events.onInputDown.add(function(){this.playerAttackingMobileDevice=true;this.buttonSwordNormal.visible=false;this.buttonSwordPressed.visible=true;this.update();},this);
 		this.buttonSwordHandler.events.onInputUp.add(function(){this.playerAttackingMobileDevice=false;this.buttonSwordNormal.visible=true;this.buttonSwordPressed.visible=false;},this);
+		this.buttonSwordHandler.visible = false;
 
-		// CHECKING IF IT IS NOT A MOBILE DEVICE
-		if (this.isMobileDevice==false)
+		// CHECKING IF IT IS A MOBILE DEVICE
+		if (this.isMobileDevice==true)
 			{
-			// HIDING THE STICK FOR MOBILE DEVICES
-			this.stick.visible = false;
+			// SHOWING THE STICK FOR MOBILE DEVICES
+			this.stick.visible = true;
 
-			// DISABLING THE STICK FOR MOBILE DEVICES
-			this.stick.enabled = false;
+			// ENABLING THE STICK FOR MOBILE DEVICES
+			this.stick.enabled = true;
 
-			// HIDING THE SWORD BUTTON FOR MOBILE DEVICES
-			this.buttonSwordHandler.visible = false;
-			this.buttonSwordNormal.visible = false;
-			this.buttonSwordPressed.visible = false;
+			// SHOWING THE SWORD BUTTON FOR MOBILE DEVICES
+			this.buttonSwordHandler.visible = true;
+			this.buttonSwordNormal.visible = true;
+			this.buttonSwordPressed.visible = true;
 
-			// HIDING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
-			this.buttonSwordIcon.visible = false;
+			// SHOWING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
+			this.buttonSwordIcon.visible = true;
 			}
 
 		// CHECKING IF A SAVEGAME WAS LOADED
