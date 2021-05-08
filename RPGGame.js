@@ -978,12 +978,10 @@ RPGGame.Game.prototype = {
 			// ENABLING THE STICK FOR MOBILE DEVICES
 			this.stick.enabled = true;
 
-			// SHOWING THE SWORD BUTTON FOR MOBILE DEVICES
+			// SHOWING THE ATTACK BUTTON FOR MOBILE DEVICES
 			this.buttonSwordHandler.visible = true;
 			this.buttonSwordNormal.visible = true;
 			this.buttonSwordPressed.visible = true;
-
-			// SHOWING THE SWORD ICON IN THE SWORD BUTTON FOR MOBILE DEVICES
 			this.buttonSwordIcon.visible = true;
 			}
 
