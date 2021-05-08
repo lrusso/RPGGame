@@ -2132,7 +2132,7 @@ RPGGame.Game.prototype = {
 	saveGame: function()
 		{
 		// GETTING THE GAME STATE AS A BLOB VALUE
-		var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, statsWeaponType: this.statsWeaponType, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"text/plain"});
+		var blobValue = new Blob([JSON.stringify({ x: this.hero.position.x, y: this.hero.position.y, statsHealth: this.statsHealth, statsGold: this.statsGold, statsWeaponType: this.statsWeaponType, lastAnimation: this.hero.animations.currentAnim.name, coinsArray: this.coinsArray })],{type:"application/octet-stream"});
 
 		// SETTING THE FILE NAME
 		var filename = "RPGGame.sav";
