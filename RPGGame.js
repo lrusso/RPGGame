@@ -55,6 +55,10 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_GAMEOVER = "Game Over.";
 	}
 
+var GAME_SOUND_ENABLED = false;
+
+var MUSIC_PLAYER = null;
+
 var RPGGame = {showDebug: false};
 
 RPGGame.Preloader = function(){};
@@ -434,9 +438,11 @@ RPGGame.Game = function (game)
 
 	this.isMobileDevice = null;
 
-	this.soundEnabled = null;
-	this.musicPlayer = null;
 	this.audioPlayer = null;
+
+	this.clickTimestamp = null;
+	this.clickPositionX = null;
+	this.clickPositionY = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -561,8 +567,6 @@ RPGGame.Game.prototype = {
 
 		this.isMobileDevice = null;
 
-		this.soundEnabled = false;
-		this.musicPlayer = null;
 		this.audioPlayer = null;
 		},
 
@@ -753,15 +757,21 @@ RPGGame.Game.prototype = {
 		this.buttonSoundOnGameShadow.tint = 0x000000;
 		this.buttonSoundOnGameShadow.alpha = 0.7;
 		this.buttonSoundOnGameShadow.fixedToCamera = true;
-		this.buttonSoundOnGameShadow.visible = false;
+		if (GAME_SOUND_ENABLED==false){this.buttonSoundOnGameShadow.visible = false;}
 		this.buttonSoundOnGame = this.add.button(612, 3, "imageSoundOn", null, this, 2, 1, 0);
 		this.buttonSoundOnGame.fixedToCamera = true;
-		this.buttonSoundOnGame.visible = false;
+		if (GAME_SOUND_ENABLED==false){this.buttonSoundOnGame.visible = false;}
 		this.buttonSoundOnGame.inputEnabled = true;
+		this.buttonSoundOnGame.events.onInputDown.add(function(){if(this.clickTimestamp==null){this.clickTimestamp=this.getCurrentTime();this.clickPositionX=this.game.input.activePointer.position.x;this.clickPositionY=this.game.input.activePointer.position.y;}},this);
 		this.buttonSoundOnGame.events.onInputUp.add(function()
 			{
+			// REJECTING ANY SLIDE AND LONG PRESS EVENT - BUGFIX FOR SAFARI ON IOS FOR ENABLING THE AUDIO CONTEXT
+			if (Math.abs(this.game.input.activePointer.position.x-this.clickPositionX)>=25){this.clickTimestamp=null;return;}
+			if (Math.abs(this.game.input.activePointer.position.y-this.clickPositionY)>=25){this.clickTimestamp=null;return;}
+			if (this.getCurrentTime()-this.clickTimestamp>=500){this.clickTimestamp=null;return;}
+
 			// SETTING THAT THE SOUND IS DISABLED
-			this.soundEnabled = false;
+			GAME_SOUND_ENABLED = false;
 
 			// SHOWING THE SOUND OFF GAME ICON
 			this.buttonSoundOffGame.visible = true;
@@ -772,11 +782,17 @@ RPGGame.Game.prototype = {
 			this.buttonSoundOnGameShadow.visible = false;
 
 			// CHECKING IF THE MUSIC PLAYER IS CREATED
-			if (this.musicPlayer!=null)
+			if (MUSIC_PLAYER!=null)
 				{
-				// PAUSING THE BACKGROUND MUSIC
-				this.musicPlayer.pause();
+				// PAUSING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.pause();
+
+				// DESTROYING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.destroy();
 				}
+
+			// CLEARING THE CLICK TIMESTAMP VALUE
+			this.clickTimestamp = null;
 			},this);
 
 		// ADDING THE SOUND OFF GAME ICON
@@ -785,13 +801,21 @@ RPGGame.Game.prototype = {
 		this.buttonSoundOffGameShadow.tint = 0x000000;
 		this.buttonSoundOffGameShadow.alpha = 0.7;
 		this.buttonSoundOffGameShadow.fixedToCamera = true;
+		if (GAME_SOUND_ENABLED==true){this.buttonSoundOffGameShadow.visible=false;}
 		this.buttonSoundOffGame = this.add.button(612, 3, "imageSoundOff", null, this, 2, 1, 0);
 		this.buttonSoundOffGame.fixedToCamera = true;
+		if (GAME_SOUND_ENABLED==true){this.buttonSoundOffGame.visible=false;}
 		this.buttonSoundOffGame.inputEnabled = true;
+		this.buttonSoundOffGame.events.onInputDown.add(function(){if(this.clickTimestamp==null){this.clickTimestamp=this.getCurrentTime();this.clickPositionX=this.game.input.activePointer.position.x;this.clickPositionY=this.game.input.activePointer.position.y;}},this);
 		this.buttonSoundOffGame.events.onInputUp.add(function()
 			{
+			// REJECTING ANY SLIDE AND LONG PRESS EVENT - BUGFIX FOR SAFARI ON IOS FOR ENABLING THE AUDIO CONTEXT
+			if (Math.abs(this.game.input.activePointer.position.x-this.clickPositionX)>=25){this.clickTimestamp=null;return;}
+			if (Math.abs(this.game.input.activePointer.position.y-this.clickPositionY)>=25){this.clickTimestamp=null;return;}
+			if (this.getCurrentTime()-this.clickTimestamp>=500){this.clickTimestamp=null;return;}
+
 			// SETTING THAT THE SOUND IS ENABLED
-			this.soundEnabled = true;
+			GAME_SOUND_ENABLED = true;
 
 			// SHOWING THE SOUND ON GAME ICON
 			this.buttonSoundOnGame.visible = true;
@@ -801,21 +825,20 @@ RPGGame.Game.prototype = {
 			this.buttonSoundOffGame.visible = false;
 			this.buttonSoundOffGameShadow.visible = false;
 
-			// CHECKING IF THE MUSIC PLAYER IS NOT CREATED
-			if (this.musicPlayer==null)
-				{
-				// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
-				this.musicPlayer = this.add.audio("musicBackground");
+			// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
+			MUSIC_PLAYER = this.add.audio("musicBackground");
 
-				// SETTING THE BACKGROUND MUSIC VOLUME
-				this.musicPlayer.volume = 0.3;
+			// SETTING THE BACKGROUND MUSIC VOLUME
+			MUSIC_PLAYER.volume = 0.3;
 
-				// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
-				this.musicPlayer.loop = true;
-				}
+			// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
+			MUSIC_PLAYER.loop = true;
 
 			// PLAYING THE BACKGROUND MUSIC
-			this.musicPlayer.play();
+			MUSIC_PLAYER.play();
+
+			// CLEARING THE CLICK TIMESTAMP VALUE
+			this.clickTimestamp = null;
 			},this);
 
 		// ADDING THE SAVE GAME ICON
@@ -1007,6 +1030,32 @@ RPGGame.Game.prototype = {
 			// UPDATING THE HERO'S ANIMATION
 			this.hero.animations.play(GAMEDATA.lastAnimation, 10, true);
 			this.hero.animations.stop(null, true);
+			}
+
+		// CHECKING IF THE MUSIC PLAYER IS CREATED
+		if (MUSIC_PLAYER!=null)
+			{
+			// PAUSING THE BACKGROUND MUSIC PLAYER
+			MUSIC_PLAYER.pause();
+
+			// DESTROYING THE BACKGROUND MUSIC PLAYER
+			MUSIC_PLAYER.destroy();
+			}
+
+		// CHECKING IF THE SOUND IS ENABLED
+		if (GAME_SOUND_ENABLED==true)
+			{
+			// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
+			MUSIC_PLAYER = this.add.audio("musicBackground");
+
+			// SETTING THE BACKGROUND MUSIC VOLUME
+			MUSIC_PLAYER.volume = 0.3;
+
+			// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
+			MUSIC_PLAYER.loop = true;
+
+			// PLAYING THE BACKGROUND MUSIC
+			MUSIC_PLAYER.play();
 			}
 		},
 
@@ -1235,7 +1284,7 @@ RPGGame.Game.prototype = {
 			this.heroDead.visible = true;
 
 			// CHECKING IF THE SOUND IS ENABLED
-			if (this.soundEnabled==true)
+			if (GAME_SOUND_ENABLED==true)
 				{
 				// PLAYING THE HERO'S DEATH SOUND
 				this.audioPlayer = this.add.audio("soundHeroDeath");
@@ -1315,7 +1364,7 @@ RPGGame.Game.prototype = {
 		this.setGold(this.statsGold + 1);
 
 		// CHECKING IF THE SOUND IS ENABLED
-		if (this.soundEnabled==true)
+		if (GAME_SOUND_ENABLED==true)
 			{
 			// PLAYING THE COIN SOUND
 			this.audioPlayer = this.add.audio("soundCoin");
@@ -1800,7 +1849,7 @@ RPGGame.Game.prototype = {
 		this.enemyExplosion.position.y = enemyDiedAtY;
 
 		// CHECKING IF THE SOUND IS ENABLED
-		if (this.soundEnabled==true)
+		if (GAME_SOUND_ENABLED==true)
 			{
 			// PLAYING THE ENEMY'S EXPLOSION SOUND
 			this.audioPlayer = this.add.audio("soundEnemyDeath");
@@ -1840,7 +1889,7 @@ RPGGame.Game.prototype = {
 		this.teleporting = true;
 
 		// CHECKING IF THE SOUND IS ENABLED
-		if (this.soundEnabled==true)
+		if (GAME_SOUND_ENABLED==true)
 			{
 			// PLAYING THE TELEPORTING SOUND
 			this.audioPlayer = this.add.audio("soundTeleporting");
@@ -1963,7 +2012,7 @@ RPGGame.Game.prototype = {
 			this.heroSlash.visible = true;
 
 			// CHECKING IF THE SOUND IS ENABLED
-			if (this.soundEnabled==true)
+			if (GAME_SOUND_ENABLED==true)
 				{
 				// PLAYING THE SLASH SOUND
 				this.audioPlayer = this.add.audio("soundSlash");
@@ -2055,7 +2104,7 @@ RPGGame.Game.prototype = {
 			this.enemySlash.visible = true;
 
 			// CHECKING IF THE SOUND IS ENABLED
-			if (this.soundEnabled==true)
+			if (GAME_SOUND_ENABLED==true)
 				{
 				// PLAYING THE SLASH SOUND
 				this.audioPlayer = this.add.audio("soundSlash");
